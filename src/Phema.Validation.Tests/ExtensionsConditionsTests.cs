@@ -5,7 +5,7 @@ namespace Phema.Validation.Tests
 	public class ExtensionsConditionsTests
 	{
 		private readonly IValidationContext validationContext;
-		
+
 		public ExtensionsConditionsTests()
 		{
 			validationContext = new ValidationContext();
@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotNull()
 		{
@@ -36,7 +36,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsEmpty()
 		{
@@ -49,7 +49,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEmpty()
 		{
@@ -62,7 +62,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNullOrWhitespace()
 		{
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotNullOrWhitespace()
 		{
@@ -88,7 +88,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsEqual()
 		{
@@ -101,7 +101,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEqual()
 		{
@@ -114,7 +114,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsMatch()
 		{
@@ -127,7 +127,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotMatch()
 		{

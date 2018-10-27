@@ -1,4 +1,5 @@
-namespace Phema.Validation{
+namespace Phema.Validation
+{
 	public class ValidationMessage
 	{
 		public ValidationMessage(string template)

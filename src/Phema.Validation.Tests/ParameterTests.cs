@@ -19,11 +19,11 @@ namespace Phema.Validation.Tests
 				.Add<int>(() => new ValidationMessage<int>("{0}"), 12);
 
 			var error = Assert.Single(validationContext.Errors);
-			
+
 			Assert.Equal("test", error.Key);
 			Assert.Equal("12", error.Message);
 		}
-		
+
 		[Fact]
 		public void ThrowWithOneParameter()
 		{
@@ -35,7 +35,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", exception.Error.Key);
 			Assert.Equal("12", exception.Error.Message);
 		}
-		
+
 		[Fact]
 		public void AddWithTwoParameters()
 		{
@@ -44,11 +44,11 @@ namespace Phema.Validation.Tests
 				.Add<int, int>(() => new ValidationMessage<int, int>("{0}{1}"), 12, 12);
 
 			var error = Assert.Single(validationContext.Errors);
-			
+
 			Assert.Equal("test", error.Key);
 			Assert.Equal("1212", error.Message);
 		}
-		
+
 		[Fact]
 		public void ThrowWithTwoParameters()
 		{

@@ -1,6 +1,7 @@
 using System;
 
-namespace Phema.Validation{
+namespace Phema.Validation
+{
 	public class ValidationMessage<TArgument> : ValidationMessage
 	{
 		public ValidationMessage(string template) : base(template)
@@ -17,13 +18,13 @@ namespace Phema.Validation{
 			return string.Format(Template, arguments[0]);
 		}
 	}
-	
+
 	public class ValidationMessage<TArgument1, TArgument2> : ValidationMessage
 	{
 		public ValidationMessage(string template) : base(template)
 		{
 		}
-		
+
 		protected override string GetMessage(params object[] arguments)
 		{
 			if (arguments.Length != 2)

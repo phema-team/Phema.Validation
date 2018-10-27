@@ -12,7 +12,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ValidationContext();
 		}
-		
+
 		[Fact]
 		public void IfIsConditionIsTrueAddsError()
 		{
@@ -25,7 +25,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IfNoIsConditionAddsError()
 		{
@@ -37,7 +37,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IfAnyIsConditionIsTrueAddsError()
 		{
@@ -51,7 +51,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsConditionIsTrueNotAddsError()
 		{
@@ -61,7 +61,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Empty(validationContext.Errors);
 		}
-		
+
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
@@ -70,11 +70,11 @@ namespace Phema.Validation.Tests
 				.Add(() => new ValidationMessage("works {0}"), 12);
 
 			var error = Assert.Single(validationContext.Errors);
-			
+
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works 12", error.Message);
 		}
-		
+
 		[Fact]
 		public void ThrowsSameExceptionInIsCondition()
 		{
@@ -83,7 +83,7 @@ namespace Phema.Validation.Tests
 					.Is(() => throw new Exception())
 					.Add(() => new ValidationMessage("works")));
 		}
-		
+
 		[Fact]
 		public void ThrowsSameExceptionInAdd()
 		{

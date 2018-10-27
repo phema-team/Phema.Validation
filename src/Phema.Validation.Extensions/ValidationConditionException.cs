@@ -1,6 +1,7 @@
 using System;
 
-namespace Phema.Validation{
+namespace Phema.Validation
+{
 	public class ValidationConditionException : Exception
 	{
 		internal ValidationConditionException(IValidationError error)

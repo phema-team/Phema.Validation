@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-namespace Phema.Validation{
+namespace Phema.Validation
+{
 	public interface IValidationContext
 	{
 		IReadOnlyCollection<IValidationError> Errors { get; }
@@ -18,7 +19,7 @@ namespace Phema.Validation{
 		}
 
 		public IReadOnlyCollection<IValidationError> Errors => errors;
-		
+
 		public IValidationCondition When(string key)
 		{
 			return new ValidationCondition(key, errors);

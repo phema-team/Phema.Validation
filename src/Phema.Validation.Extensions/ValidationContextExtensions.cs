@@ -4,7 +4,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Phema.Validation{
+namespace Phema.Validation
+{
 	public static class ValidationContextExtensions
 	{
 		public static IValidationCondition When(this IValidationContext validationContext)
@@ -19,19 +20,20 @@ namespace Phema.Validation{
 		{
 			return validationContext.When(expression);
 		}
-		
+
 		public static IValidationCondition When<TModel>(
-			this IValidationContext validationContext, 
+			this IValidationContext validationContext,
 			Expression<Func<TModel, object>> expression)
 		{
 			string key;
-			
+
 			switch (expression.Body)
 			{
 				case MemberExpression memberExpression:
 					key = GetKey(memberExpression);
 					break;
-				case UnaryExpression unaryExpression when unaryExpression.Operand is MemberExpression memberExpression:
+				case UnaryExpression unaryExpression 
+						when unaryExpression.Operand is MemberExpression memberExpression:
 					key = GetKey(memberExpression);
 					break;
 				default:
@@ -46,7 +48,7 @@ namespace Phema.Validation{
 					?? memberExpression.Member.Name;
 			}
 		}
-		
+
 		public static bool IsValid(this IValidationContext validationContext)
 		{
 			return validationContext.Errors.Count == 0;
