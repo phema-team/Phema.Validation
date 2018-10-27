@@ -27,7 +27,6 @@ var person = new Person
   Name = null
 };
 
-
 var validationContext = new ValidationContext();
 
 validationContext.When(person, p => p.Name)
