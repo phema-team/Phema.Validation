@@ -9,7 +9,7 @@ namespace Phema.Validation
 		IValidationCondition When(string key);
 	}
 
-	internal class ValidationContext : IValidationContext
+	public class ValidationContext : IValidationContext
 	{
 		private readonly List<ValidationError> errors;
 
