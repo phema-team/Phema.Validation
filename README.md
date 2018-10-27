@@ -2,6 +2,12 @@
 
 C# tiny, fast and customizable validation library
 
+- [x] Core library
+- [x] Extensions
+- [x] Conditions
+- [x] Tests
+- [ ] AspNetCore integration
+
 ```csharp
 var validationContext = new ValidationContext();
 
