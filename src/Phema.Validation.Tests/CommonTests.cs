@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -18,7 +17,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("test")
 				.Is(() => true)
-				.Add(() => new ValidationMessage("works"));
+				.Add(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -30,7 +29,7 @@ namespace Phema.Validation.Tests
 		public void IfNoIsConditionAddsError()
 		{
 			validationContext.When("test")
-				.Add(() => new ValidationMessage("works"));
+				.Add(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -44,7 +43,7 @@ namespace Phema.Validation.Tests
 			validationContext.When("test")
 				.Is(() => false)
 				.Is(() => true)
-				.Add(() => new ValidationMessage("works"));
+				.Add(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -57,7 +56,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("test")
 				.Is(() => false)
-				.Add(() => new ValidationMessage("works"));
+				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.Empty(validationContext.Errors);
 		}
@@ -67,7 +66,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("test")
 				.Is(() => true)
-				.Add(() => new ValidationMessage("works {0}"), 12);
+				.Add(() => new ValidationMessage(() => "works {0}"), 12);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -81,7 +80,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<Exception>(() =>
 				validationContext.When("test")
 					.Is(() => throw new Exception())
-					.Add(() => new ValidationMessage("works")));
+					.Add(() => new ValidationMessage(() => "works")));
 		}
 
 		[Fact]

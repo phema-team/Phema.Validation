@@ -1,17 +1,19 @@
+using System;
+
 namespace Phema.Validation
 {
 	public class ValidationMessage
 	{
-		public ValidationMessage(string template)
+		public ValidationMessage(Func<string> factory)
 		{
-			Template = template;
+			Factory = factory;
 		}
 
-		public string Template { get; }
+		public Func<string> Factory { get; }
 
 		protected internal virtual string GetMessage(params object[] arguments)
 		{
-			return string.Format(Template, arguments);
+			return string.Format(Factory(), arguments);
 		}
 	}
 }
