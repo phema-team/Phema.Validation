@@ -13,7 +13,7 @@ var validationContext = new ValidationContext();
 
 validationContext.When("key")
   .Is(() => true)
-  .Add(new ValidationMessage("template"));
+  .Add(() => new ValidationMessage(() => "template"));
   
 var error = Assert.Single(validationContext.Errors);
 
@@ -31,7 +31,7 @@ var validationContext = new ValidationContext();
 
 validationContext.When(person, p => p.Name)
   .IsNullOrWhitespace(person.Name)
-  .Add(new ValidationMessage("Is null or whitespace"));
+  .Add(() => new ValidationMessage(() => "Is null or whitespace"));
   
 var error = Assert.Single(validationContext.Errors);
 
