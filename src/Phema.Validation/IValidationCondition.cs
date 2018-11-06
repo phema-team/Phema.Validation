@@ -6,7 +6,7 @@ namespace Phema.Validation
 	public interface IValidationCondition
 	{
 		IValidationCondition Is(Condition condition);
-		IValidationError Add(Func<ValidationMessage> selector, params object[] arguments);
+		IValidationError Add(Selector selector, params object[] arguments);
 	}
 
 	internal class ValidationCondition : IValidationCondition
@@ -28,7 +28,7 @@ namespace Phema.Validation
 			return this;
 		}
 
-		public IValidationError Add(Func<ValidationMessage> selector, params object[] arguments)
+		public IValidationError Add(Selector selector, params object[] arguments)
 		{
 			if (conditions.Count == 0)
 			{

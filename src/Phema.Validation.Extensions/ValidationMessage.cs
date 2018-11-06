@@ -4,7 +4,7 @@ namespace Phema.Validation
 {
 	public class ValidationMessage<TArgument> : ValidationMessage
 	{
-		public ValidationMessage(Func<string> factory) : base(factory)
+		public ValidationMessage(Func<string> template) : base(template)
 		{
 		}
 
@@ -15,13 +15,13 @@ namespace Phema.Validation
 				throw new ArgumentException(nameof(arguments));
 			}
 
-			return string.Format(Factory(), arguments[0]);
+			return string.Format(Template(), arguments[0]);
 		}
 	}
 
 	public class ValidationMessage<TArgument1, TArgument2> : ValidationMessage
 	{
-		public ValidationMessage(Func<string> factory) : base(factory)
+		public ValidationMessage(Func<string> template) : base(template)
 		{
 		}
 
@@ -32,7 +32,7 @@ namespace Phema.Validation
 				throw new ArgumentException(nameof(arguments));
 			}
 
-			return string.Format(Factory(), arguments[0], arguments[1]);
+			return string.Format(Template(), arguments[0], arguments[1]);
 		}
 	}
 }

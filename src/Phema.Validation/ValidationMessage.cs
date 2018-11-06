@@ -4,16 +4,16 @@ namespace Phema.Validation
 {
 	public class ValidationMessage
 	{
-		public ValidationMessage(Func<string> factory)
+		public ValidationMessage(Func<string> template)
 		{
-			Factory = factory;
+			Template = template;
 		}
 
-		public Func<string> Factory { get; }
+		public Func<string> Template { get; }
 
 		protected internal virtual string GetMessage(params object[] arguments)
 		{
-			return string.Format(Factory(), arguments);
+			return string.Format(Template(), arguments);
 		}
 	}
 }

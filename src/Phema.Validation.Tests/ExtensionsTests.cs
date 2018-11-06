@@ -117,5 +117,49 @@ namespace Phema.Validation.Tests
 
 			validationContext.EnsureIsValid();
 		}
+		
+		[Fact]
+		public void IsValidByKey()
+		{
+			validationContext.When("test")
+				.Is(() => false)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.True(validationContext.IsValid("test"));
+		}
+		
+		[Fact]
+		public void IsInvalidByKey()
+		{
+			validationContext.When("test")
+				.Is(() => true)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.False(validationContext.IsValid("test"));
+		}
+		
+		[Fact]
+		public void IsValidByKeyExpression()
+		{
+			var stab = new Stab();
+			
+			validationContext.When(stab, s => s.Message)
+				.Is(() => false)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.True(validationContext.IsValid<Stab>(s => s.Message));
+		}
+		
+		[Fact]
+		public void IsInvalidByKeyExpression()
+		{
+			var stab = new Stab();
+			
+			validationContext.When(stab, s => s.Message)
+				.Is(() => true)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.False(validationContext.IsValid<Stab>(s => s.Message));
+		}
 	}
 }

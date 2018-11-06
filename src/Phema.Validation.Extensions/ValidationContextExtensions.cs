@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace Phema.Validation
 {
@@ -25,33 +23,28 @@ namespace Phema.Validation
 			this IValidationContext validationContext,
 			Expression<Func<TModel, object>> expression)
 		{
-			string key;
-
-			switch (expression.Body)
-			{
-				case MemberExpression memberExpression:
-					key = GetKey(memberExpression);
-					break;
-				case UnaryExpression unaryExpression 
-						when unaryExpression.Operand is MemberExpression memberExpression:
-					key = GetKey(memberExpression);
-					break;
-				default:
-					throw new KeyNotFoundException();
-			}
-
+			var key = ExpressionHelper.GetKeyByMember(expression);
+			
 			return validationContext.When(key);
-
-			string GetKey(MemberExpression memberExpression)
-			{
-				return memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name
-					?? memberExpression.Member.Name;
-			}
 		}
 
 		public static bool IsValid(this IValidationContext validationContext)
 		{
 			return validationContext.Errors.Count == 0;
+		}
+
+		public static bool IsValid(this IValidationContext validationContext, string key)
+		{
+			return !validationContext.Errors.Any(error => error.Key == key);
+		}
+		
+		public static bool IsValid<TModel>(
+			this IValidationContext validationContext, 
+			Expression<Func<TModel, object>> expression)
+		{
+			var key = ExpressionHelper.GetKeyByMember(expression);
+			
+			return !validationContext.Errors.Any(error => error.Key == key);
 		}
 
 		public static void EnsureIsValid(this IValidationContext validationContext)
