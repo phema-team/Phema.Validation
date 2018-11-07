@@ -5,15 +5,17 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6B5349B7-8B34-49DD-90B9-D45BB472CD88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation", "src\Phema.Validation\Phema.Validation.csproj", "{1EDF34FD-4131-4054-BB0D-E18E85DFAADC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phema.Validation", "src\Phema.Validation\Phema.Validation.csproj", "{1EDF34FD-4131-4054-BB0D-E18E85DFAADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Tests", "src\Phema.Validation.Tests\Phema.Validation.Tests.csproj", "{5CD712CF-F35D-4601-93D0-F3FDE0B171CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phema.Validation.Tests", "src\Phema.Validation.Tests\Phema.Validation.Tests.csproj", "{5CD712CF-F35D-4601-93D0-F3FDE0B171CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Extensions", "src\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj", "{3BADCA5B-2EC6-4D6D-A3D8-3413B266186B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phema.Validation.Extensions", "src\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj", "{3BADCA5B-2EC6-4D6D-A3D8-3413B266186B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Extensions.Conditions", "src\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj", "{C985E75C-F247-4C24-BF57-0A7BCD93D99E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phema.Validation.Extensions.Conditions", "src\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj", "{C985E75C-F247-4C24-BF57-0A7BCD93D99E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.AspNetCore", "src\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj", "{F8CDD1A3-316F-40CE-966A-73FF8337F467}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phema.Validation.AspNetCore", "src\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj", "{F8CDD1A3-316F-40CE-966A-73FF8337F467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1EDF34FD-4131-4054-BB0D-E18E85DFAADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -88,6 +87,21 @@ Global
 		{F8CDD1A3-316F-40CE-966A-73FF8337F467}.Release|x64.Build.0 = Release|Any CPU
 		{F8CDD1A3-316F-40CE-966A-73FF8337F467}.Release|x86.ActiveCfg = Release|Any CPU
 		{F8CDD1A3-316F-40CE-966A-73FF8337F467}.Release|x86.Build.0 = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|x64.Build.0 = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Debug|x86.Build.0 = Debug|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|x64.ActiveCfg = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|x64.Build.0 = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|x86.ActiveCfg = Release|Any CPU
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1EDF34FD-4131-4054-BB0D-E18E85DFAADC} = {6B5349B7-8B34-49DD-90B9-D45BB472CD88}
@@ -95,5 +109,9 @@ Global
 		{3BADCA5B-2EC6-4D6D-A3D8-3413B266186B} = {6B5349B7-8B34-49DD-90B9-D45BB472CD88}
 		{C985E75C-F247-4C24-BF57-0A7BCD93D99E} = {6B5349B7-8B34-49DD-90B9-D45BB472CD88}
 		{F8CDD1A3-316F-40CE-966A-73FF8337F467} = {6B5349B7-8B34-49DD-90B9-D45BB472CD88}
+		{B7E48D7D-4E03-4892-A48F-ED8F25FCF54B} = {6B5349B7-8B34-49DD-90B9-D45BB472CD88}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1A47D0E-2802-4D47-AC05-C39C2F3DB2CC}
 	EndGlobalSection
 EndGlobal

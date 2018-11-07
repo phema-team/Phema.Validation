@@ -1,35 +1,27 @@
 using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
-	public class ValidationComponent
+	public class ValidationComponent<TModel, TValidation>
+		where TValidation : Validation<TModel>
 	{
-		private readonly IList<Action<IServiceCollection>> actions;
-
 		protected ValidationComponent()
 		{
-			actions = new List<Action<IServiceCollection>>();
-		}
-		
-		protected void Validation<TModel, TValidation, TSection>()
-			where TModel : class
-			where TValidation : Validation<TModel>
-			where TSection : ValidationSection
-		{
-			actions.Add(services => 
-				services
-					.AddScoped<Validation<TModel>, TValidation>()
-					.AddSingleton<TSection>());
 		}
 
-		internal void Configure(IServiceCollection services)
+		protected ValidationMessage Register(Func<string> factory)
 		{
-			foreach (var action in actions)
-			{
-				action(services);
-			}
+			return new ValidationMessage(factory);
+		}
+
+		protected ValidationMessage<TValue> Register<TValue>(Func<string> factory)
+		{
+			return new ValidationMessage<TValue>(factory);
+		}
+
+		protected ValidationMessage<TValue1, TValue2> Register<TValue1, TValue2>(Func<string> factory)
+		{
+			return new ValidationMessage<TValue1, TValue2>(factory);
 		}
 	}
 }

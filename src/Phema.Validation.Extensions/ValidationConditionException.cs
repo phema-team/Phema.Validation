@@ -1,8 +1,9 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Phema.Validation
 {
-	public class ValidationConditionException : Exception
+	public class ValidationConditionException : ValidationException
 	{
 		internal ValidationConditionException(IValidationError error)
 		{
