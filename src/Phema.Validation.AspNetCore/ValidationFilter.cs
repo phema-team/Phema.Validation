@@ -13,7 +13,7 @@ namespace Phema.Validation
 
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
-			foreach (var (_, value) in context.ActionArguments)
+			foreach (var value in context.ActionArguments.Values)
 			{
 				if (options.Validations.TryGetValue(value.GetType(), out var factory))
 				{

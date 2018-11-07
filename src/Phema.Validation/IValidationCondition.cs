@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Phema.Validation
@@ -32,30 +31,31 @@ namespace Phema.Validation
 		{
 			if (conditions.Count == 0)
 			{
-				return AddError();
+				return AddError(selector, arguments);
 			}
 
 			foreach (var condition in conditions)
 			{
 				if (condition())
 				{
-					return AddError();
+					return AddError(selector, arguments);
 				}
 			}
 
 			return null;
+		}
 
-			ValidationError AddError()
+		private ValidationError AddError(Selector selector, params object[] arguments)
+		{
+			var error = new ValidationError
 			{
-				var error = new ValidationError
-				{
-					Key = key, Message = selector().GetMessage(arguments)
-				};
+				Key = key, 
+				Message = selector().GetMessage(arguments)
+			};
 
-				errors.Add(error);
+			errors.Add(error);
 
-				return error;
-			}
+			return error;
 		}
 	}
 }

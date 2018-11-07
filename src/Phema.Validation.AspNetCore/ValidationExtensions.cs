@@ -6,7 +6,7 @@ namespace Phema.Validation
 {
 	public static class ValidationExtensions
 	{
-		public static void AddValidation(this IServiceCollection services, Action<IValidationConfiguration> action)
+		public static void AddValidation(this IServiceCollection services, Action<IValidationConfiguration> configuration)
 		{
 			services.AddTransient<IValidationContext, ValidationContext>();
 			services.Configure<MvcOptions>(options =>
@@ -15,7 +15,7 @@ namespace Phema.Validation
 				options.Filters.Add(new ValidationFilter());
 			});
 
-			action(new ValidationConfiguration(services));
+			configuration(new ValidationConfiguration(services));
 		}
 	}
 }

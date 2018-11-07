@@ -4,17 +4,11 @@ using Phema.Validation;
 
 namespace WebApplication1
 {
-	public class Test
-	{
-		public string MyProperty { get; set; }
-		public int MyProperty2 { get; set; }
-	}
-
 	[Route("test")]
 	public class Controller : ControllerBase
 	{
 		[HttpPost("works")]
-		public string Works([FromBody] Test test)
+		public string Works([FromBody] Model model)
 		{
 			HttpContext.RequestServices.GetRequiredService<IValidationContext>()
 					.When("", s => s.Length)

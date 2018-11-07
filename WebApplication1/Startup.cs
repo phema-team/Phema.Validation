@@ -5,15 +5,6 @@ using Phema.Validation;
 
 namespace WebApplication1
 {
-	public class VVVV : Validation<Test>
-	{
-		protected override void Validate(IValidationContext validationContext, Test model)
-		{
-			validationContext.When(model, m => m.MyProperty)
-				.Add(() => new ValidationMessage(() => "Works 123123"));
-		}
-	}
-	
 	public class Startup
 	{
 		public void ConfigureServices(IServiceCollection services)
@@ -21,8 +12,8 @@ namespace WebApplication1
 			services.AddMvcCore()
 				.AddJsonFormatters();
 
-			services.AddValidation(
-				config => config.AddValidation<Test, VVVV, ValidationComponent<Test, VVVV>>());
+			services.AddValidation(config => 
+				config.AddValidation<Model, ModelValidation, ModelValidationComponent>());
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

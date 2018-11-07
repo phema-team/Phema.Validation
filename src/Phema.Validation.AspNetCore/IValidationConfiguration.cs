@@ -22,13 +22,15 @@ namespace Phema.Validation
 			where TValidation : Validation<TModel>
 			where TComponent : ValidationComponent<TModel, TValidation>
 		{
-			services.AddSingleton<TValidation>()
+			services.AddTransient<TValidation>()
 				.AddSingleton<TComponent>();
 
-			services.Configure<ValidationOptions>(o =>
-				o.Validations.Add(
-					typeof(TModel), 
-					provider => provider.GetRequiredService<TValidation>()));
+			services.Configure<ValidationOptions>(options =>
+			{
+				options.Validations.Add(
+					typeof(TModel),
+					provider => provider.GetRequiredService<TValidation>());
+			});
 
 			return this;
 		}

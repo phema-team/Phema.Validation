@@ -43,8 +43,8 @@ namespace Phema.Validation
 			Expression<Func<TModel, object>> expression)
 		{
 			var key = ExpressionHelper.GetKeyByMember(expression);
-			
-			return !validationContext.Errors.Any(error => error.Key == key);
+
+			return validationContext.IsValid(key);
 		}
 
 		public static void EnsureIsValid(this IValidationContext validationContext)

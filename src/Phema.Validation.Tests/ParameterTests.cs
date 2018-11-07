@@ -41,7 +41,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("test")
 				.Is(() => true)
-				.Add(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
+				.Add<int, int>(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
 
 			var error = Assert.Single(validationContext.Errors);
 
