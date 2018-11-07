@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -11,12 +12,17 @@ namespace Phema.Validation
 			return validationContext.When("");
 		}
 
-		public static IValidationCondition When<TModel>(
+		public static IValueValidationCondition<TProperty> When<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, object>> expression)
+			Expression<Func<TModel, TProperty>> expression)
 		{
-			return validationContext.When(expression);
+			var key = ExpressionHelper.GetKeyByMember(expression);
+			var value = ExpressionHelper.GetValueFromExpression(model, expression);
+			
+			var validationCondition = validationContext.When(key);
+			
+			return new ValueValidationCondition<TProperty>(validationCondition, value);
 		}
 
 		public static IValidationCondition When<TModel>(
