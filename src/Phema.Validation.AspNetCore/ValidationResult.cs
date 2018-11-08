@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Phema.Validation
@@ -8,37 +7,30 @@ namespace Phema.Validation
 	public class ValidationResult : ObjectResult
 	{
 		public ValidationResult(IEnumerable<IValidationError> errors)
-			: base(new ValidationResponse(errors))
+			: base(GetSummary(errors))
 		{
 			StatusCode = 400;
 		}
 
 		public ValidationResult(IValidationError error)
-			: base(new ValidationResponse(error))
+			: base(GetSummary(error))
 		{
 			StatusCode = 400;
 		}
 
-		[DataContract]
-		private class ValidationResponse
+		private static IDictionary<string, string> GetSummary(IValidationError error)
 		{
-			public ValidationResponse(IValidationError error)
+			return new Dictionary<string, string>
 			{
-				Validation = new Dictionary<string, string>
-				{
-					[error.Key] = error.Message
-				};
-			}
+				[error.Key] = error.Message
+			};
+		}
 
-			public ValidationResponse(IEnumerable<IValidationError> errors)
-			{
-				Validation = errors.ToDictionary(
-					error => error.Key,
-					error => error.Message);
-			}
-			
-			[DataMember(Name = "validation")]
-			public IDictionary<string, string> Validation { get; }
+		private static IDictionary<string, string> GetSummary(IEnumerable<IValidationError> errors)
+		{
+			return errors.ToDictionary(
+				error => error.Key,
+				error => error.Message);
 		}
 	}
 }

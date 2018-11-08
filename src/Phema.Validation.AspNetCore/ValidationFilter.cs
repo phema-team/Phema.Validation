@@ -31,6 +31,12 @@ namespace Phema.Validation
 
 		public void OnActionExecuted(ActionExecutedContext context)
 		{
+			var validationContext = context.HttpContext.RequestServices.GetRequiredService<IValidationContext>();
+
+			if (!validationContext.IsValid())
+			{
+				context.Result = new ValidationResult(validationContext.Errors);
+			}
 		}
 	}
 }

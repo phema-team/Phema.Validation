@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	public interface IValidationContext
+	public interface IValidationContext : IDisposable
 	{
 		IReadOnlyCollection<IValidationError> Errors { get; }
 
@@ -23,6 +24,10 @@ namespace Phema.Validation
 		public IValidationCondition When(string key)
 		{
 			return new ValidationCondition(key, errors);
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

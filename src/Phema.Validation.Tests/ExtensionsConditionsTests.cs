@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -139,6 +140,39 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
+		}
+		
+		[Fact]
+		public void ValueIsInRange()
+		{
+			validationContext.When("age")
+				.IsInRange(11, 10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+
+			var error = Assert.Single(validationContext.Errors);
+
+			Assert.Equal("age", error.Key);
+			Assert.Equal("Works", error.Message);
+		}
+		
+		[Fact]
+		public void ValueLessThanRange()
+		{
+			validationContext.When("age")
+				.IsInRange(9, 10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+			
+			Assert.True(validationContext.IsValid());
+		}
+		
+		[Fact]
+		public void ValueGreaterThanRange()
+		{
+			validationContext.When("age")
+				.IsInRange(13, 10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+			
+			Assert.True(validationContext.IsValid());
 		}
 	}
 }

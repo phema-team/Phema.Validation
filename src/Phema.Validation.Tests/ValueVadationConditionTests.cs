@@ -194,5 +194,90 @@ namespace Phema.Validation.Tests
 			Assert.Equal("test", error.Key);
 			Assert.Equal("works", error.Message);
 		}
+		
+		public class TestClass
+		{
+			[DataMember(Name = "name")]
+			public string Name { get; set; }
+
+			[DataMember(Name = "age")]
+			public int Age { get; set; }
+		}
+
+		[Fact]
+		public void Test()
+		{
+			var test = new TestClass
+			{
+				Name = "test",
+				Age = 13
+			};
+
+			validationContext.When(test, t => t.Name)
+				.IsNullOrWhitespace()
+				.Add(() => new ValidationMessage(() => "Name is null or whitespace"));
+
+			validationContext.When(test, t => t.Age)
+				.Is(age => age < 18)
+				.Add<int>(() => new ValidationMessage<int>(() => "Age {0} is under 18"), test.Age);
+			
+			Assert.False(validationContext.IsValid());
+			
+			Assert.True(validationContext.IsValid<TestClass>(t => t.Name));
+			Assert.False(validationContext.IsValid<TestClass>(t => t.Age));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("age", error.Key);
+			Assert.Equal("Age 13 is under 18", error.Message);
+		}
+
+		[Fact]
+		public void ValueIsInRange()
+		{
+			var test = new TestClass
+			{
+				Age = 11
+			};
+
+			validationContext.When(test, t => t.Age)
+				.IsInRange(10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+
+			var error = Assert.Single(validationContext.Errors);
+
+			Assert.Equal("age", error.Key);
+			Assert.Equal("Works", error.Message);
+		}
+		
+		[Fact]
+		public void ValueLessThanRange()
+		{
+			var test = new TestClass
+			{
+				Age = 9
+			};
+
+			validationContext.When(test, t => t.Age)
+				.IsInRange(10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+			
+			Assert.True(validationContext.IsValid());
+		}
+		
+		[Fact]
+		public void ValueGreaterThanRange()
+		{
+			var test = new TestClass
+			{
+				Age = 13
+			};
+
+			validationContext.When(test, t => t.Age)
+				.IsInRange(10, 12)
+				.Add(() => new ValidationMessage(() => "Works"));
+			
+			Assert.True(validationContext.IsValid());
+		}
 	}
 }

@@ -6,9 +6,9 @@ namespace WebApplication1
 	{
 		public ModelValidationComponent()
 		{
-			MyPropertyMustBeSet = Register(() => "My property must be set");
+			NameMustBeSet = Register(() => "Name must be set");
 		}
 
-		public ValidationMessage MyPropertyMustBeSet { get; }
+		public ValidationMessage NameMustBeSet { get; }
 	}
 }

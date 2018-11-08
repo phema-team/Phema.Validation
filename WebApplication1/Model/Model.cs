@@ -1,8 +1,13 @@
-﻿namespace WebApplication1
+﻿using System.Runtime.Serialization;
+
+namespace WebApplication1
 {
 	public class Model
 	{
-		public string MyProperty { get; set; }
-		public int MyProperty2 { get; set; }
+		[DataMember(Name = "name")]
+		public string Name { get; set; }
+		
+		[DataMember(Name = "age")]
+		public int Age { get; set; }
 	}
 }

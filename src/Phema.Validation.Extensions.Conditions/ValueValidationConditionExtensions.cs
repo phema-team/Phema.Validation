@@ -69,5 +69,13 @@ namespace Phema.Validation
 		{
 			return validationCondition.Is(value => !Regex.IsMatch(value, regex, options));
 		}
+		
+		public static IValueValidationCondition<int> IsInRange(
+			this IValueValidationCondition<int> validationCondition,
+			int min, 
+			int max)
+		{
+			return validationCondition.Is(value => value >= min && value <= max);
+		}
 	}
 }

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Phema.Validation
 {
@@ -8,11 +9,11 @@ namespace Phema.Validation
 	{
 		public static void AddValidation(this IServiceCollection services, Action<IValidationConfiguration> configuration)
 		{
-			services.AddTransient<IValidationContext, ValidationContext>();
+			services.TryAddScoped<IValidationContext, ValidationContext>();
 			services.Configure<MvcOptions>(options =>
 			{
-				options.Filters.Add(new ValidationExceptionFilter());
-				options.Filters.Add(new ValidationFilter());
+				options.Filters.Add<ValidationExceptionFilter>();
+				options.Filters.Add<ValidationFilter>();
 			});
 
 			configuration(new ValidationConfiguration(services));

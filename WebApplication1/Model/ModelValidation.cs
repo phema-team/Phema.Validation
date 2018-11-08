@@ -13,8 +13,9 @@ namespace WebApplication1
 		
 		protected override void Validate(IValidationContext validationContext, Model model)
 		{
-			validationContext.When(model, m => m.MyProperty)
-				.Add(() => component.MyPropertyMustBeSet);
+			validationContext.When(model, m => m.Name)
+				.IsNullOrWhitespace()
+				.Add(() => component.NameMustBeSet);
 		}
 	}
 }
