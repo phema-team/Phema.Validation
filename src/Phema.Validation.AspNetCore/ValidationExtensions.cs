@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -12,8 +13,15 @@ namespace Phema.Validation
 			services.TryAddScoped<IValidationContext, ValidationContext>();
 			services.Configure<MvcOptions>(options =>
 			{
-				options.Filters.Add<ValidationExceptionFilter>();
-				options.Filters.Add<ValidationFilter>();
+				if (!options.Filters.Any(x => x is ValidationExceptionFilter))
+				{
+					options.Filters.Add<ValidationExceptionFilter>();
+				}
+
+				if (!options.Filters.Any(x => x is ValidationFilter))
+				{
+					options.Filters.Add<ValidationFilter>();
+				}
 			});
 
 			configuration(new ValidationConfiguration(services));
