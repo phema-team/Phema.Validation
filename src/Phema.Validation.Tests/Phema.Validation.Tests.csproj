@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj" />
     <ProjectReference Include="..\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj" />
     <ProjectReference Include="..\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj" />
   </ItemGroup>

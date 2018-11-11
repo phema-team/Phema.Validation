@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	public class ValidationOptions
+	internal class ValidationOptions
 	{
 		public ValidationOptions()
 		{
