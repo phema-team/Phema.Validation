@@ -12,8 +12,9 @@ namespace WebApplication1
 			services.AddMvcCore()
 				.AddJsonFormatters();
 
-			services.AddValidation(config => 
-				config.AddValidation<Model, ModelValidation, ModelValidationComponent>());
+			services.AddValidation(
+				validation => validation
+					.AddValidation<Model, ModelValidation, ModelValidationComponent>());
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

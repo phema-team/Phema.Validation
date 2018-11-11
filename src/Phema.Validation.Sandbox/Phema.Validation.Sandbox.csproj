@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj" />
+	  <ProjectReference Include="..\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj" />
+	  <ProjectReference Include="..\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj" />
+	  <ProjectReference Include="..\Phema.Validation\Phema.Validation.csproj" />
+	</ItemGroup>
+
+</Project>
