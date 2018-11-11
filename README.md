@@ -45,10 +45,10 @@ var error = Assert.Single(validationContext.Errors);
 Assert.Equal("Name", error.Key);
 Assert.Equal("Is null or whitespace", error.Message);
 ```
-- You can validate model value using expression like example above, or just passing <T>
+- You can validate model value using expression like example above, or just passing `T`
 - You can use predefined conditions like `IsNot`, `IsNull`, `IsEmpty`, etc.
-- You can use `Throw` unstead or `Add` to stop execution flow. That will throw `ValidationConditionException` with Error property
-- You can ensure that validation context is valid or throw `ValidationContextException` with Error property by using `EnsureIsValid`
+- You can use `Throw` unstead or `Add` to stop execution flow. That will throw `ValidationConditionException` with `Error` property
+- You can ensure that validation context is valid or throw `ValidationContextException` with `Errors` property by using `EnsureIsValid`
 - You can validate that key in not presented in error using `IsValid<T>(t => t.Key)` or just passing string key
 - You can use typed parameters (up to 2 for now) using `Add<TArgument>(...)` or `Throw<TArgument>(...)`
 
