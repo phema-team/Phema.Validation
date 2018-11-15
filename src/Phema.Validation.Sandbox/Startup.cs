@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Phema.Validation;
 
-namespace WebApplication1
+namespace Phema.Validation.Sandbox
 {
 	public class Startup
 	{

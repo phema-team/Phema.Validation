@@ -1,4 +1,8 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Phema.Validation.Tests")]
+
 namespace Phema.Validation
 {
-	public delegate bool Condition<TValue>(TValue value);
+	public delegate bool Condition();
 }

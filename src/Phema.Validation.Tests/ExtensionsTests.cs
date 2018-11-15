@@ -15,8 +15,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfAnyErrorIsValidIsFalse()
 		{
-			validationContext.When("test")
-				.Is(() => true)
+			validationContext.Validate("test", 10)
+				.When(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.Single(validationContext.Errors);
@@ -26,8 +26,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotWorksAsNotIs()
 		{
-			validationContext.When("test")
-				.IsNot(() => true)
+			validationContext.Validate("test", 10)
+				.WhenNot(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid());
@@ -37,8 +37,8 @@ namespace Phema.Validation.Tests
 		public void ThrowsIfConditionIsTrue()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("test")
-					.Is(() => true)
+				validationContext.Validate("test", 10)
+					.When(value => true)
 					.Throw(() => new ValidationMessage(() => "works")));
 
 			Assert.Equal("test", exception.Error.Key);
@@ -48,8 +48,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureThrowsIfAnyError()
 		{
-			validationContext.When("test")
-				.Is(() => true)
+			validationContext.Validate("test", 10)
+				.When(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			var exception = Assert.Throws<ValidationContextException>(
@@ -68,51 +68,25 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void WhenGetsKeyFromDataMember()
-		{
-			validationContext.When<Stab>(s => s.Message)
-				.Is(() => true)
-				.Add(() => new ValidationMessage(() => "works"));
-
-			var error = Assert.Single(validationContext.Errors);
-
-			Assert.Equal("message", error.Key);
-			Assert.Equal("works", error.Message);
-		}
-
-		[Fact]
 		public void WhenWorksAnsGenericVersion()
 		{
 			var stab = new Stab();
 
-			validationContext.When(stab, s => s.Message)
-				.Is(() => true)
+			validationContext.Validate(stab, s => s.Message)
+				.When(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
 			Assert.Equal("message", error.Key);
-			Assert.Equal("works", error.Message);
-		}
-
-		[Fact]
-		public void EmptyWhenExtension()
-		{
-			validationContext.When()
-				.Is(() => true)
-				.Add(() => new ValidationMessage(() => "works"));
-
-			var error = Assert.Single(validationContext.Errors);
-
-			Assert.Equal("", error.Key);
 			Assert.Equal("works", error.Message);
 		}
 
 		[Fact]
 		public void EnsureIsValidNotThrowsIfValid()
 		{
-			validationContext.When("test")
-				.Is(() => false)
+			validationContext.Validate("test", 10)
+				.When(value => false)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			validationContext.EnsureIsValid();
@@ -121,8 +95,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsValidByKey()
 		{
-			validationContext.When("test")
-				.Is(() => false)
+			validationContext.Validate("test", 10)
+				.When(value => false)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid("test"));
@@ -131,8 +105,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsInvalidByKey()
 		{
-			validationContext.When("test")
-				.Is(() => true)
+			validationContext.Validate("test", 10)
+				.When(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.False(validationContext.IsValid("test"));
@@ -143,11 +117,23 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new Stab();
 			
-			validationContext.When(stab, s => s.Message)
-				.Is(() => false)
+			validationContext.Validate(stab, s => s.Message)
+				.When(value => false)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid<Stab>(s => s.Message));
+		}
+		
+		[Fact]
+		public void IsValidByKeyModelExpression()
+		{
+			var stab = new Stab();
+			
+			validationContext.Validate(stab, s => s.Message)
+				.When(value => false)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.True(validationContext.IsValid(stab, s => s.Message));
 		}
 		
 		[Fact]
@@ -155,11 +141,41 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new Stab();
 			
-			validationContext.When(stab, s => s.Message)
-				.Is(() => true)
+			validationContext.Validate(stab, s => s.Message)
+				.When(value => true)
 				.Add(() => new ValidationMessage(() => "works"));
 
 			Assert.False(validationContext.IsValid<Stab>(s => s.Message));
+		}
+		
+		[Fact]
+		public void IsInvalidByKeyModelExpression()
+		{
+			var stab = new Stab();
+			
+			validationContext.Validate(stab, s => s.Message)
+				.When(() => true)
+				.Add(() => new ValidationMessage(() => "works"));
+			
+			validationContext.Validate(stab, s => s.Message)
+				.When(() => true)
+				.Add(() => new ValidationMessage(() => "works"));
+
+			Assert.False(validationContext.IsValid(stab, s => s.Message));
+			
+			Assert.Equal(2, validationContext.Errors.Count);
+		}
+
+		[Fact]
+		public void EmptyValidate()
+		{
+			validationContext.Validate()
+				.Add(() => new ValidationMessage(() => "works"));
+
+			var error = Assert.Single(validationContext.Errors);
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("works", error.Message);
 		}
 	}
 }

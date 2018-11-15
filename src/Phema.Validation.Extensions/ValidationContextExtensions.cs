@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -7,50 +6,45 @@ namespace Phema.Validation
 {
 	public static class ValidationContextExtensions
 	{
-		public static IValidationCondition When(this IValidationContext validationContext)
+		public static IValidationCondition Validate(this IValidationContext validationContext)
 		{
-			return validationContext.When("");
+			return validationContext.Validate("", (object)null);
 		}
 
-		public static IValueValidationCondition<TProperty> When<TModel, TProperty>(
+		public static IValidationCondition<TValue> Validate<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TProperty>> expression)
+			Expression<Func<TModel, TValue>> expression)
 		{
-			var key = ExpressionHelper.GetKeyByMember(expression);
-			var value = ExpressionHelper.GetValueFromExpression(model, expression);
+			var key = (ExpressionValidationKey<TModel, TValue>)expression;
+			var value = key.GetValue(model);
 			
-			var validationCondition = validationContext.When(key);
-			
-			return new ValueValidationCondition<TProperty>(validationCondition, value);
+			return validationContext.Validate(key, value);
 		}
-
-		public static IValidationCondition When<TModel>(
-			this IValidationContext validationContext,
-			Expression<Func<TModel, object>> expression)
-		{
-			var key = ExpressionHelper.GetKeyByMember(expression);
-			
-			return validationContext.When(key);
-		}
-
+		
 		public static bool IsValid(this IValidationContext validationContext)
 		{
 			return validationContext.Errors.Count == 0;
 		}
 
-		public static bool IsValid(this IValidationContext validationContext, string key)
+		public static bool IsValid(this IValidationContext validationContext, ValidationKey key)
 		{
-			return !validationContext.Errors.Any(error => error.Key == key);
+			return !validationContext.Errors.Any(error => error.Key == key.Key);
 		}
 		
 		public static bool IsValid<TModel>(
-			this IValidationContext validationContext, 
+			this IValidationContext validationContext,
 			Expression<Func<TModel, object>> expression)
 		{
-			var key = ExpressionHelper.GetKeyByMember(expression);
-
-			return validationContext.IsValid(key);
+			return validationContext.IsValid((ExpressionValidationKey<TModel, object>)expression);
+		}
+		
+		public static bool IsValid<TModel, TProperty>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TProperty>> expression)
+		{
+			return validationContext.IsValid((ExpressionValidationKey<TModel, TProperty>)expression);
 		}
 
 		public static void EnsureIsValid(this IValidationContext validationContext)

@@ -14,9 +14,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddWithOneParameter()
 		{
-			validationContext.When("test")
-				.Is(() => true)
-				.Add<int>(() => new ValidationMessage<int>(() => "{0}"), 12);
+			validationContext.Validate("test", 10)
+				.When(value => true)
+				.Add(() => new ValidationMessage<int>(() => "{0}"), 12);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -28,8 +28,8 @@ namespace Phema.Validation.Tests
 		public void ThrowWithOneParameter()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("test")
-					.Is(() => true)
+				validationContext.Validate("test", 10)
+					.When(value => true)
 					.Throw(() => new ValidationMessage<int>(() => "{0}"), 12));
 
 			Assert.Equal("test", exception.Error.Key);
@@ -39,9 +39,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddWithTwoParameters()
 		{
-			validationContext.When("test")
-				.Is(() => true)
-				.Add<int, int>(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
+			validationContext.Validate("test", 10)
+				.When(value => true)
+				.Add(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -53,8 +53,8 @@ namespace Phema.Validation.Tests
 		public void ThrowWithTwoParameters()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("test")
-					.Is(() => true)
+				validationContext.Validate("test", 10)
+					.When(value => true)
 					.Throw(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12));
 
 			Assert.Equal("test", exception.Error.Key);

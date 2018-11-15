@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace WebApplication1
+namespace Phema.Validation.Sandbox
 {
 	public class Program
 	{
@@ -11,7 +11,7 @@ namespace WebApplication1
 		}
 
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-				WebHost.CreateDefaultBuilder(args)
-						.UseStartup<Startup>();
+			WebHost.CreateDefaultBuilder(args)
+				.UseStartup<Startup>();
 	}
 }

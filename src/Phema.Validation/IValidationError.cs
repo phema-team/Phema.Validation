@@ -1,14 +1,20 @@
-namespace Phema.Validation
+﻿namespace Phema.Validation
 {
 	public interface IValidationError
 	{
 		string Key { get; }
 		string Message { get; }
 	}
-
-	internal class ValidationError : IValidationError
+	
+	public class ValidationError : IValidationError
 	{
-		public string Key { get; set; }
-		public string Message { get; set; }
+		public ValidationError(string key, string message)
+		{
+			Key = key;
+			Message = message;
+		}
+		
+		public string Key { get; }
+		public string Message { get; }
 	}
 }

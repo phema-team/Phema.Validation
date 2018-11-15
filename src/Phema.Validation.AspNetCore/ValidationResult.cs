@@ -18,19 +18,21 @@ namespace Phema.Validation
 			StatusCode = 400;
 		}
 
-		private static IDictionary<string, string> GetSummary(IValidationError error)
+		private static IDictionary<string, string[]> GetSummary(IValidationError error)
 		{
-			return new Dictionary<string, string>
+			return new Dictionary<string, string[]>
 			{
-				[error.Key] = error.Message
+				[error.Key] = new[]{ error.Message }
 			};
 		}
 
-		private static IDictionary<string, string> GetSummary(IEnumerable<IValidationError> errors)
+		private static IDictionary<string, string[]> GetSummary(IEnumerable<IValidationError> errors)
 		{
-			return errors.ToDictionary(
-				error => error.Key,
-				error => error.Message);
+			return errors
+				.GroupBy(error => error.Key)
+				.ToDictionary(
+					grouping => grouping.Key,
+					grouping => grouping.Select(error => error.Message).ToArray());
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Phema.Validation
 {
@@ -8,7 +8,7 @@ namespace Phema.Validation
 		{
 		}
 
-		protected override string GetMessage(params object[] arguments)
+		protected override string GetMessage(object[] arguments)
 		{
 			if (arguments.Length != 1)
 			{
@@ -18,14 +18,14 @@ namespace Phema.Validation
 			return string.Format(Template(), arguments[0]);
 		}
 	}
-
+	
 	public class ValidationMessage<TArgument1, TArgument2> : ValidationMessage
 	{
 		public ValidationMessage(Func<string> template) : base(template)
 		{
 		}
 
-		protected override string GetMessage(params object[] arguments)
+		protected override string GetMessage(object[] arguments)
 		{
 			if (arguments.Length != 2)
 			{

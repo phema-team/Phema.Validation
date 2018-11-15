@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Phema.Validation;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1
+namespace Phema.Validation.Sandbox
 {
 	[Route("test")]
 	public class Controller : ControllerBase
@@ -17,9 +15,9 @@ namespace WebApplication1
 		[HttpPost("works")]
 		public Model Works([FromBody] Model model)
 		{
-			validationContext.When(model, s => s.Age)
-				.IsInRange(10, 12)
-				.Add<int>(() => new ValidationMessage<int>(() => "{0} in [10, 12] range"), model.Age);
+			validationContext.Validate(model, s => s.Age)
+				.WhenInRange(10, 12)
+				.Add<ModelValidationComponent, int>(c => c.AgeInRange, model.Age);
 
 			return model;
 		}

@@ -1,4 +1,3 @@
-using System.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +23,12 @@ namespace Phema.Validation.Tests
 		
 		protected override void Validate(IValidationContext validationContext, TestModel model)
 		{
-			validationContext.When(model, m => m.Name)
-				.IsNull()
+			validationContext.Validate(model, m => m.Name)
+				.WhenNull()
 				.Add(() => component.NameIsNull);
 
-			validationContext.When(model, m => m.Age)
-				.IsInRange(0, 17)
+			validationContext.Validate(model, m => m.Age)
+				.WhenInRange(0, 17)
 				.Add(() => component.IsUnderage);
 		}
 	}

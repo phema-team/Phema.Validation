@@ -1,33 +1,39 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Phema.Validation
 {
 	public interface IValidationCondition
 	{
-		IValidationCondition Is(Condition condition);
-		IValidationError Add(Selector selector, params object[] arguments);
+		IValidationError Add(Selector selector, object[] arguments = null);
 	}
-
-	internal class ValidationCondition : IValidationCondition
+	
+	public interface IValidationCondition<out TValue> : IValidationCondition
 	{
-		private readonly string key;
-		private readonly List<ValidationError> errors;
-		private readonly List<Condition> conditions;
+		IValidationCondition<TValue> When(Condition<TValue> condition);
+	}
+	
+	internal class ValidationCondition<TValue> : IValidationCondition<TValue>
+	{
+		private readonly TValue value;
+		private readonly ValidationKey key;
+		private readonly ICollection<IValidationError> errors;
+		private readonly ICollection<Condition<TValue>> conditions;
 
-		public ValidationCondition(string key, List<ValidationError> errors)
+		public ValidationCondition(TValue value, ValidationKey key, ICollection<IValidationError> errors)
 		{
+			this.value = value;
 			this.key = key;
 			this.errors = errors;
-			conditions = new List<Condition>();
+			conditions = new List<Condition<TValue>>();
 		}
-
-		public IValidationCondition Is(Condition condition)
+		
+		public IValidationCondition<TValue> When(Condition<TValue> condition)
 		{
 			conditions.Add(condition);
 			return this;
 		}
 
-		public IValidationError Add(Selector selector, params object[] arguments)
+		public IValidationError Add(Selector selector, object[] arguments = null)
 		{
 			if (conditions.Count == 0)
 			{
@@ -36,7 +42,7 @@ namespace Phema.Validation
 
 			foreach (var condition in conditions)
 			{
-				if (condition())
+				if (condition(value))
 				{
 					return AddError(selector, arguments);
 				}
@@ -44,17 +50,11 @@ namespace Phema.Validation
 
 			return null;
 		}
-
-		private ValidationError AddError(Selector selector, params object[] arguments)
+		
+		private ValidationError AddError(Selector selector, object[] arguments)
 		{
-			var error = new ValidationError
-			{
-				Key = key, 
-				Message = selector().GetMessage(arguments)
-			};
-
+			var error = new ValidationError(key.Key, selector().GetMessage(arguments));
 			errors.Add(error);
-
 			return error;
 		}
 	}

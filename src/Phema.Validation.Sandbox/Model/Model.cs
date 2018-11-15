@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace WebApplication1
+namespace Phema.Validation.Sandbox
 {
 	public class Model
 	{

@@ -2,7 +2,11 @@ using System;
 
 namespace Phema.Validation
 {
-	public class ValidationComponent<TModel, TValidation>
+	public abstract class ValidationComponent
+	{
+	}
+	
+	public class ValidationComponent<TModel, TValidation> : ValidationComponent
 		where TValidation : Validation<TModel>
 	{
 		protected ValidationComponent()

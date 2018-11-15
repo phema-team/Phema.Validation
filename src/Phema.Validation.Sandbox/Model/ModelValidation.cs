@@ -1,21 +1,12 @@
-﻿using Phema.Validation;
-
-namespace WebApplication1
+﻿namespace Phema.Validation.Sandbox
 {
 	public class ModelValidation : Validation<Model>
 	{
-		private readonly ModelValidationComponent component;
-
-		public ModelValidation(ModelValidationComponent component)
-		{
-			this.component = component;
-		}
-		
 		protected override void Validate(IValidationContext validationContext, Model model)
 		{
-			validationContext.When(model, m => m.Name)
-				.IsNullOrWhitespace()
-				.Add(() => component.NameMustBeSet);
+			validationContext.Validate(model, m => m.Name)
+				.WhenNullOrWhitespace()
+				.Add<ModelValidationComponent>(c => c.NameMustBeSet);
 		}
 	}
 }

@@ -2,21 +2,19 @@ namespace Phema.Validation
 {
 	public static class ValidationConditionExtensions
 	{
-		public static IValidationCondition IsNot(
-			this IValidationCondition validationCondition,
+		public static IValidationCondition<TValue> When<TValue>(
+			this IValidationCondition<TValue> validationCondition,
 			Condition condition)
 		{
-			validationCondition.Is(() => !condition());
-
-			return validationCondition;
+			return validationCondition.When(value => condition());
 		}
-
+		
 		public static void Throw(
-			this IValidationCondition validationCondition,
+			this IValidationCondition builder,
 			Selector selector,
-			params object[] arguments)
+			object[] arguments = null)
 		{
-			var error = validationCondition.Add(selector, arguments);
+			var error = builder.Add(selector, arguments);
 
 			if (error != null)
 			{
@@ -24,38 +22,38 @@ namespace Phema.Validation
 			}
 		}
 		
-		public static void Add<TArgument>(
-			this IValidationCondition validationCondition,
+		public static IValidationError Add<TArgument>(
+			this IValidationCondition builder,
 			Selector<TArgument> selector,
 			TArgument argument)
 		{
-			validationCondition.Add(() => selector(), argument);
+			return builder.Add(() => selector(), new object [] { argument });
 		}
 
 		public static void Throw<TArgument>(
-			this IValidationCondition validationCondition,
+			this IValidationCondition builder,
 			Selector<TArgument> selector,
 			TArgument argument)
 		{
-			validationCondition.Throw(() => selector(), (object)argument);
+			builder.Throw(() => selector(), new object[] { argument });
 		}
 
-		public static void Add<TArgument1, TArgument2>(
-			this IValidationCondition validationCondition,
+		public static IValidationError Add<TArgument1, TArgument2>(
+			this IValidationCondition builder,
 			Selector<TArgument1, TArgument2> selector,
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			validationCondition.Add(() => selector(), argument1, argument2);
+			return builder.Add(() => selector(), new object[] { argument1, argument2 });
 		}
 
 		public static void Throw<TArgument1, TArgument2>(
-			this IValidationCondition validationCondition,
+			this IValidationCondition builder,
 			Selector<TArgument1, TArgument2> selector,
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			validationCondition.Throw(() => selector(), (object)argument1, (object)argument2);
+			builder.Throw(() => selector(), new object[] { argument1, argument2 });
 		}
 	}
 }
