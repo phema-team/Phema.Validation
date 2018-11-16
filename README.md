@@ -7,14 +7,13 @@ C# tiny, fast and customizable validation library
 - [x] Conditions
 - [x] Tests
 - [x] AspNetCore integration
-- [] Severity (get set property with default unspecified)
 
 # Using core
 ```csharp
 var validationContext = new ValidationContext();
 
-validationContext.When("key")
-  .Is(() => true)
+validationContext.When("key", "value")
+  .Is(value => true)
   .Add(() => new ValidationMessage(() => "template"));
   
 var error = Assert.Single(validationContext.Errors);
