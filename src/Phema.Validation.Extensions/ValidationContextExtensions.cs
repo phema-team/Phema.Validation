@@ -22,49 +22,38 @@ namespace Phema.Validation
 			return validationContext.Validate(key, value);
 		}
 		
-		public static bool IsValid(
-			this IValidationContext validationContext, 
-			ValidationSeverity? severity = null)
+		public static bool IsValid(this IValidationContext validationContext)
 		{
-			severity = severity ?? validationContext.Severity;
-			
-			return severity == null 
-				|| !validationContext.Errors.Any(error => error.Severity >= severity);
+			return !validationContext.Errors.Any(error => error.Severity >= validationContext.Severity);
 		}
 
 		public static bool IsValid(
 			this IValidationContext validationContext, 
-			ValidationKey key, 
-			ValidationSeverity? severity = null)
+			ValidationKey key)
 		{
-			severity = severity ?? validationContext.Severity;
-
-			return severity == null 
-				|| !validationContext.Errors.Any(error => error.Key == key.Key && error.Severity >= severity);
+			return !validationContext.Errors
+				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
 		}
 		
 		public static bool IsValid<TModel>(
 			this IValidationContext validationContext,
-			Expression<Func<TModel, object>> expression,
-			ValidationSeverity? severity = null)
+			Expression<Func<TModel, object>> expression)
 		{
-			return validationContext.IsValid((ExpressionValidationKey<TModel, object>)expression, severity);
+			return validationContext.IsValid((ExpressionValidationKey<TModel, object>)expression);
 		}
 		
 		public static bool IsValid<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TProperty>> expression,
-			ValidationSeverity? severity = null)
+			Expression<Func<TModel, TProperty>> expression)
 		{
-			return validationContext.IsValid((ExpressionValidationKey<TModel, TProperty>)expression, severity);
+			return validationContext.IsValid((ExpressionValidationKey<TModel, TProperty>)expression);
 		}
 
 		public static void EnsureIsValid(
-			this IValidationContext validationContext,
-			ValidationSeverity? severity = null)
+			this IValidationContext validationContext)
 		{
-			if (!validationContext.IsValid(severity))
+			if (!validationContext.IsValid())
 			{
 				throw new ValidationContextException(validationContext.Errors);
 			}

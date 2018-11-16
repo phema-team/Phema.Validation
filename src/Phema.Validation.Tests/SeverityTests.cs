@@ -337,28 +337,6 @@ namespace Phema.Validation.Tests
 			
 			Assert.True(validationContext.IsValid("key1"));
 			Assert.False(validationContext.IsValid("key2"));
-			
-			Assert.False(validationContext.IsValid("key1", ValidationSeverity.Trace));
-			Assert.True(validationContext.IsValid("key2", ValidationSeverity.Error));
-		}
-		
-		[Fact]
-		public void EnsureIsValidContextWhenLowerErrorSeverityButSeverityOverride()
-		{
-			var validationContext = new ValidationContext(ValidationSeverity.Information);
-
-			validationContext.Validate("key", 12)
-				.WhenEqual(12)
-				.AddDebug(() => new ValidationMessage(() => "message"));
-			
-			var exception = Assert.Throws<ValidationContextException>(
-				() => validationContext.EnsureIsValid(ValidationSeverity.Trace));
-
-			var error = Assert.Single(exception.Errors);
-			Assert.Equal("key", error.Key);
-			Assert.Equal("message", error.Message);
-			Assert.Equal(ValidationSeverity.Debug, error.Severity);
-			Assert.Equal(ValidationSeverity.Information, validationContext.Severity);
 		}
 	}
 }

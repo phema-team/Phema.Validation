@@ -15,7 +15,7 @@ namespace Phema.Validation
 			validationContext = new ValidationContext(options.Value.Severity);
 		}
 
-		public ValidationSeverity? Severity => validationContext.Severity;
+		public ValidationSeverity Severity => validationContext.Severity;
 		
 		public IReadOnlyCollection<IValidationError> Errors => validationContext.Errors;
 		

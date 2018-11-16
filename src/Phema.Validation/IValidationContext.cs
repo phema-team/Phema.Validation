@@ -4,7 +4,7 @@ namespace Phema.Validation
 {
 	public interface IValidationContext
 	{
-		ValidationSeverity? Severity { get; }
+		ValidationSeverity Severity { get; }
 		IReadOnlyCollection<IValidationError> Errors { get; }
 		IValidationCondition<TValue> Validate<TValue>(ValidationKey key, TValue value);
 	}
@@ -16,6 +16,7 @@ namespace Phema.Validation
 		public ValidationContext()
 		{
 			errors = new List<IValidationError>();
+			Severity = ValidationSeverity.Error;
 		}
 
 		public ValidationContext(ValidationSeverity severity)
@@ -24,7 +25,7 @@ namespace Phema.Validation
 			Severity = severity;
 		}
 
-		public ValidationSeverity? Severity { get; }
+		public ValidationSeverity Severity { get; }
 		
 		public IReadOnlyCollection<IValidationError> Errors => errors;
 		
