@@ -4,17 +4,20 @@
 	{
 		string Key { get; }
 		string Message { get; }
+		ValidationSeverity Severity { get; }
 	}
 	
 	public class ValidationError : IValidationError
 	{
-		public ValidationError(string key, string message)
+		public ValidationError(string key, string message, ValidationSeverity severity)
 		{
 			Key = key;
 			Message = message;
+			Severity = severity;
 		}
 		
 		public string Key { get; }
 		public string Message { get; }
+		public ValidationSeverity Severity { get; }
 	}
 }

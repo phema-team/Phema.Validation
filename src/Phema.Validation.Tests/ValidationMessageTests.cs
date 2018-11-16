@@ -35,7 +35,7 @@ namespace Phema.Validation
 		{
 			var message = new ValidationMessage(() => "{0}{1}");
 
-			Assert.Equal("1", message.GetMessage(new object[] { 1, 2 }));
+			Assert.Equal("12", message.GetMessage(new object[] { 1, 2 }));
 		}
 
 		[Fact]

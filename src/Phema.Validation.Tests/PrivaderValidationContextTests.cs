@@ -32,15 +32,15 @@ namespace Phema.Validation.Tests
 			{
 				validationContext.Validate(model, m => m.Name)
 					.WhenEqual("Invalid")
-					.Add<ValidationComponent>(c => c.NameIsInvalid);
+					.AddError<ValidationComponent>(c => c.NameIsInvalid);
 
 				validationContext.Validate(model, m => m.Age)
 					.WhenEqual(12)
-					.Add<ValidationComponent, int>(c => c.AgeIsInvalid, model.Age);
+					.AddError<ValidationComponent, int>(c => c.AgeIsInvalid, model.Age);
 
 				validationContext.Validate(model, m => m.Phone)
 					.WhenEqual(8_800_555_35_35)
-					.Add<ValidationComponent, long, int>(c => c.PhoneIsInvalid, model.Phone, model.Age);
+					.AddError<ValidationComponent, long, int>(c => c.PhoneIsInvalid, model.Phone, model.Age);
 			}
 		}
 

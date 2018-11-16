@@ -17,7 +17,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.Single(validationContext.Errors);
 			Assert.False(validationContext.IsValid());
@@ -28,7 +28,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.WhenNot(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid());
 		}
@@ -50,7 +50,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid());
@@ -74,7 +74,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.Validate(stab, s => s.Message)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -87,7 +87,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => false)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			validationContext.EnsureIsValid();
 		}
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => false)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid("test"));
 		}
@@ -107,7 +107,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.False(validationContext.IsValid("test"));
 		}
@@ -119,7 +119,7 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.Message)
 				.When(value => false)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid<Stab>(s => s.Message));
 		}
@@ -131,7 +131,7 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.Message)
 				.When(value => false)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.True(validationContext.IsValid(stab, s => s.Message));
 		}
@@ -143,7 +143,7 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.Message)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.False(validationContext.IsValid<Stab>(s => s.Message));
 		}
@@ -155,11 +155,11 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.Message)
 				.When(() => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 			
 			validationContext.Validate(stab, s => s.Message)
 				.When(() => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			Assert.False(validationContext.IsValid(stab, s => s.Message));
 			
@@ -170,7 +170,7 @@ namespace Phema.Validation.Tests
 		public void EmptyValidate()
 		{
 			validationContext.Validate()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 

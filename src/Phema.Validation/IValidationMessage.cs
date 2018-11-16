@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace Phema.Validation
+﻿namespace Phema.Validation
 {
 	public class ValidationMessage
 	{
-		public ValidationMessage(Func<string> template)
+		public ValidationMessage(Template template)
 		{
 			Template = template;
 		}
 		
-		public Func<string> Template { get; }
+		public Template Template { get; }
 		
 		protected internal virtual string GetMessage(object[] args)
 		{

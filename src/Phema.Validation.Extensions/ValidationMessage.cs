@@ -4,7 +4,7 @@ namespace Phema.Validation
 {
 	public class ValidationMessage<TArgument> : ValidationMessage
 	{
-		public ValidationMessage(Func<string> template) : base(template)
+		public ValidationMessage(Template template) : base(template)
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace Phema.Validation
 	
 	public class ValidationMessage<TArgument1, TArgument2> : ValidationMessage
 	{
-		public ValidationMessage(Func<string> template) : base(template)
+		public ValidationMessage(Template template) : base(template)
 		{
 		}
 

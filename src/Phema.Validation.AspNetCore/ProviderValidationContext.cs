@@ -14,6 +14,12 @@ namespace Phema.Validation
 			validationContext = new ValidationContext();
 		}
 
+		public ValidationSeverity Severity
+		{
+			get => validationContext.Severity;
+			set => validationContext.Severity = value;
+		}
+		
 		public IReadOnlyCollection<IValidationError> Errors => validationContext.Errors;
 		
 		public IValidationCondition<TValue> Validate<TValue>(ValidationKey key, TValue value)
@@ -46,9 +52,9 @@ namespace Phema.Validation
 			return this;
 		}
 
-		public IValidationError Add(Selector selector, object[] arguments = null)
+		public IValidationError Add(Selector selector, object[] arguments, ValidationSeverity severity)
 		{
-			return condition.Add(selector, arguments);
+			return condition.Add(selector, arguments, severity);
 		}
 
 		public object GetService(Type serviceType)

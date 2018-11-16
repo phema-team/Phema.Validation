@@ -6,7 +6,7 @@
 		{
 			validationContext.Validate(model, m => m.Name)
 				.WhenNullOrWhitespace()
-				.Add<ModelValidationComponent>(c => c.NameMustBeSet);
+				.AddError<ModelValidationComponent>(c => c.NameMustBeSet);
 		}
 	}
 }

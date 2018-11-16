@@ -25,11 +25,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate(model, m => m.Name)
 				.WhenNull()
-				.Add(() => component.NameIsNull);
+				.AddError(() => component.NameIsNull);
 
 			validationContext.Validate(model, m => m.Age)
 				.WhenInRange(0, 17)
-				.Add(() => component.IsUnderage);
+				.AddError(() => component.IsUnderage);
 		}
 	}
 	

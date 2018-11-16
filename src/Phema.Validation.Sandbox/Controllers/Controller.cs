@@ -17,7 +17,7 @@ namespace Phema.Validation.Sandbox
 		{
 			validationContext.Validate(model, s => s.Age)
 				.WhenInRange(10, 12)
-				.Add<ModelValidationComponent, int>(c => c.AgeInRange, model.Age);
+				.AddError<ModelValidationComponent, int>(c => c.AgeInRange, model.Age);
 
 			return model;
 		}

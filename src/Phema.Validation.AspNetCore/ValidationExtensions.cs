@@ -31,7 +31,7 @@ namespace Phema.Validation
 			return services;
 		}
 
-		public static IValidationError Add<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
+		public static IValidationError AddError<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
 			where TValidationComponent : ValidationComponent
 		{
 			var provider = (IServiceProvider)condition;
@@ -40,10 +40,10 @@ namespace Phema.Validation
 
 			var message = selector(component);
 
-			return condition.Add(() => message);
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Error);
 		}
 		
-		public static IValidationError Add<TValidationComponent, TArgument>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage<TArgument>> selector, TArgument argument)
+		public static IValidationError AddWarning<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
 			where TValidationComponent : ValidationComponent
 		{
 			var provider = (IServiceProvider)condition;
@@ -52,10 +52,10 @@ namespace Phema.Validation
 
 			var message = selector(component);
 
-			return condition.Add(() => message, argument);
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Warning);
 		}
 		
-		public static IValidationError Add<TValidationComponent, TArgument1, TArgument2>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage<TArgument1, TArgument2>> selector, TArgument1 argument1, TArgument2 argument2)
+		public static IValidationError AddInformation<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
 			where TValidationComponent : ValidationComponent
 		{
 			var provider = (IServiceProvider)condition;
@@ -64,7 +64,57 @@ namespace Phema.Validation
 
 			var message = selector(component);
 
-			return condition.Add(() => message, argument1, argument2);
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Information);
+		}
+		
+		public static IValidationError AddDebug<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
+			where TValidationComponent : ValidationComponent
+		{
+			var provider = (IServiceProvider)condition;
+
+			var component = provider.GetRequiredService<TValidationComponent>();
+
+			var message = selector(component);
+
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Debug);
+		}
+		
+		public static IValidationError AddTrace<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
+			where TValidationComponent : ValidationComponent
+		{
+			var provider = (IServiceProvider)condition;
+
+			var component = provider.GetRequiredService<TValidationComponent>();
+
+			var message = selector(component);
+
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Trace);
+		}
+
+		
+		
+		public static IValidationError AddError<TValidationComponent, TArgument>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage<TArgument>> selector, TArgument argument)
+			where TValidationComponent : ValidationComponent
+		{
+			var provider = (IServiceProvider)condition;
+
+			var component = provider.GetRequiredService<TValidationComponent>();
+
+			var message = selector(component);
+
+			return condition.AddError(() => message, argument);
+		}
+		
+		public static IValidationError AddError<TValidationComponent, TArgument1, TArgument2>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage<TArgument1, TArgument2>> selector, TArgument1 argument1, TArgument2 argument2)
+			where TValidationComponent : ValidationComponent
+		{
+			var provider = (IServiceProvider)condition;
+
+			var component = provider.GetRequiredService<TValidationComponent>();
+
+			var message = selector(component);
+
+			return condition.AddError(() => message, argument1, argument2);
 		}
 	}
 }

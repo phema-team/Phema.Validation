@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("key", Array.Empty<int>())
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "message"));
+				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
 			
@@ -32,7 +32,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("key", new [] { 1, 2, 3 })
 				.WhenNotEmpty()
-				.Add(() => new ValidationMessage(() => "message"));
+				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
 			
@@ -53,7 +53,7 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.List)
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "message"));
+				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
 			
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 			
 			validationContext.Validate(stab, s => s.List)
 				.WhenNotEmpty()
-				.Add(() => new ValidationMessage(() => "message"));
+				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
 			

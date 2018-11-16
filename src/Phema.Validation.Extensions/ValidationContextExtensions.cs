@@ -24,12 +24,14 @@ namespace Phema.Validation
 		
 		public static bool IsValid(this IValidationContext validationContext)
 		{
-			return validationContext.Errors.Count == 0;
+			return !validationContext.Errors
+				.Any(error => error.Severity >= validationContext.Severity);
 		}
 
 		public static bool IsValid(this IValidationContext validationContext, ValidationKey key)
 		{
-			return !validationContext.Errors.Any(error => error.Key == key.Key);
+			return !validationContext.Errors
+				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
 		}
 		
 		public static bool IsValid<TModel>(

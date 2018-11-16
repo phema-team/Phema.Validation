@@ -4,7 +4,7 @@ namespace Phema.Validation
 {
 	public interface IValidationCondition
 	{
-		IValidationError Add(Selector selector, object[] arguments = null);
+		IValidationError Add(Selector selector, object[] arguments, ValidationSeverity severity);
 	}
 	
 	public interface IValidationCondition<out TValue> : IValidationCondition
@@ -33,27 +33,27 @@ namespace Phema.Validation
 			return this;
 		}
 
-		public IValidationError Add(Selector selector, object[] arguments = null)
+		public IValidationError Add(Selector selector, object[] arguments, ValidationSeverity severity)
 		{
 			if (conditions.Count == 0)
 			{
-				return AddError(selector, arguments);
+				return AddError(selector, arguments, severity);
 			}
 
 			foreach (var condition in conditions)
 			{
 				if (condition(value))
 				{
-					return AddError(selector, arguments);
+					return AddError(selector, arguments, severity);
 				}
 			}
 
 			return null;
 		}
 		
-		private ValidationError AddError(Selector selector, object[] arguments)
+		private ValidationError AddError(Selector selector, object[] arguments, ValidationSeverity severity)
 		{
-			var error = new ValidationError(key.Key, selector().GetMessage(arguments));
+			var error = new ValidationError(key.Key, selector().GetMessage(arguments), severity);
 			errors.Add(error);
 			return error;
 		}

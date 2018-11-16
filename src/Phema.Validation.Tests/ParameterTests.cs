@@ -16,7 +16,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage<int>(() => "{0}"), 12);
+				.AddError(() => new ValidationMessage<int>(() => "{0}"), 12);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -41,7 +41,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
+				.AddError(() => new ValidationMessage<int, int>(() => "{0}{1}"), 12, 12);
 
 			var error = Assert.Single(validationContext.Errors);
 

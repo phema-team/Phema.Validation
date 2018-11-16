@@ -17,7 +17,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.Add(() => new ValidationMessage(() => "works"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -29,7 +29,7 @@ namespace Phema.Validation.Tests
 		public void IfNoIsConditionAddsError()
 		{
 			validationContext.Validate("test", 10)
-				.Add(() => new ValidationMessage(() => "works"));
+				.Add(() => new ValidationMessage(() => "works"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -43,7 +43,7 @@ namespace Phema.Validation.Tests
 			validationContext.Validate("test", 10)
 				.When(value => false)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works"));
+				.Add(() => new ValidationMessage(() => "works"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -56,7 +56,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => false)
-				.Add(() => new ValidationMessage(() => "works"));
+				.Add(() => new ValidationMessage(() => "works"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			Assert.Empty(validationContext.Errors);
 		}
@@ -66,7 +66,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 10)
 				.When(value => true)
-				.Add(() => new ValidationMessage(() => "works {0}"), new object[] { 12 });
+				.Add(() => new ValidationMessage(() => "works {0}"), new object[] { 12 }, ValidationSeverity.Error);
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -80,7 +80,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<Exception>(() =>
 				validationContext.Validate("test", 10)
 					.When(value => throw new Exception())
-					.Add(() => new ValidationMessage(() => "works")));
+					.Add(() => new ValidationMessage(() => "works"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
 
 		[Fact]
@@ -89,7 +89,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<Exception>(() =>
 				validationContext.Validate("test", 10)
 					.When(value => true)
-					.Add(() => throw new Exception()));
+					.Add(() => throw new Exception(), Array.Empty<object>(), ValidationSeverity.Error));
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", (int?)null)
 				.WhenNull()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -29,7 +29,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", 12)
 				.WhenNotNull()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -42,7 +42,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "")
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "done")
 				.WhenNotEmpty()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", " ")
 				.WhenNullOrWhitespace()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -81,7 +81,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "done")
 				.WhenNotNullOrWhitespace()
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -94,7 +94,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "done")
 				.WhenEqual("done")
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -107,7 +107,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", (string)null)
 				.WhenEqual(null)
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -120,7 +120,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "")
 				.WhenNotEqual("done")
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -133,7 +133,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", (string)null)
 				.WhenNotEqual("done")
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -146,7 +146,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "abc")
 				.WhenMatch("[a-c]+")
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -159,7 +159,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("test", "def")
 				.WhenNotMatch("[a-c]")
-				.Add(() => new ValidationMessage(() => "works"));
+				.AddError(() => new ValidationMessage(() => "works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -172,7 +172,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 11)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "Works"));
+				.AddError(() => new ValidationMessage(() => "Works"));
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -185,7 +185,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 9)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "Works"));
+				.AddError(() => new ValidationMessage(() => "Works"));
 			
 			Assert.True(validationContext.IsValid());
 		}
@@ -195,7 +195,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 13)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "Works"));
+				.AddError(() => new ValidationMessage(() => "Works"));
 			
 			Assert.True(validationContext.IsValid());
 		}
