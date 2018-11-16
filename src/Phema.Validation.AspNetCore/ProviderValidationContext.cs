@@ -1,24 +1,21 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public class ProviderValidationContext : IValidationContext, IServiceProvider
+	internal class ProviderValidationContext : IValidationContext, IServiceProvider
 	{
 		private readonly IServiceProvider provider;
 		private readonly IValidationContext validationContext;
 
-		public ProviderValidationContext(IServiceProvider provider)
+		public ProviderValidationContext(IServiceProvider provider, IOptions<ValidationOptions> options)
 		{
 			this.provider = provider;
-			validationContext = new ValidationContext();
+			validationContext = new ValidationContext(options.Value.Severity);
 		}
 
-		public ValidationSeverity Severity
-		{
-			get => validationContext.Severity;
-			set => validationContext.Severity = value;
-		}
+		public ValidationSeverity? Severity => validationContext.Severity;
 		
 		public IReadOnlyCollection<IValidationError> Errors => validationContext.Errors;
 		
@@ -27,34 +24,6 @@ namespace Phema.Validation
 			var condition = validationContext.Validate(key, value);
 			
 			return new ProviderValidationCondition<TValue>(provider, condition);
-		}
-
-		public object GetService(Type serviceType)
-		{
-			return provider.GetService(serviceType);
-		}
-	}
-	
-	public class ProviderValidationCondition<TValue> : IValidationCondition<TValue>, IServiceProvider
-	{
-		private readonly IServiceProvider provider;
-		private readonly IValidationCondition<TValue> condition;
-
-		public ProviderValidationCondition(IServiceProvider provider, IValidationCondition<TValue> condition)
-		{
-			this.provider = provider;
-			this.condition = condition;
-		}
-
-		public IValidationCondition<TValue> When(Condition<TValue> condition)
-		{
-			this.condition.When(condition);
-			return this;
-		}
-
-		public IValidationError Add(Selector selector, object[] arguments, ValidationSeverity severity)
-		{
-			return condition.Add(selector, arguments, severity);
 		}
 
 		public object GetService(Type serviceType)

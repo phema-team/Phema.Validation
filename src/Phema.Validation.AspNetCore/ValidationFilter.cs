@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public class ValidationFilter : IActionFilter
+	internal class ValidationFilter : IActionFilter
 	{
 		public void OnActionExecuting(ActionExecutingContext context)
 		{

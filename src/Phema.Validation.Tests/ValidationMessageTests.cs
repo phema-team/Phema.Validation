@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Phema.Validation
 {
 	public class ValidationMessageTests
 	{
-		private readonly IValidationContext validationContext;
-
-		public ValidationMessageTests()
-		{
-			validationContext = new ValidationContext();
-		}
-
 		[Fact]
 		public void ValidationMessage()
 		{

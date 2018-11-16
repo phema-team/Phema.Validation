@@ -3,13 +3,16 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	internal class ValidationOptions
+	public class ValidationOptions
 	{
 		public ValidationOptions()
 		{
+			Severity = ValidationSeverity.Error;
 			Validations = new Dictionary<Type, Func<IServiceProvider, Validation>>();
 		}
 		
-		public IDictionary<Type, Func<IServiceProvider, Validation>> Validations { get; }
+		public ValidationSeverity Severity { get; set; }
+		
+		internal IDictionary<Type, Func<IServiceProvider, Validation>> Validations { get; }
 	}
 }

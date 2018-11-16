@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Phema.Validation
 {
-	public class ExpressionValidationKey<TModel, TProperty> : ValidationKey
+	internal class ExpressionValidationKey<TModel, TProperty> : ValidationKey
 	{
 		private static Func<TModel, TProperty> factory;
 		

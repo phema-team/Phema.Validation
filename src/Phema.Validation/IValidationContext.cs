@@ -4,7 +4,7 @@ namespace Phema.Validation
 {
 	public interface IValidationContext
 	{
-		ValidationSeverity Severity { get; set; }
+		ValidationSeverity? Severity { get; }
 		IReadOnlyCollection<IValidationError> Errors { get; }
 		IValidationCondition<TValue> Validate<TValue>(ValidationKey key, TValue value);
 	}
@@ -13,21 +13,18 @@ namespace Phema.Validation
 	{
 		private readonly List<IValidationError> errors;
 		
-		public ValidationContext(ValidationSeverity severity = ValidationSeverity.Error)
+		public ValidationContext()
+		{
+			errors = new List<IValidationError>();
+		}
+
+		public ValidationContext(ValidationSeverity severity)
 		{
 			errors = new List<IValidationError>();
 			Severity = severity;
 		}
 
-		public ValidationSeverity Severity 
-		{ 
-			get; 
-			
-			// Хочу ли я меть возможность менять Severity уже созданного контекста
-			// Могут ли я менять ее несколько раз?
-			// Насколько это багоемко и какие я готов предложить альтернативы?
-			set;
-		}
+		public ValidationSeverity? Severity { get; }
 		
 		public IReadOnlyCollection<IValidationError> Errors => errors;
 		

@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
 	public class ValidationKeyTests
 	{
-		private readonly IValidationContext validationContext;
-
-		public ValidationKeyTests()
-		{
-			validationContext = new ValidationContext();
-		}
-
 		[Fact]
 		public void ValidationKey()
 		{

@@ -40,6 +40,58 @@ namespace Phema.Validation.Tests
 			Assert.Equal("message", error.Message);
 		}
 		
+		[Fact]
+		public void WhenCount()
+		{
+			validationContext.Validate("key", new [] { 1, 2, 3 })
+				.WhenCount(3)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void WhenNotCount()
+		{
+			validationContext.Validate("key", new [] { 1, 2, 3 })
+				.WhenNotCount(2)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void WhenContains()
+		{
+			validationContext.Validate("key", new [] { 1, 2, 3 })
+				.WhenContains(2)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void WhenNotContains()
+		{
+			validationContext.Validate("key", new [] { 1, 2, 3 })
+				.WhenNotContains(4)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
 		public class Stab
 		{
 			[DataMember(Name = "key")]

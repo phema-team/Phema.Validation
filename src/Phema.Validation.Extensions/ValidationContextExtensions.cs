@@ -22,36 +22,49 @@ namespace Phema.Validation
 			return validationContext.Validate(key, value);
 		}
 		
-		public static bool IsValid(this IValidationContext validationContext)
+		public static bool IsValid(
+			this IValidationContext validationContext, 
+			ValidationSeverity? severity = null)
 		{
-			return !validationContext.Errors
-				.Any(error => error.Severity >= validationContext.Severity);
+			severity = severity ?? validationContext.Severity;
+			
+			return severity == null 
+				|| !validationContext.Errors.Any(error => error.Severity >= severity);
 		}
 
-		public static bool IsValid(this IValidationContext validationContext, ValidationKey key)
+		public static bool IsValid(
+			this IValidationContext validationContext, 
+			ValidationKey key, 
+			ValidationSeverity? severity = null)
 		{
-			return !validationContext.Errors
-				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
+			severity = severity ?? validationContext.Severity;
+
+			return severity == null 
+				|| !validationContext.Errors.Any(error => error.Key == key.Key && error.Severity >= severity);
 		}
 		
 		public static bool IsValid<TModel>(
 			this IValidationContext validationContext,
-			Expression<Func<TModel, object>> expression)
+			Expression<Func<TModel, object>> expression,
+			ValidationSeverity? severity = null)
 		{
-			return validationContext.IsValid((ExpressionValidationKey<TModel, object>)expression);
+			return validationContext.IsValid((ExpressionValidationKey<TModel, object>)expression, severity);
 		}
 		
 		public static bool IsValid<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TProperty>> expression)
+			Expression<Func<TModel, TProperty>> expression,
+			ValidationSeverity? severity = null)
 		{
-			return validationContext.IsValid((ExpressionValidationKey<TModel, TProperty>)expression);
+			return validationContext.IsValid((ExpressionValidationKey<TModel, TProperty>)expression, severity);
 		}
 
-		public static void EnsureIsValid(this IValidationContext validationContext)
+		public static void EnsureIsValid(
+			this IValidationContext validationContext,
+			ValidationSeverity? severity = null)
 		{
-			if (!validationContext.IsValid())
+			if (!validationContext.IsValid(severity))
 			{
 				throw new ValidationContextException(validationContext.Errors);
 			}

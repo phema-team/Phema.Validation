@@ -1,5 +1,3 @@
-using System;
-
 namespace Phema.Validation
 {
 	public abstract class ValidationComponent
