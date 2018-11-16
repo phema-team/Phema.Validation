@@ -7,6 +7,7 @@ C# tiny, fast and customizable validation library
 - [x] Conditions
 - [x] Tests
 - [x] AspNetCore integration
+- [] Severity (get set property with default unspecified)
 
 # Using core
 ```csharp
