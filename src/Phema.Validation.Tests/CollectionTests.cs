@@ -17,8 +17,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsEmpty()
 		{
-			validationContext.Validate("key", Array.Empty<int>())
-				.WhenEmpty()
+			validationContext
+				.When("key", Array.Empty<int>())
+				.IsEmpty()
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -30,8 +31,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotEmpty()
 		{
-			validationContext.Validate("key", new [] { 1, 2, 3 })
-				.WhenNotEmpty()
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsNotEmpty()
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -41,10 +42,10 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void WhenCount()
+		public void IsCount()
 		{
-			validationContext.Validate("key", new [] { 1, 2, 3 })
-				.WhenCount(3)
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsCount(3)
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -54,10 +55,10 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void WhenNotCount()
+		public void IsNotCount()
 		{
-			validationContext.Validate("key", new [] { 1, 2, 3 })
-				.WhenNotCount(2)
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsNotCount(2)
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -67,10 +68,10 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void WhenContains()
+		public void IsContains()
 		{
-			validationContext.Validate("key", new [] { 1, 2, 3 })
-				.WhenContains(2)
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsContains(2)
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -80,10 +81,10 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void WhenNotContains()
+		public void IsNotContains()
 		{
-			validationContext.Validate("key", new [] { 1, 2, 3 })
-				.WhenNotContains(4)
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsNotContains(4)
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -103,8 +104,8 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new Stab { List = new List<int>()};
 			
-			validationContext.Validate(stab, s => s.List)
-				.WhenEmpty()
+			validationContext.When(stab, s => s.List)
+				.IsEmpty()
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);
@@ -118,8 +119,8 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new Stab { List = new List<int> { 1, 2, 3 }};
 			
-			validationContext.Validate(stab, s => s.List)
-				.WhenNotEmpty()
+			validationContext.When(stab, s => s.List)
+				.IsNotEmpty()
 				.AddError(() => new ValidationMessage(() => "message"));
 
 			var error = Assert.Single(validationContext.Errors);

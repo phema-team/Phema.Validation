@@ -5,57 +5,57 @@ namespace Phema.Validation
 {
 	public static class ValidationConditionStringExtensions
 	{
-		public static IValidationCondition<string> WhenEmpty(
+		public static IValidationCondition<string> IsEmpty(
 			this IValidationCondition<string> builder)
 		{
-			return builder.When(value => value == string.Empty);
+			return builder.Is(value => value == string.Empty);
 		}
 
-		public static IValidationCondition<string> WhenNotEmpty(
+		public static IValidationCondition<string> IsNotEmpty(
 			this IValidationCondition<string> builder)
 		{
-			return builder.When(value => value != string.Empty);
+			return builder.Is(value => value != string.Empty);
 		}
 
-		public static IValidationCondition<string> WhenNullOrWhitespace(
+		public static IValidationCondition<string> IsNullOrWhitespace(
 			this IValidationCondition<string> builder)
 		{
-			return builder.When(value => string.IsNullOrWhiteSpace(value));
+			return builder.Is(value => string.IsNullOrWhiteSpace(value));
 		}
 
-		public static IValidationCondition<string> WhenNotNullOrWhitespace(
+		public static IValidationCondition<string> IsNotNullOrWhitespace(
 			this IValidationCondition<string> builder)
 		{
-			return builder.When(value => !string.IsNullOrWhiteSpace(value));
+			return builder.Is(value => !string.IsNullOrWhiteSpace(value));
 		}
 		
-		public static IValidationCondition<string> WhenMatch(
+		public static IValidationCondition<string> IsMatch(
 			this IValidationCondition<string> builder,
 			string regex, 
 			RegexOptions options = RegexOptions.None)
 		{
-			return builder.When(value => Regex.IsMatch(value, regex, options));
+			return builder.Is(value => Regex.IsMatch(value, regex, options));
 		}
 
-		public static IValidationCondition<string> WhenNotMatch(
+		public static IValidationCondition<string> IsNotMatch(
 			this IValidationCondition<string> builder,
 			string regex, 
 			RegexOptions options = RegexOptions.None)
 		{
-			return builder.When(value => !Regex.IsMatch(value, regex, options));
+			return builder.Is(value => !Regex.IsMatch(value, regex, options));
 		}
 		
-		public static IValidationCondition<string> WhenNotEmail(
+		public static IValidationCondition<string> IsNotEmail(
 			this IValidationCondition<string> builder)
 		{
-			return builder.When(value => !new EmailAddressAttribute().IsValid(value));
+			return builder.Is(value => !new EmailAddressAttribute().IsValid(value));
 		}
 		
-		public static IValidationCondition<string> WhenLength(
+		public static IValidationCondition<string> IsLength(
 			this IValidationCondition<string> builder,
 			int length)
 		{
-			return builder.When(value => value != null && value.Length == length);
+			return builder.Is(value => value != null && value.Length == length);
 		}
 	}
 }

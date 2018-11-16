@@ -19,9 +19,9 @@ namespace Phema.Validation
 		
 		public IReadOnlyCollection<IValidationError> Errors => validationContext.Errors;
 		
-		public IValidationCondition<TValue> Validate<TValue>(ValidationKey key, TValue value)
+		public IValidationCondition<TValue> When<TValue>(ValidationKey key, TValue value)
 		{
-			var condition = validationContext.Validate(key, value);
+			var condition = validationContext.When(key, value);
 			
 			return new ProviderValidationCondition<TValue>(provider, condition);
 		}

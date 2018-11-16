@@ -26,18 +26,18 @@ namespace Phema.Validation.Tests
 
 		public class Validation : Validation<Model>
 		{
-			protected override void Validate(IValidationContext validationContext, Model model)
+			protected override void When(IValidationContext validationContext, Model model)
 			{
-				validationContext.Validate(model, m => m.Name)
-					.WhenEqual("Invalid")
+				validationContext.When(model, m => m.Name)
+					.IsEqual("Invalid")
 					.AddError<ValidationComponent>(c => c.NameIsInvalid);
 
-				validationContext.Validate(model, m => m.Age)
-					.WhenEqual(12)
+				validationContext.When(model, m => m.Age)
+					.IsEqual(12)
 					.AddError<ValidationComponent, int>(c => c.AgeIsInvalid, model.Age);
 
-				validationContext.Validate(model, m => m.Phone)
-					.WhenEqual(8_800_555_35_35)
+				validationContext.When(model, m => m.Phone)
+					.IsEqual(8_800_555_35_35)
 					.AddError<ValidationComponent, long, int>(c => c.PhoneIsInvalid, model.Phone, model.Age);
 			}
 		}
@@ -69,7 +69,7 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.ValidateCore(validationContext, new Model { Name = "Invalid" });
+			validation.WhenCore(validationContext, new Model { Name = "Invalid" });
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -148,7 +148,7 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.ValidateCore(validationContext, new Model
+			validation.WhenCore(validationContext, new Model
 			{
 				Age = 322,
 				Phone = 8_800_555_35_35

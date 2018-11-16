@@ -21,14 +21,14 @@ namespace Phema.Validation.Tests
 			this.component = component;
 		}
 		
-		protected override void Validate(IValidationContext validationContext, TestModel model)
+		protected override void When(IValidationContext validationContext, TestModel model)
 		{
-			validationContext.Validate(model, m => m.Name)
-				.WhenNull()
+			validationContext.When(model, m => m.Name)
+				.IsNull()
 				.AddError(() => component.NameIsNull);
 
-			validationContext.Validate(model, m => m.Age)
-				.WhenInRange(0, 17)
+			validationContext.When(model, m => m.Age)
+				.IsInRange(0, 17)
 				.AddError(() => component.IsUnderage);
 		}
 	}
@@ -110,7 +110,7 @@ namespace Phema.Validation.Tests
 			var validation = provider.GetRequiredService<TestValidation>();
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
-			validation.ValidateCore(validationContext, model);
+			validation.WhenCore(validationContext, model);
 			
 			Assert.Equal(2, validationContext.Errors.Count);
 			

@@ -9,7 +9,7 @@ namespace Phema.Validation
 	
 	public interface IValidationCondition<out TValue> : IValidationCondition
 	{
-		IValidationCondition<TValue> When(Condition<TValue> condition);
+		IValidationCondition<TValue> Is(Condition<TValue> condition);
 	}
 	
 	internal class ValidationCondition<TValue> : IValidationCondition<TValue>
@@ -27,7 +27,7 @@ namespace Phema.Validation
 			conditions = new List<Condition<TValue>>();
 		}
 		
-		public IValidationCondition<TValue> When(Condition<TValue> condition)
+		public IValidationCondition<TValue> Is(Condition<TValue> condition)
 		{
 			conditions.Add(condition);
 			return this;

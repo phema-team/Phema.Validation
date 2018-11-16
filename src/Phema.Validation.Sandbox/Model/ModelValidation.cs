@@ -2,10 +2,10 @@
 {
 	public class ModelValidation : Validation<Model>
 	{
-		protected override void Validate(IValidationContext validationContext, Model model)
+		protected override void When(IValidationContext validationContext, Model model)
 		{
-			validationContext.Validate(model, m => m.Name)
-				.WhenNullOrWhitespace()
+			validationContext.When(model, m => m.Name)
+				.IsNullOrWhitespace()
 				.AddError<ModelValidationComponent>(c => c.NameMustBeSet);
 		}
 	}

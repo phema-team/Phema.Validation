@@ -6,12 +6,12 @@ namespace Phema.Validation
 {
 	public static class ValidationContextExtensions
 	{
-		public static IValidationCondition Validate(this IValidationContext validationContext)
+		public static IValidationCondition When(this IValidationContext validationContext)
 		{
-			return validationContext.Validate("", (object)null);
+			return validationContext.When("", (object)null);
 		}
 
-		public static IValidationCondition<TValue> Validate<TModel, TValue>(
+		public static IValidationCondition<TValue> When<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
@@ -19,7 +19,7 @@ namespace Phema.Validation
 			var key = (ExpressionValidationKey<TModel, TValue>)expression;
 			var value = key.GetValue(model);
 			
-			return validationContext.Validate(key, value);
+			return validationContext.When(key, value);
 		}
 		
 		public static bool IsValid(this IValidationContext validationContext)

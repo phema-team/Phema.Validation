@@ -4,44 +4,44 @@ namespace Phema.Validation
 {
 	public static class ValidationConditionCollectonExtensions
 	{
-		public static IValidationCondition<ICollection<TElement>> WhenEmpty<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsEmpty<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder)
 		{
-			return builder.When(value => value == null || value.Count == 0);
+			return builder.Is(value => value == null || value.Count == 0);
 		}
 		
-		public static IValidationCondition<ICollection<TElement>> WhenNotEmpty<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsNotEmpty<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder)
 		{
-			return builder.When(value => value != null && value.Count != 0);
+			return builder.Is(value => value != null && value.Count != 0);
 		}
 		
-		public static IValidationCondition<ICollection<TElement>> WhenCount<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsCount<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder,
 			int count)
 		{
-			return builder.When(value => value != null && value.Count == count);
+			return builder.Is(value => value != null && value.Count == count);
 		}
 		
-		public static IValidationCondition<ICollection<TElement>> WhenNotCount<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsNotCount<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder,
 			int count)
 		{
-			return builder.When(value => value != null && value.Count != count);
+			return builder.Is(value => value != null && value.Count != count);
 		}
 		
-		public static IValidationCondition<ICollection<TElement>> WhenContains<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsContains<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder,
 			TElement element)
 		{
-			return builder.When(value => value?.Contains(element) ?? false);
+			return builder.Is(value => value?.Contains(element) ?? false);
 		}
 		
-		public static IValidationCondition<ICollection<TElement>> WhenNotContains<TElement>(
+		public static IValidationCondition<ICollection<TElement>> IsNotContains<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder,
 			TElement element)
 		{
-			return builder.When(value => !value?.Contains(element) ?? false);
+			return builder.Is(value => !value?.Contains(element) ?? false);
 		}
 	}
 }

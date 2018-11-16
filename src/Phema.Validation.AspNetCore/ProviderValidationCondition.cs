@@ -13,9 +13,9 @@ namespace Phema.Validation
 			this.condition = condition;
 		}
 
-		public IValidationCondition<TValue> When(Condition<TValue> condition)
+		public IValidationCondition<TValue> Is(Condition<TValue> condition)
 		{
-			this.condition.When(condition);
+			this.condition.Is(condition);
 			return this;
 		}
 

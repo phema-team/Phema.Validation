@@ -2,26 +2,26 @@ namespace Phema.Validation
 {
 	public static class ValidationConditionLongExtensions
 	{
-		public static IValidationCondition<long> WhenGreater(
+		public static IValidationCondition<long> IsGreater(
 			this IValidationCondition<long> builder,
 			long number)
 		{
-			return builder.When(value => value > number);
+			return builder.Is(value => value > number);
 		}
 		
-		public static IValidationCondition<long> WhenLess(
+		public static IValidationCondition<long> IsLess(
 			this IValidationCondition<long> builder,
 			long number)
 		{
-			return builder.When(value => value < number);
+			return builder.Is(value => value < number);
 		}
 		
-		public static IValidationCondition<long> WhenInRange(
+		public static IValidationCondition<long> IsInRange(
 			this IValidationCondition<long> builder,
 			long min, 
 			long max)
 		{
-			return builder.When(value => value >= min && value <= max);
+			return builder.Is(value => value >= min && value <= max);
 		}
 	}
 }
