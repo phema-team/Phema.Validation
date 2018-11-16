@@ -9,7 +9,7 @@ namespace Phema.Validation.Tests
 
 		public ExtensionsTests()
 		{
-			validationContext = new ValidationContext(ValidationSeverity.Error);
+			validationContext = new ValidationContext();
 		}
 
 		[Fact]

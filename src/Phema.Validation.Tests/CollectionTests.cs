@@ -93,6 +93,65 @@ namespace Phema.Validation.Tests
 			Assert.Equal("message", error.Message);
 		}
 		
+		[Fact]
+		public void IsAny_Empty()
+		{
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsAny()
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void IsAny()
+		{
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsAny(x => x == 2)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void IsAny_Valid()
+		{
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsAny(x => x == 4)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			Assert.True(validationContext.IsValid("key"));
+		}
+		
+		[Fact]
+		public void IsAll()
+		{
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsAll(x => x < 4)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			var error = Assert.Single(validationContext.Errors);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message", error.Message);
+		}
+		
+		[Fact]
+		public void IsAll_Valid()
+		{
+			validationContext.When("key", new [] { 1, 2, 3 })
+				.IsAll(x => x == 2)
+				.AddError(() => new ValidationMessage(() => "message"));
+
+			Assert.True(validationContext.IsValid("key"));
+		}
+		
 		public class Stab
 		{
 			[DataMember(Name = "key")]
