@@ -13,7 +13,7 @@ namespace Phema.Validation.Tests
 			var services = new ServiceCollection();
 			
 			services.AddValidation(validation => 
-				validation.AddValidation<Model, ModelValidation, ModelValidationComponent>());
+				validation.Add<Model, ModelValidation, ModelValidationComponent>());
 
 			validationContext = services.BuildServiceProvider().GetRequiredService<IValidationContext>();
 		}
@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 		
 		public class ModelValidation : Validation<Model>
 		{
-			protected override void When(IValidationContext validationContext, Model model)
+			protected override void Validate(IValidationContext validationContext, Model model)
 			{
 				throw new System.NotImplementedException();
 			}
@@ -52,7 +52,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddError<ModelValidationComponent>(c => c.NoParameters);
 			
 			Assert.NotNull(error);
@@ -67,7 +67,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddError<ModelValidationComponent, int>(c => c.OneParameter, 11);
 			
 			Assert.NotNull(error);
@@ -82,7 +82,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddError<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 			
 			Assert.NotNull(error);
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent>(c => c.NoParameters);
 			
 			Assert.NotNull(error);
@@ -112,7 +112,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent, int>(c => c.OneParameter, 11);
 			
 			Assert.NotNull(error);
@@ -127,7 +127,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 			
 			Assert.NotNull(error);
@@ -142,7 +142,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent>(c => c.NoParameters);
 			
 			Assert.NotNull(error);
@@ -157,7 +157,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent, int>(c => c.OneParameter, 11);
 			
 			Assert.NotNull(error);
@@ -172,7 +172,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 			
 			Assert.NotNull(error);
@@ -187,7 +187,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent>(c => c.NoParameters);
 			
 			Assert.NotNull(error);
@@ -202,7 +202,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent, int>(c => c.OneParameter, 11);
 			
 			Assert.NotNull(error);
@@ -217,7 +217,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 			
 			Assert.NotNull(error);
@@ -232,7 +232,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent>(c => c.NoParameters);
 			
 			Assert.NotNull(error);
@@ -247,7 +247,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent, int>(c => c.OneParameter, 11);
 			
 			Assert.NotNull(error);
@@ -262,7 +262,7 @@ namespace Phema.Validation.Tests
 			var model = new Model();
 
 			var error = validationContext.When(model, m => m.Name)
-				.IsNull()
+				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 			
 			Assert.NotNull(error);

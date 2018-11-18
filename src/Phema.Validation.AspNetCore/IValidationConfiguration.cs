@@ -9,9 +9,15 @@ namespace Phema.Validation
 {
 	public interface IValidationConfiguration
 	{
-		IValidationConfiguration AddValidation<TModel, TValidation, TComponent>()
+		IValidationConfiguration Add<TModel, TValidation, TComponent>()
 			where TValidation : Validation<TModel>
 			where TComponent : ValidationComponent<TModel, TValidation>;
+
+		IValidationConfiguration AddComponent<TModel, TComponent>()
+			where TComponent : ValidationComponent<TModel>;
+
+		IValidationConfiguration AddValidation<TModel, TValidation>()
+			where TValidation : Validation<TModel>;
 	}
 	
 	internal class ValidationConfiguration : IValidationConfiguration
@@ -37,13 +43,20 @@ namespace Phema.Validation
 
 			return this;
 		}
+		
+		public IValidationConfiguration AddComponent<TModel, TComponent>()
+			where TComponent : ValidationComponent<TModel>
+		{
+			services.TryAddSingleton<TComponent>();
+			return this;
+		}
 
-		public IValidationConfiguration AddValidation<TModel, TValidation, TComponent>()
+		public IValidationConfiguration Add<TModel, TValidation, TComponent>()
 			where TValidation : Validation<TModel>
 			where TComponent : ValidationComponent<TModel, TValidation>
 		{
-			services.TryAddSingleton<TComponent>();
-			return AddValidation<TModel, TValidation>();
+			return AddComponent<TModel, TComponent>()
+				.AddValidation<TModel, TValidation>();
 		}
 	}
 }

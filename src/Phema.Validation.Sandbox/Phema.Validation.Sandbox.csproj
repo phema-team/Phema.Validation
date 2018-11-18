@@ -12,12 +12,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="Properties\launchSettings.json" />
+	  <ProjectReference Include="..\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj" />
+	  <ProjectReference Include="..\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj" />
-	  <ProjectReference Include="..\Phema.Validation.Extensions.Conditions\Phema.Validation.Extensions.Conditions.csproj" />
+	  <_ContentIncludedByDefault Remove="Properties\launchSettings.json" />
 	</ItemGroup>
 
 </Project>

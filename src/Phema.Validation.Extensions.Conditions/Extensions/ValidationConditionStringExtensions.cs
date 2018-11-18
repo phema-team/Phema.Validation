@@ -23,12 +23,6 @@ namespace Phema.Validation
 			return builder.Is(value => string.IsNullOrWhiteSpace(value));
 		}
 
-		public static IValidationCondition<string> IsNotNullOrWhitespace(
-			this IValidationCondition<string> builder)
-		{
-			return builder.Is(value => !string.IsNullOrWhiteSpace(value));
-		}
-		
 		public static IValidationCondition<string> IsMatch(
 			this IValidationCondition<string> builder,
 			string regex, 
@@ -51,7 +45,7 @@ namespace Phema.Validation
 			return builder.Is(value => !new EmailAddressAttribute().IsValid(value));
 		}
 		
-		public static IValidationCondition<string> IsLength(
+		public static IValidationCondition<string> HasLength(
 			this IValidationCondition<string> builder,
 			int length)
 		{

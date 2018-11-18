@@ -2,15 +2,6 @@ namespace Phema.Validation
 {
 	public abstract class ValidationComponent
 	{
-	}
-	
-	public class ValidationComponent<TModel, TValidation> : ValidationComponent
-		where TValidation : Validation<TModel>
-	{
-		protected ValidationComponent()
-		{
-		}
-
 		protected ValidationMessage Register(Template factory)
 		{
 			return new ValidationMessage(factory);
@@ -25,5 +16,14 @@ namespace Phema.Validation
 		{
 			return new ValidationMessage<TValue1, TValue2>(factory);
 		}
+	}
+	
+	public abstract class ValidationComponent<TModel> : ValidationComponent
+	{
+	}
+	
+	public abstract class ValidationComponent<TModel, TValidation> : ValidationComponent<TModel>
+		where TValidation : Validation<TModel>
+	{
 	}
 }

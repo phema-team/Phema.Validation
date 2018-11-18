@@ -2,7 +2,7 @@
 
 namespace Phema.Validation.Sandbox
 {
-	[Route("test")]
+	[Route("key")]
 	public class Controller : ControllerBase
 	{
 		private readonly IValidationContext validationContext;
@@ -12,11 +12,11 @@ namespace Phema.Validation.Sandbox
 			this.validationContext = validationContext;
 		}
 		
-		[HttpPost("works")]
+		[HttpPost("template")]
 		public Model Works([FromBody] Model model)
 		{
 			validationContext.When(model, s => s.Age)
-				.IsInRange(10, 12)
+				.Is(value => value > 10 && value < 12)
 				.AddError<ModelValidationComponent, int>(c => c.AgeInRange, model.Age);
 
 			return model;

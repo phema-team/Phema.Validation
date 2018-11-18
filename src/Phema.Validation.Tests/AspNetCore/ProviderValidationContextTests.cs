@@ -5,44 +5,31 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class PrivaderValidationContextTests
+	public class ProviderValidationContextTests
 	{
-		public class Model
+		public class Validation : Validation<TestModel>
 		{
-			[DataMember(Name = "name")]
-			public string Name { get; set; }
-
-			[DataMember(Name = "age")]
-			public int Age { get; set; }
-
-			[DataMember(Name = "phone")]
-			public long Phone { get; set; }
-		}
-
-		public class Validation : Validation<Model>
-		{
-			protected override void When(IValidationContext validationContext, Model model)
+			protected override void Validate(IValidationContext validationContext, TestModel model)
 			{
 				validationContext.When(model, m => m.Name)
-					.IsEqual("Invalid")
+					.Is(value => value == "Invalid")
 					.AddError<ValidationComponent>(c => c.NameIsInvalid);
 
 				validationContext.When(model, m => m.Age)
-					.IsEqual(12)
+					.Is(value => value == 12)
 					.AddError<ValidationComponent, int>(c => c.AgeIsInvalid, model.Age);
 
 				validationContext.When(model, m => m.Phone)
-					.IsEqual(8_800_555_35_35)
+					.Is(value => value == 8_800_555_35_35)
 					.AddError<ValidationComponent, long, int>(c => c.PhoneIsInvalid, model.Phone, model.Age);
 			}
 		}
 
-		public class ValidationComponent : ValidationComponent<Model, Validation>
+		public class ValidationComponent : ValidationComponent<TestModel, Validation>
 		{
 			public ValidationComponent()
 			{
@@ -61,7 +48,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection();
 
-			services.AddValidation(v => v.AddValidation<Model, Validation, ValidationComponent>());
+			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
 
 			var provider = services.BuildServiceProvider();
 
@@ -69,7 +56,7 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.WhenCore(validationContext, new Model { Name = "Invalid" });
+			validation.ValidateCore(validationContext, new TestModel { Name = "Invalid" });
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -82,7 +69,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection();
 
-			services.AddValidation(v => v.AddValidation<Model, Validation, ValidationComponent>());
+			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
 
 			var provider = services.BuildServiceProvider();
 
@@ -101,7 +88,7 @@ namespace Phema.Validation.Tests
 				new List<IFilterMetadata>(),
 				new Dictionary<string, object>
 				{
-					["test"] = new Model
+					["key"] = new TestModel
 					{
 						Age = 12
 					}
@@ -114,10 +101,10 @@ namespace Phema.Validation.Tests
 
 			var value = Assert.IsType<Dictionary<string, string[]>>(result.Value);
 
-			var element = Assert.Single(value);
+			var (key, messages) = Assert.Single(value);
 
-			Assert.Equal("age", element.Key);
-			Assert.Equal("age: 12", Assert.Single(element.Value));
+			Assert.Equal("age", key);
+			Assert.Equal("age: 12", Assert.Single(messages));
 		}
 
 		[Fact]
@@ -125,7 +112,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection();
 
-			services.AddValidation(v => v.AddValidation<Model, Validation, ValidationComponent>());
+			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
 
 			var provider = services.BuildServiceProvider();
 
@@ -148,7 +135,7 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.WhenCore(validationContext, new Model
+			validation.ValidateCore(validationContext, new TestModel
 			{
 				Age = 322,
 				Phone = 8_800_555_35_35
@@ -160,10 +147,10 @@ namespace Phema.Validation.Tests
 
 			var value = Assert.IsType<Dictionary<string, string[]>>(result.Value);
 
-			var element = Assert.Single(value);
+			var (key, messages) = Assert.Single(value);
 
-			Assert.Equal("phone", element.Key);
-			Assert.Equal("phone: 88005553535 age: 322", Assert.Single(element.Value));
+			Assert.Equal("phone", key);
+			Assert.Equal("phone: 88005553535 age: 322", Assert.Single(messages));
 		}
 	}
 }

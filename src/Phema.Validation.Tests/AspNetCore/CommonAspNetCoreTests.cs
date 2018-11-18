@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class CommonAspNetTests
+	public class CommonAspNetCoreTests
 	{
 		[Fact]
 		public void EmptyValidationResolves()

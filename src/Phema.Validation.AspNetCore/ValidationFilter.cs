@@ -19,7 +19,7 @@ namespace Phema.Validation
 				{
 					var validation = factory(provider);
 					
-					validation.WhenCore(validationContext, value);
+					validation.ValidateCore(validationContext, value);
 				}
 			}
 
