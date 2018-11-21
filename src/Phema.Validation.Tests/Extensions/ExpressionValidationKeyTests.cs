@@ -95,6 +95,23 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void NamedIndexedArrayWithJoinedExpression()
+		{
+			var person = new Person
+			{
+				List = new[] { new Children() }
+			};
+
+			var error = validationContext.When(person, p => p.Array[0].Name)
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:0:name", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
 		public void NamedIndexedListWithJoinedExpression()
 		{
 			var person = new Person
@@ -108,6 +125,25 @@ namespace Phema.Validation.Tests
 			
 			Assert.NotNull(error);
 			Assert.Equal("list:0:name", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
+		public void NamedIndexedMemberArrayWithJoinedExpression()
+		{
+			var person = new Person
+			{
+				List = new[] { new Children(), new Children() }
+			};
+
+			var index = 1;
+
+			var error = validationContext.When(person, p => p.Array[index].Name)
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:1:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 		
@@ -131,6 +167,23 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void NamedIndexedMemberArrayWithJoinedAndIndexedExpression()
+		{
+			var person = new Person
+			{
+				Array = new [] { new Children { Address = new Address() } }
+			};
+
+			var error = validationContext.When(person, p => p.Array[0].Address.Street)
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:0:address:street", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
 		public void NamedIndexedMemberListWithJoinedAndIndexedExpression()
 		{
 			var person = new Person
@@ -144,6 +197,25 @@ namespace Phema.Validation.Tests
 			
 			Assert.NotNull(error);
 			Assert.Equal("list:0:address:street", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
+		public void NamedIndexedMemberArrayWithJoinedAndIndexedMemberExpression()
+		{
+			var person = new Person
+			{
+				Array = new []{ new Children(), new Children { Address = new Address() } }
+			};
+
+			var index = 1;
+			
+			var error = validationContext.When(person, p => p.Array[index].Address.Street)
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:1:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 		
