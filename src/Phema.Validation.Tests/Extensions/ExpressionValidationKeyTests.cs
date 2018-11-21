@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Xunit;
 
@@ -47,6 +49,17 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
+		public void ExpressionEquality()
+		{
+			Expression<Func<Person, string>> e = p => p.Name;
+
+			Expression<Func<Person, string>> e2 = p => p.Address.Street;
+			
+			Assert.False(e.Equals(e2));
+			Assert.NotEqual(e.GetHashCode(), e2.GetHashCode());
+		}
+
+		[Fact]
 		public void NamedExpression()
 		{
 			var person = new Person();
@@ -85,7 +98,9 @@ namespace Phema.Validation.Tests
 				List = new List<Children> { new Children() }
 			};
 
-			var error = validationContext.When(person, p => p.List[0])
+			Expression<Func<Person, Children>> e = p => p.List[0];
+
+			var error = validationContext.When(person, e)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -99,7 +114,7 @@ namespace Phema.Validation.Tests
 		{
 			var person = new Person
 			{
-				List = new[] { new Children() }
+				Array = new[] { new Children() }
 			};
 
 			var error = validationContext.When(person, p => p.Array[0].Name)
@@ -133,7 +148,7 @@ namespace Phema.Validation.Tests
 		{
 			var person = new Person
 			{
-				List = new[] { new Children(), new Children() }
+				Array = new[] { new Children(), new Children() }
 			};
 
 			var index = 1;
@@ -235,6 +250,33 @@ namespace Phema.Validation.Tests
 			
 			Assert.NotNull(error);
 			Assert.Equal("list:1:address:street", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		public class Dimensional
+		{
+			[DataMember(Name = "array")]
+			public int[,] Array { get; set; }
+		}
+		
+		[Fact]
+		public void DimensionalExpression()
+		{
+			var dimensional = new Dimensional
+			{
+				Array = new[,]
+				{
+					{1, 2},
+					{1, 2}
+				}
+			};
+			
+			var error = validationContext.When(dimensional, d => d.Array[1, 0])
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:1:0", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 	}
