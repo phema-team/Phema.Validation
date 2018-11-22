@@ -56,8 +56,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey_NotMemberExpression()
 		{
-			Assert.Throws<KeyNotFoundException>(
-				() => (ExpressionValidationKey<string, int>)(Expression<Func<string, int>>)(s => s.GetHashCode()));
+			var key = (ExpressionValidationKey<string, int>)(Expression<Func<string, int>>)(s => s.GetHashCode());
+			
+			Assert.Equal("", key.Key);
 		}
 	}
 }

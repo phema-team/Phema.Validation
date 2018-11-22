@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Xunit;
@@ -29,6 +30,16 @@ namespace Phema.Validation.Tests
 		{
 			[DataMember(Name = "street")]
 			public string Street { get; set; }
+
+			[DataMember(Name = "floor")]
+			public Floor Floor { get; set; }
+		}
+		
+		[DataContract]
+		public class Floor
+		{
+			[DataMember(Name = "list")]
+			public IList<int> List { get; set; }
 		}
 
 		[DataContract]
@@ -260,6 +271,50 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void IndexedListByNestedProperties()
+		{
+			var person = new Person
+			{
+				List = new[] { new Children(), new Children() }
+			};
+
+			var model = new
+			{
+				Index = 1
+			};
+			
+			var error = validationContext.When(person, d => d.List[model.Index])
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("list:1", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
+		public void IndexedArrayByNestedProperties()
+		{
+			var person = new Person
+			{
+				Array = new[] { new Children(), new Children() }
+			};
+
+			var model = new
+			{
+				Index = 1
+			};
+			
+			var error = validationContext.When(person, d => d.Array[model.Index])
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.NotNull(error);
+			Assert.Equal("array:1", error.Key);
+			Assert.Equal("template", error.Message);
+		}
+		
+		[Fact]
 		public void DimensionalExpression()
 		{
 			var dimensional = new Dimensional
@@ -278,6 +333,42 @@ namespace Phema.Validation.Tests
 			Assert.NotNull(error);
 			Assert.Equal("array:1:0", error.Key);
 			Assert.Equal("template", error.Message);
+		}
+
+		[Fact]
+		public void LongIndexExpressionWithDoubleConstants()
+		{
+			var person = new Person
+			{
+				List = new List<Children>
+				{
+					new Children
+					{
+						Address = new Address
+						{
+							Floor = new Floor
+							{
+								List = new[]
+								{
+									1, 2, 3
+								}
+							}
+						}
+					}
+				}
+			};
+
+			var model = new
+			{
+				Index1 = 0,
+				Index2 = 1
+			};
+
+			var error = validationContext.When(person, p => p.List[model.Index1].Address.Floor.List[model.Index2])
+				.Is(() => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.Equal("list:0:address:floor:list:1", error.Key);
 		}
 	}
 }
