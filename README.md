@@ -12,6 +12,7 @@ C# tiny, fast and customizable validation library
 ```csharp
 var validationContext = new ValidationContext();
 
+// validationContext.When(nameof(model.Name), model.Name)
 validationContext.When("key", "value")
   .Is(value => true)
   .Add(() => new ValidationMessage(() => "template"));
@@ -96,10 +97,10 @@ public class TestValidationComponent : ValidationComponent<TestModel, TestValida
 // Startup
 services.AddValidation(
   validation => 
-    validation.AddValidation<TestModel, TestValidation, TestValidationComponent>());
+    validation.Add<TestModel, TestValidation, TestValidationComponent>());
 ```
 - You have to use `mvc` for validation, because validation uses filters for it
 - You can inject `IValidationContext` to any part of your application
 - You can override key by using `[DataMember(Name = "key")]` attribute
-- You can add `Validation` without `ValidationComponent`, but i prefer not to do that because of responsibility 
+- You can add `Validation` without `ValidationComponent` or `IValidationComponent` without `Validation`, but i prefer not to do that because of responsibility 
 - If your validation context will be invalid after controller action executed, result will be substituted by validation messages. Try to check validation messages added explicitly by injection of `IValidationContext` before submiting changes
