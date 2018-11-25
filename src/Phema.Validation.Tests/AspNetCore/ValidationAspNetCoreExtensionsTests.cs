@@ -27,12 +27,12 @@ namespace Phema.Validation.Tests
 		}
 	}
 	
-	public class TestValidationComponent : ValidationComponent<TestModel, TestValidation>
+	public class TestValidationComponent : IValidationComponent<TestModel, TestValidation>
 	{
 		public TestValidationComponent()
 		{
-			NameIsNull = Register(() => "Name is null");
-			IsUnderage = Register(() => "Is underage");
+			NameIsNull = new ValidationMessage(() => "Name is null");
+			IsUnderage = new ValidationMessage(() => "Is underage");
 		}
 
 		public ValidationMessage NameIsNull { get; }

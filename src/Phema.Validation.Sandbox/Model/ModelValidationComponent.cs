@@ -1,11 +1,11 @@
 ﻿namespace Phema.Validation.Sandbox
 {
-	public class ModelValidationComponent : ValidationComponent<Model, ModelValidation>
+	public class ModelValidationComponent : IValidationComponent<Model, ModelValidation>
 	{
 		public ModelValidationComponent()
 		{
-			NameMustBeSet = Register(() => "Name must be set");
-			AgeInRange = Register<int>(() => "Age {0} in range");
+			NameMustBeSet = new ValidationMessage(() => "Name must be set");
+			AgeInRange = new ValidationMessage<int>(() => "Age {0} in range");
 		}
 
 		public ValidationMessage NameMustBeSet { get; }

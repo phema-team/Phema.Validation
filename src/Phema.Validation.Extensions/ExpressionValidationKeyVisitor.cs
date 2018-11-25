@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,27 +10,16 @@ namespace Phema.Validation
 	{
 		private readonly IList<string> keys = new List<string>();
 		
+		public string Result => string.Join(":", keys.Reverse());
+		
 		protected override Expression VisitMember(MemberExpression node)
 		{
-			if (!(node.Expression is ConstantExpression) && !CheckIfNestedConstant(node))
+			if (!(node.Expression is ConstantExpression) && !CheckIfNestedConstantExpression(node))
 			{
 				keys.Add(GetKey(node));
 			}
 			
 			return base.VisitMember(node);
-		}
-
-		private bool CheckIfNestedConstant(MemberExpression expression)
-		{
-			switch (expression.Expression)
-			{
-				case ConstantExpression _:
-					return true;
-				case MemberExpression me:
-					return CheckIfNestedConstant(me);
-				default:
-					return false;
-			}
 		}
 
 		protected override Expression VisitBinary(BinaryExpression node)
@@ -56,58 +43,70 @@ namespace Phema.Validation
 		{
 			switch (expression)
 			{
-				case ConstantExpression ce:
-					keys.Add(ce.Value.ToString());
+				case ConstantExpression constantExpression:
+					keys.Add(constantExpression.Value.ToString());
 					break;
-				case MemberExpression me:
-					ProcessMemberRecursive(me, new List<MemberInfo>{ me.Member });
+				case MemberExpression memberExpression:
+					ProcessMemberExpressionRecursive(memberExpression, new List<MemberInfo>{ memberExpression.Member });
 					break;
 			}
 		}
 
-		private void ProcessMemberRecursive(MemberExpression expression, IList<MemberInfo> memberInfo)
+		private void ProcessMemberExpressionRecursive(MemberExpression expression, IList<MemberInfo> memberInfo)
 		{
 			switch (expression.Expression)
 			{
-				case ConstantExpression ce:
-
-					var value = ce.Value;
-					var type = value.GetType();
-					
-					foreach (var member in memberInfo.Reverse())
-					{
-						switch (member.MemberType)
-						{
-							case MemberTypes.Field:
-								value = type.GetField(member.Name).GetValue(value);
-								break;
-							case MemberTypes.Property:
-								value = type.GetProperty(member.Name).GetValue(value);
-								break;
-						}
-
-						type = value.GetType();
-					}
-					
-					keys.Add(value.ToString());
+				case ConstantExpression constantExpression:
+					ProcessConstantExpression(constantExpression);
 					break;
 				
-				case MemberExpression me:
-					memberInfo.Add(me.Member);
-					ProcessMemberRecursive(me, memberInfo);
+				case MemberExpression memberExpression:
+					memberInfo.Add(memberExpression.Member);
+					ProcessMemberExpressionRecursive(memberExpression, memberInfo);
 					break;
+			}
+
+			void ProcessConstantExpression(ConstantExpression constantExpression)
+			{
+				var value = constantExpression.Value;
+				var type = value.GetType();
+					
+				foreach (var member in memberInfo.Reverse())
+				{
+					switch (member.MemberType)
+					{
+						case MemberTypes.Field:
+							value = type.GetField(member.Name).GetValue(value);
+							break;
+						case MemberTypes.Property:
+							value = type.GetProperty(member.Name).GetValue(value);
+							break;
+					}
+
+					type = value.GetType();
+				}
+					
+				keys.Add(value.ToString());
+			}
+		}
+		
+		private static bool CheckIfNestedConstantExpression(MemberExpression expression)
+		{
+			switch (expression.Expression)
+			{
+				case ConstantExpression _:
+					return true;
+				case MemberExpression me:
+					return CheckIfNestedConstantExpression(me);
+				default:
+					return false;
 			}
 		}
 
-		private string GetKey(MemberExpression memberExpression)
+		private static string GetKey(MemberExpression memberExpression)
 		{
 			return memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name
 				?? memberExpression.Member.Name;
-		}
-
-		public override string ToString()
-		{
-			return string.Join(":", keys.Reverse());
 		}
 	}
 }

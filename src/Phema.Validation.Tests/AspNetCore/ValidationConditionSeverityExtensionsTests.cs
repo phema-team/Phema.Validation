@@ -32,13 +32,13 @@ namespace Phema.Validation.Tests
 			}
 		}
 		
-		public class ModelValidationComponent : ValidationComponent<Model, ModelValidation>
+		public class ModelValidationComponent : IValidationComponent<Model, ModelValidation>
 		{
 			public ModelValidationComponent()
 			{
-				NoParameters = Register(() => "message");
-				OneParameter = Register<int>(() => "message: {0}");
-				TwoParameters = Register<int, int>(() => "message: {0},{1}");
+				NoParameters = new ValidationMessage(() => "message");
+				OneParameter = new ValidationMessage<int>(() => "message: {0}");
+				TwoParameters = new ValidationMessage<int, int>(() => "message: {0},{1}");
 			}
 			
 			public ValidationMessage NoParameters { get; }

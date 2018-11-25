@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Xunit;
@@ -39,7 +38,17 @@ namespace Phema.Validation.Tests
 		public class Floor
 		{
 			[DataMember(Name = "list")]
-			public IList<int> List { get; set; }
+			public IList<Room> List { get; set; }
+			
+			[DataMember(Name = "array")]
+			public Room[] Array { get; set; }
+		}
+		
+		[DataContract]
+		public class Room
+		{
+			[DataMember(Name = "name")]
+			public string Name { get; set; }
 		}
 
 		[DataContract]
@@ -350,7 +359,11 @@ namespace Phema.Validation.Tests
 							{
 								List = new[]
 								{
-									1, 2, 3
+									new Room(), 
+									new Room
+									{
+										Name = "room"
+									}
 								}
 							}
 						}
@@ -364,11 +377,51 @@ namespace Phema.Validation.Tests
 				Index2 = 1
 			};
 
-			var error = validationContext.When(person, p => p.List[model.Index1].Address.Floor.List[model.Index2])
-				.Is(() => true)
+			var error = validationContext.When(person, p => p.List[model.Index1].Address.Floor.List[model.Index2].Name)
+				.Is(value => value == "room")
 				.AddError(() => new ValidationMessage(() => "template"));
 			
-			Assert.Equal("list:0:address:floor:list:1", error.Key);
+			Assert.Equal("list:0:address:floor:list:1:name", error.Key);
+		}
+		
+		[Fact]
+		public void LongIndexExpressionWithDoubleConstantsWithArray()
+		{
+			var person = new Person
+			{
+				Array = new[]
+				{
+					new Children
+					{
+						Address = new Address
+						{
+							Floor = new Floor
+							{
+								Array = new[]
+								{
+									new Room(), 
+									new Room
+									{
+										Name = "room"
+									}
+								}
+							}
+						}
+					}
+				}
+			};
+
+			var model = new
+			{
+				Index1 = 0,
+				Index2 = 1
+			};
+
+			var error = validationContext.When(person, p => p.Array[model.Index1].Address.Floor.Array[model.Index2].Name)
+				.Is(value => value == "room")
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.Equal("array:0:address:floor:array:1:name", error.Key);
 		}
 	}
 }

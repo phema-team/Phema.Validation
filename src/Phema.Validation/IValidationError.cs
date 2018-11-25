@@ -7,7 +7,7 @@
 		ValidationSeverity Severity { get; }
 	}
 	
-	public class ValidationError : IValidationError
+	internal class ValidationError : IValidationError
 	{
 		public ValidationError(string key, string message, ValidationSeverity severity)
 		{

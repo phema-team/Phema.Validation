@@ -29,13 +29,13 @@ namespace Phema.Validation.Tests
 			}
 		}
 
-		public class ValidationComponent : ValidationComponent<TestModel, Validation>
+		public class ValidationComponent : IValidationComponent<TestModel, Validation>
 		{
 			public ValidationComponent()
 			{
-				NameIsInvalid = Register(() => "message");
-				AgeIsInvalid = Register<int>(() => "age: {0}");
-				PhoneIsInvalid = Register<long, int>(() => "phone: {0} age: {1}");
+				NameIsInvalid = new ValidationMessage(() => "message");
+				AgeIsInvalid =  new ValidationMessage<int>(() => "age: {0}");
+				PhoneIsInvalid = new ValidationMessage<long, int>(() => "phone: {0} age: {1}");
 			}
 
 			public ValidationMessage NameIsInvalid { get; }
