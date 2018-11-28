@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Phema.Validation
 {
-	internal class ValidationResult : ObjectResult
+	internal sealed class ValidationResult : ObjectResult
 	{
 		public ValidationResult(IEnumerable<IValidationError> errors)
 			: base(GetSummary(errors))

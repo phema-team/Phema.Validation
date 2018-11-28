@@ -14,7 +14,7 @@ namespace Phema.Validation
 
 			var message = selector(component);
 
-			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Error);
+			return condition.Add(() => message, null, ValidationSeverity.Error);
 		}
 		
 		public static IValidationError AddWarning<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)

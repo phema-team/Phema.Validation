@@ -1,38 +1,49 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Phema.Validation
 {
-	public class ValidationMessage<TArgument> : ValidationMessage
+	public sealed class ValidationMessage<TArgument> : IValidationMessage
 	{
-		public ValidationMessage(Template template) : base(template)
+		public ValidationMessage(Func<string> templateProvider)
 		{
+			TemplateProvider = templateProvider;
 		}
 
-		protected override string GetMessage(object[] arguments)
+		public Func<string> TemplateProvider { get; }
+
+		public string GetMessage(object[] arguments, CultureInfo cultureInfo)
 		{
 			if (arguments.Length != 1)
 			{
 				throw new ArgumentException(nameof(arguments));
 			}
 
-			return string.Format(Template(), arguments[0]);
+			var template = TemplateProvider();
+
+			return string.Format(cultureInfo, template, arguments);
 		}
 	}
-	
-	public class ValidationMessage<TArgument1, TArgument2> : ValidationMessage
+
+	public sealed class ValidationMessage<TArgument1, TArgument2> : IValidationMessage
 	{
-		public ValidationMessage(Template template) : base(template)
+		public ValidationMessage(Func<string> templateProvider)
 		{
+			TemplateProvider = templateProvider;
 		}
 
-		protected override string GetMessage(object[] arguments)
+		public Func<string> TemplateProvider { get; }
+
+		public string GetMessage(object[] arguments, CultureInfo cultureInfo)
 		{
 			if (arguments.Length != 2)
 			{
 				throw new ArgumentException(nameof(arguments));
 			}
 
-			return string.Format(Template(), arguments[0], arguments[1]);
+			var template = TemplateProvider();
+
+			return string.Format(cultureInfo, template, arguments);
 		}
 	}
 }

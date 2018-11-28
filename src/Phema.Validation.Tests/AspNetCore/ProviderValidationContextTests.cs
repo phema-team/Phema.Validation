@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,9 +12,9 @@ namespace Phema.Validation.Tests
 {
 	public class ProviderValidationContextTests
 	{
-		public class Validation : Validation<TestModel>
+		public class Validation : IValidation<TestModel>
 		{
-			protected override void Validate(IValidationContext validationContext, TestModel model)
+			public void Validate(IValidationContext validationContext, TestModel model)
 			{
 				validationContext.When(model, m => m.Name)
 					.Is(value => value == "Invalid")
@@ -43,20 +44,32 @@ namespace Phema.Validation.Tests
 			public ValidationMessage<long, int> PhoneIsInvalid { get; }
 		}
 
-		[Fact]
-		public void ProviderValidationContext()
+		private readonly IServiceProvider provider;
+
+		public ProviderValidationContextTests()
 		{
 			var services = new ServiceCollection();
 
 			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
 
-			var provider = services.BuildServiceProvider();
+			services.AddScoped<IHttpContextAccessor>(sp =>
+				new HttpContextAccessor
+				{
+					HttpContext = new DefaultHttpContext()
+				});
+			
+			provider = services.BuildServiceProvider();
+		}
 
+
+		[Fact]
+		public void ProviderValidationContext()
+		{
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.ValidateCore(validationContext, new TestModel { Name = "Invalid" });
+			validation.Validate(validationContext, new TestModel { Name = "Invalid" });
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -67,12 +80,6 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ProviderValidationContext_ValidationFilter()
 		{
-			var services = new ServiceCollection();
-
-			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
-
-			var provider = services.BuildServiceProvider();
-
 			var filter = new ValidationFilter();
 
 			var context = new ActionExecutingContext(
@@ -110,12 +117,6 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ProviderValidationContext_ValidationFilter_Executed()
 		{
-			var services = new ServiceCollection();
-
-			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
-
-			var provider = services.BuildServiceProvider();
-
 			var filter = new ValidationFilter();
 
 			var context = new ActionExecutedContext(
@@ -135,7 +136,7 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.ValidateCore(validationContext, new TestModel
+			validation.Validate(validationContext, new TestModel
 			{
 				Age = 322,
 				Phone = 8_800_555_35_35

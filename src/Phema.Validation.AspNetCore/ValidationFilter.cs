@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	internal class ValidationFilter : IActionFilter
+	internal sealed class ValidationFilter : IActionFilter
 	{
 		public void OnActionExecuting(ActionExecutingContext context)
 		{
@@ -13,13 +13,11 @@ namespace Phema.Validation
 
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
-			foreach (var value in context.ActionArguments.Values)
+			foreach (var model in context.ActionArguments.Values)
 			{
-				if (options.Validations.TryGetValue(value.GetType(), out var factory))
+				if (options.Validations.TryGetValue(model.GetType(), out var validation))
 				{
-					var validation = factory(provider);
-					
-					validation.ValidateCore(validationContext, value);
+					validation(provider, model);
 				}
 			}
 

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Phema.Validation
 {
-	internal class ValidationExceptionFilter : IExceptionFilter
+	internal sealed class ValidationExceptionFilter : IExceptionFilter
 	{
 		public void OnException(ExceptionContext context)
 		{

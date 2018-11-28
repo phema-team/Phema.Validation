@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Phema.Validation.Tests")]
 
 namespace Phema.Validation
 {

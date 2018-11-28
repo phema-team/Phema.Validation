@@ -2,7 +2,7 @@
 
 namespace Phema.Validation
 {
-	public class ValidationConditionException : ValidationException
+	public sealed class ValidationConditionException : ValidationException
 	{
 		internal ValidationConditionException(IValidationError error)
 		{

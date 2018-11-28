@@ -11,6 +11,7 @@ namespace Phema.Validation
 		{
 			if (!services.Any(s => s.ServiceType == typeof(IValidationContext)))
 			{
+				services.AddHttpContextAccessor();
 				services.AddScoped<IValidationContext, ProviderValidationContext>();
 				
 				services.Configure<MvcOptions>(options =>

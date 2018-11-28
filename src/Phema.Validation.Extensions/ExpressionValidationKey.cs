@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Phema.Validation
 {
-	internal class ExpressionValidationKey<TModel, TProperty> : ValidationKey
+	internal sealed class ExpressionValidationKey<TModel, TProperty> : ValidationKey
 	{
 		private readonly Expression<Func<TModel, TProperty>> expression;
 		

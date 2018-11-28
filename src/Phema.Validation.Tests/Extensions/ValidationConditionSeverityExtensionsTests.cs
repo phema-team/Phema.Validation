@@ -57,13 +57,13 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = new ValidationContext();
 
-			var error = validationContext.When("key", 12)
+			var (key, message, severity) = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.Add(() => new ValidationMessage(() => "message"), null, ValidationSeverity.Fatal);
+				.Add(() => new ValidationMessage(() => "message"), ValidationSeverity.Fatal);
 			
-			Assert.Equal("key", error.Key);
-			Assert.Equal("message", error.Message);
-			Assert.Equal(ValidationSeverity.Fatal, error.Severity);
+			Assert.Equal("key", key);
+			Assert.Equal("message", message);
+			Assert.Equal(ValidationSeverity.Fatal, severity);
 		}
 		
 		[Fact]

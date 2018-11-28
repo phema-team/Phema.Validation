@@ -1,8 +1,8 @@
 ﻿namespace Phema.Validation.Sandbox
 {
-	public class ModelValidation : Validation<Model>
+	public class ModelValidation : IValidation<Model>
 	{
-		protected override void Validate(IValidationContext validationContext, Model model)
+		public void Validate(IValidationContext validationContext, Model model)
 		{
 			validationContext.When(model, m => m.Name)
 				.IsNullOrWhitespace()

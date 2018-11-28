@@ -10,17 +10,17 @@ namespace Phema.Validation
 	public interface IValidationConfiguration
 	{
 		IValidationConfiguration Add<TModel, TValidation, TComponent>()
-			where TValidation : Validation<TModel>
+			where TValidation : class, IValidation<TModel>
 			where TComponent : class, IValidationComponent<TModel, TValidation>;
 
 		IValidationConfiguration AddComponent<TModel, TComponent>()
 			where TComponent : class, IValidationComponent<TModel>;
 
 		IValidationConfiguration AddValidation<TModel, TValidation>()
-			where TValidation : Validation<TModel>;
+			where TValidation : class, IValidation<TModel>;
 	}
 	
-	internal class ValidationConfiguration : IValidationConfiguration
+	internal sealed class ValidationConfiguration : IValidationConfiguration
 	{
 		private readonly IServiceCollection services;
 
@@ -28,9 +28,9 @@ namespace Phema.Validation
 		{
 			this.services = services;
 		}
-		
+
 		public IValidationConfiguration AddValidation<TModel, TValidation>()
-			where TValidation : Validation<TModel>
+			where TValidation : class, IValidation<TModel>
 		{
 			services.TryAddScoped<TValidation>();
 
@@ -38,7 +38,12 @@ namespace Phema.Validation
 			{
 				options.Validations.TryAdd(
 					typeof(TModel),
-					provider => provider.GetRequiredService<TValidation>());
+					(provider, model) =>
+					{
+						var validation = provider.GetRequiredService<TValidation>();
+						var validationContext = provider.GetRequiredService<IValidationContext>();
+						validation.Validate(validationContext, (TModel)model);
+					});
 			});
 
 			return this;
@@ -52,7 +57,7 @@ namespace Phema.Validation
 		}
 
 		public IValidationConfiguration Add<TModel, TValidation, TComponent>()
-			where TValidation : Validation<TModel>
+			where TValidation : class, IValidation<TModel>
 			where TComponent : class, IValidationComponent<TModel, TValidation>
 		{
 			return AddComponent<TModel, TComponent>()

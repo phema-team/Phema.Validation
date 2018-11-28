@@ -7,7 +7,7 @@
 		ValidationSeverity Severity { get; }
 	}
 	
-	internal class ValidationError : IValidationError
+	internal sealed class ValidationError : IValidationError
 	{
 		public ValidationError(string key, string message, ValidationSeverity severity)
 		{

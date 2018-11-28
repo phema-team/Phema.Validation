@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -15,6 +16,12 @@ namespace Phema.Validation.Tests
 			services.AddValidation(validation => 
 				validation.Add<Model, ModelValidation, ModelValidationComponent>());
 
+			services.AddScoped<IHttpContextAccessor>(
+				sp => new HttpContextAccessor
+				{
+					HttpContext = new DefaultHttpContext()
+				});
+			
 			validationContext = services.BuildServiceProvider().GetRequiredService<IValidationContext>();
 		}
 
@@ -24,9 +31,9 @@ namespace Phema.Validation.Tests
 			public string Name { get; set; }
 		}
 		
-		public class ModelValidation : Validation<Model>
+		public class ModelValidation : IValidation<Model>
 		{
-			protected override void Validate(IValidationContext validationContext, Model model)
+			public void Validate(IValidationContext validationContext, Model model)
 			{
 				throw new System.NotImplementedException();
 			}

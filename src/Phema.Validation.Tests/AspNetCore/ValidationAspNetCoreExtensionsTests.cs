@@ -1,12 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class TestValidation : Validation<TestModel>
+	public class TestValidation : IValidation<TestModel>
 	{
 		private readonly TestValidationComponent component;
 
@@ -15,7 +16,7 @@ namespace Phema.Validation.Tests
 			this.component = component;
 		}
 		
-		protected override void Validate(IValidationContext validationContext, TestModel model)
+		public void Validate(IValidationContext validationContext, TestModel model)
 		{
 			validationContext.When(model, m => m.Name)
 				.Is(value => value == null)
@@ -81,10 +82,9 @@ namespace Phema.Validation.Tests
 
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
 
-			var (type, selector) = Assert.Single(options.Validations);
+			var (type, _) = Assert.Single(options.Validations);
 
 			Assert.Equal(typeof(TestModel), type);
-			Assert.Equal(typeof(TestValidation), selector(provider).GetType());
 		}
 
 		[Fact]
@@ -93,6 +93,12 @@ namespace Phema.Validation.Tests
 			services.AddValidation(
 				v => 
 					v.Add<TestModel, TestValidation, TestValidationComponent>());
+
+			services.AddScoped<IHttpContextAccessor>(sp =>
+				new HttpContextAccessor
+				{
+					HttpContext = new DefaultHttpContext()
+				});
 			
 			var provider = services.BuildServiceProvider();
 
@@ -104,7 +110,7 @@ namespace Phema.Validation.Tests
 			var validation = provider.GetRequiredService<TestValidation>();
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
-			validation.ValidateCore(validationContext, model);
+			validation.Validate(validationContext, model);
 			
 			Assert.Equal(2, validationContext.Errors.Count);
 			

@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Phema.Validation
 {
-	internal class ExpressionValidationKeyVisitor : ExpressionVisitor
+	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
 		private readonly IList<string> keys = new List<string>();
 		

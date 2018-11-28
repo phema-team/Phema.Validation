@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Phema.Validation
 {
-	public class ValidationContextException : ValidationException
+	public sealed class ValidationContextException : ValidationException
 	{
 		internal ValidationContextException(IReadOnlyCollection<IValidationError> errors)
 		{

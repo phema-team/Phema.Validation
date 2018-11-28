@@ -9,7 +9,7 @@ namespace Phema.Validation
 	}
 	
 	public interface IValidationComponent<TModel, TValidation> : IValidationComponent<TModel>
-		where TValidation : Validation<TModel>
+		where TValidation : class, IValidation<TModel>
 	{
 	}
 }

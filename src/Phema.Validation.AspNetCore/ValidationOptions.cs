@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Phema.Validation
 {
-	public class ValidationOptions
+	public sealed class ValidationOptions
 	{
 		public ValidationOptions()
 		{
 			Severity = ValidationSeverity.Error;
-			Validations = new Dictionary<Type, Func<IServiceProvider, Validation>>();
+			CultureInfo = CultureInfo.InvariantCulture;
+			Validations = new Dictionary<Type, Action<IServiceProvider, object>>();
 		}
 		
 		public ValidationSeverity Severity { get; set; }
+		public CultureInfo CultureInfo { get; set; }
 		
-		internal IDictionary<Type, Func<IServiceProvider, Validation>> Validations { get; }
+		internal IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
 	}
 }

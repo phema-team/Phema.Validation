@@ -1,19 +1,29 @@
-﻿namespace Phema.Validation
+﻿using System;
+using System.Globalization;
+
+namespace Phema.Validation
 {
-	public class ValidationMessage
+	public interface IValidationMessage
 	{
-		public ValidationMessage(Template template)
+		string GetMessage(object[] arguments, CultureInfo cultureInfo);
+	}
+	
+	public sealed class ValidationMessage : IValidationMessage
+	{
+		public ValidationMessage(Func<string> templateProvider)
 		{
-			Template = template;
+			TemplateProvider = templateProvider;
 		}
 		
-		public Template Template { get; }
-		
-		protected internal virtual string GetMessage(object[] args)
+		public Func<string> TemplateProvider { get; }
+
+		public string GetMessage(object[] arguments, CultureInfo cultureInfo)
 		{
-			return args == null
-				? Template()
-				: string.Format(Template(), args);
+			var template = TemplateProvider();
+			
+			return arguments == null
+				? template
+				: string.Format(cultureInfo, template, arguments);
 		}
 	}
 }

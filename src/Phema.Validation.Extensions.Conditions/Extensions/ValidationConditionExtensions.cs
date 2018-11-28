@@ -1,10 +1,12 @@
+using System;
+
 namespace Phema.Validation
 {
 	public static class ValidationConditionExtensions
 	{
 		public static IValidationCondition<TValue> IsNot<TValue>(
 			this IValidationCondition<TValue> builder,
-			Condition<TValue> condition)
+			Func<TValue, bool> condition)
 		{
 			return builder.Is(value => !condition(value));
 		}
