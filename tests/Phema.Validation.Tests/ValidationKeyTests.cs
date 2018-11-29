@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using Xunit;
+﻿using Xunit;
 
 namespace Phema.Validation.Tests
 {
