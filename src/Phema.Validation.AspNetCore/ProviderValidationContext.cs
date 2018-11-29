@@ -19,7 +19,7 @@ namespace Phema.Validation
 			this.provider = provider;
 			validationContext = new ValidationContext(
 				options.Value.Severity,
-				TryGetCultureInfo(provider, options));
+				TryGetCultureInfo(provider, options.Value));
 		}
 
 		public ValidationSeverity Severity => validationContext.Severity;
@@ -38,20 +38,28 @@ namespace Phema.Validation
 			return provider.GetService(serviceType);
 		}
 
-		private CultureInfo TryGetCultureInfo(IServiceProvider provider, IOptions<ValidationOptions> options)
+		private CultureInfo TryGetCultureInfo(IServiceProvider provider, ValidationOptions options)
 		{
 			var httpContext = provider.GetRequiredService<IHttpContextAccessor>().HttpContext;
 
 			if (httpContext == null)
 			{
-				return options.Value.CultureInfo;
+				return options.CultureInfo;
 			}
-
+			
 			var acceptLanguage = httpContext.Request.Headers[HeaderNames.AcceptLanguage];
 
-			return acceptLanguage.Any()
-				? CultureInfo.GetCultureInfo(acceptLanguage.Single())
-				: options.Value.CultureInfo;
+			if (acceptLanguage.Any())
+			{
+				var preferredCulture = acceptLanguage.FirstOrDefault();
+
+				var foundCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+					.FirstOrDefault(cultureInfo => cultureInfo.Name == preferredCulture);
+
+				return foundCulture ?? options.CultureInfo;
+			}
+
+			return options.CultureInfo;
 		}
 	}
 }
