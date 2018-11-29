@@ -1,3 +1,4 @@
+using System.Linq;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -16,7 +17,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("age", 10)
 				.IsNot(value => value == 5)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -27,9 +28,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsNot(value => value == 10)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -37,7 +38,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", (string)null)
 				.IsNull()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -48,9 +49,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "")
 				.IsNull()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -58,7 +59,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "")
 				.IsNotNull()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -69,9 +70,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", (string)null)
 				.IsNotNull()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -79,7 +80,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "john")
 				.IsEqual("john")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -90,9 +91,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsEqual("notjohn")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 
 		[Fact]
@@ -100,7 +101,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", (string)null)
 				.IsEqual(null)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -111,7 +112,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "john")
 				.IsNotEqual("notjohn")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -122,9 +123,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsNotEqual("john")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 
 		[Fact]
@@ -132,7 +133,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", (string)null)
 				.IsNotEqual("john")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);

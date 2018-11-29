@@ -13,6 +13,14 @@ namespace Phema.Validation
 
 			Assert.Equal("message", message.TemplateProvider());
 		}
+		
+		[Fact]
+		public void NullValidationMessage()
+		{
+			var message = new ValidationMessage(() => null);
+
+			Assert.Null(message.TemplateProvider());
+		}
 
 		[Fact]
 		public void ValidationMessageWithParameter()
@@ -48,39 +56,13 @@ namespace Phema.Validation
 		}
 
 		[Fact]
-		public void ValidationMessageWithInvalidParameterCount_1()
-		{
-			var message = new ValidationMessage<int>(() => "{0}");
-			var exception = Assert.Throws<ArgumentException>(() => message.GetMessage(new object[]
-			{
-				1, 2
-			}, CultureInfo.InvariantCulture));
-
-			Assert.Equal("arguments", exception.Message);
-		}
-
-		[Fact]
-		public void ValidationMessageWithInvalidParameterCount_2()
-		{
-			var message = new ValidationMessage<int, int>(() => "{0}{1}");
-			var exception = Assert.Throws<ArgumentException>(() => message.GetMessage(new object[]
-			{
-				1
-			}, CultureInfo.InvariantCulture));
-
-			Assert.Equal("arguments", exception.Message);
-		}
-
-		[Fact]
 		public void AddMessageWithInvalidArguments()
 		{
 			var validationContext = new ValidationContext();
 
 			var error = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddError(() => new ValidationMessage<int>(() => "{0}"), 10);
-			// .AddError(() => new ValidationMessage<int>(() => "{0}"), 10L);
-			// .AddError(() => new ValidationMessage<int>(() => "{0}"), "");
+				.Is(value => true)
+				.Add(() => new ValidationMessage(() => "{0}"), new object[]{10}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("10", error.Message);

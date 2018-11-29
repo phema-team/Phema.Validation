@@ -1,3 +1,7 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Phema.Validation.AspNetCore.Tests")]
+
 namespace Phema.Validation
 {
 	public interface IValidation<in TModel>

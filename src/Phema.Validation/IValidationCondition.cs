@@ -36,7 +36,7 @@ namespace Phema.Validation
 		
 		public IValidationCondition<TValue> Is(Func<TValue, bool> condition)
 		{
-			this.conditions.Add(condition);
+			conditions.Add(condition);
 			return this;
 		}
 
@@ -62,7 +62,7 @@ namespace Phema.Validation
 		{
 			var validationMessage = selector();
 
-			var message = validationMessage.GetMessage(arguments, cultureInfo);
+			var message = validationMessage?.GetMessage(arguments, cultureInfo);
 			
 			var error = new ValidationError(key.Key, message, severity);
 			errors.Add(error);

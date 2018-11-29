@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Phema.Validation.Tests")]
+[assembly: InternalsVisibleTo("Phema.Validation.Extensions.Tests")]
 
 namespace Phema.Validation
 {

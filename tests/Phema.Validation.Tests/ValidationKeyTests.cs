@@ -34,30 +34,5 @@ namespace Phema.Validation.Tests
 
 			Assert.False(key.Equals(null));
 		}
-
-		[Fact]
-		public void ExpressionValidationKey()
-		{
-			var key = (ExpressionValidationKey<string, int>)(Expression<Func<string, int>>)(s => s.Length);
-
-			Assert.Equal("Length", key.Key);
-		}
-
-		[Fact]
-		public void NullExpressionValidationKey()
-		{
-			var exception = Assert.Throws<ArgumentNullException>(
-				() => (ExpressionValidationKey<string, int>)(Expression<Func<string, int>>)(null));
-
-			Assert.Equal("expression", exception.ParamName);
-		}
-
-		[Fact]
-		public void ExpressionValidationKey_NotMemberExpression()
-		{
-			var key = (ExpressionValidationKey<string, int>)(Expression<Func<string, int>>)(s => s.GetHashCode());
-			
-			Assert.Equal("", key.Key);
-		}
 	}
 }

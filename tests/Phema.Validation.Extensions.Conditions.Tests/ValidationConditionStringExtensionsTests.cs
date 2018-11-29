@@ -1,3 +1,4 @@
+using System.Linq;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -16,7 +17,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", string.Empty)
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -27,9 +28,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -37,7 +38,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "john")
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -48,9 +49,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", string.Empty)
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 			
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -58,7 +59,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", " ")
 				.IsNullOrWhitespace()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -69,9 +70,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsNullOrWhitespace()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -79,7 +80,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "abc")
 				.IsMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -90,9 +91,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "def")
 				.IsMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -100,7 +101,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "def")
 				.IsNotMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -111,9 +112,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "abc")
 				.IsNotMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -121,7 +122,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("email", "email")
 				.IsNotEmail()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("email", error.Key);
 			Assert.Equal("template", error.Message);
@@ -132,9 +133,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("email", "email@email.com")
 				.IsNotEmail()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -142,7 +143,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("name", "john")
 				.HasLength(4)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
@@ -153,9 +154,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLength(5)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 	}
 }

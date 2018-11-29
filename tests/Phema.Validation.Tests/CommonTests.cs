@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -17,7 +18,7 @@ namespace Phema.Validation.Tests
 		{
 			var error1 = validationContext.When("key", 10)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			var error2 = Assert.Single(validationContext.Errors);
 
@@ -30,7 +31,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", 10)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -40,7 +41,7 @@ namespace Phema.Validation.Tests
 		public void IfNoIsConditionAddsError()
 		{
 			var error =validationContext.When("key", 10)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -52,7 +53,7 @@ namespace Phema.Validation.Tests
 			var error =validationContext.When("key", 10)
 				.Is(value => false)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -63,7 +64,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", 10)
 				.Is(value => false)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Empty(validationContext.Errors);
 		}
@@ -73,7 +74,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", 10)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage<int, int>(() => "template {0}, {1}"), 12, 13);
+				.Add(() => new ValidationMessage(() => "template {0}, {1}"), new object[]{12, 13}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template 12, 13", error.Message);
@@ -85,7 +86,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<Exception>(() =>
 				validationContext.When("key", 10)
 					.Is(value => throw new Exception())
-					.AddError(() => new ValidationMessage(() => "template")));
+					.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error));
 		}
 
 		[Fact]
@@ -94,7 +95,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<Exception>(() =>
 				validationContext.When("key", 10)
 					.Is(value => true)
-					.AddError(() => throw new Exception()));
+					.Add(() => throw new Exception(), ValidationSeverity.Error));
 		}
 	}
 }

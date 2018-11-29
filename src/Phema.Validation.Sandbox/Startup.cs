@@ -13,9 +13,7 @@ namespace Phema.Validation.Sandbox
 
 			services.AddValidation(
 				validation => validation
-					.Add<Model, ModelValidation, ModelValidationComponent>()
-					.AddComponent<Model, ModelValidationComponent>()
-					.AddValidation<Model, ModelValidation>());
+					.Add<Model, ModelValidation, ModelValidationComponent>());
 
 			services.Configure<ValidationOptions>(
 				options => options.Severity = ValidationSeverity.Error);

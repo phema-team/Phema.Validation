@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -17,7 +18,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", new [] { 1 })
 				.IsAny()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -28,9 +29,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", Array.Empty<int>())
 				.IsAny()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -38,7 +39,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", new [] { 1 })
 				.IsAny(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -49,9 +50,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new [] { 1 })
 				.IsAny(x => x == 2)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 		
 		[Fact]
@@ -59,7 +60,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", new [] { 1 })
 				.IsAll(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -70,9 +71,9 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new [] { 1, 2 })
 				.IsAll(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
-			Assert.True(validationContext.IsValid());
+			Assert.True(!validationContext.Errors.Any());
 		}
 	}
 }

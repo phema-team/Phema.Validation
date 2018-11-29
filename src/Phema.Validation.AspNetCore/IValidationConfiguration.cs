@@ -1,9 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
-[assembly: InternalsVisibleTo("Phema.Validation.Tests")]
 
 namespace Phema.Validation
 {

@@ -4,14 +4,6 @@ namespace Phema.Validation
 {
 	public static class ValidationConditionSeverityExtensions
 	{
-		public static IValidationError Add(
-			this IValidationCondition condition,
-			Func<ValidationMessage> selector,
-			ValidationSeverity severity)
-		{
-			return condition.Add(selector, null, severity);
-		}
-		
 		public static IValidationError AddError(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
