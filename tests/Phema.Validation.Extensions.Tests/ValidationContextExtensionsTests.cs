@@ -36,7 +36,20 @@ namespace Phema.Validation.Tests
 			Assert.Equal("template", error.Message);
 		}
 		
-		
+		[Fact]
+		public void WhenWithFuncSelector()
+		{
+			var stab = new TestModel();
+
+			validationContext.When(stab, s => s.Name, s => s.Name)
+				.Is(value => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+
+			var error = Assert.Single(validationContext.Errors);
+
+			Assert.Equal("name", error.Key);
+			Assert.Equal("template", error.Message);
+		}
 		
 		[Fact]
 		public void IfAnyErrorIsValidIsFalse()

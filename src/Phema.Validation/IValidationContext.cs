@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 
 namespace Phema.Validation
 {
@@ -12,14 +11,12 @@ namespace Phema.Validation
 	
 	public sealed class ValidationContext : IValidationContext
 	{
-		private readonly CultureInfo cultureInfo;
 		private readonly List<IValidationError> errors;
 		
-		public ValidationContext(ValidationSeverity severity = ValidationSeverity.Error, CultureInfo cultureInfo = null)
+		public ValidationContext(ValidationSeverity severity = ValidationSeverity.Error)
 		{
 			Severity = severity;
 			errors = new List<IValidationError>();
-			this.cultureInfo = cultureInfo ?? CultureInfo.InvariantCulture;
 		}
 
 		public ValidationSeverity Severity { get; }
@@ -28,7 +25,7 @@ namespace Phema.Validation
 		
 		public IValidationCondition<TValue> When<TValue>(ValidationKey key, TValue value)
 		{
-			return new ValidationCondition<TValue>(value, key, errors, cultureInfo);
+			return new ValidationCondition<TValue>(value, key, errors);
 		}
 	}
 }

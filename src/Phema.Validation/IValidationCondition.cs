@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Phema.Validation.Tests")]
@@ -23,14 +22,12 @@ namespace Phema.Validation
 		private readonly ValidationKey key;
 		private readonly ICollection<IValidationError> errors;
 		private readonly ICollection<Func<TValue, bool>> conditions;
-		private readonly CultureInfo cultureInfo;
 		
-		public ValidationCondition(TValue value, ValidationKey key, ICollection<IValidationError> errors, CultureInfo cultureInfo)
+		public ValidationCondition(TValue value, ValidationKey key, ICollection<IValidationError> errors)
 		{
 			this.value = value;
 			this.key = key;
 			this.errors = errors;
-			this.cultureInfo = cultureInfo;
 			conditions = new List<Func<TValue, bool>>();
 		}
 		
@@ -62,7 +59,7 @@ namespace Phema.Validation
 		{
 			var validationMessage = selector();
 
-			var message = validationMessage?.GetMessage(arguments, cultureInfo);
+			var message = validationMessage?.GetMessage(arguments);
 			
 			var error = new ValidationError(key.Key, message, severity);
 			errors.Add(error);

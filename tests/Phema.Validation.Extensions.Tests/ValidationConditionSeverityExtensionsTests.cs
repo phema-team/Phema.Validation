@@ -27,7 +27,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddError(() => new ValidationMessage<int>(() => "message: {0}"), 11);
+				.AddError(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
 			Assert.NotNull(error);
 			
@@ -43,12 +43,28 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddError(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22);
+				.AddError(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
 			Assert.NotNull(error);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
+			Assert.Equal(ValidationSeverity.Error, error.Severity);
+		}
+		
+		[Fact]
+		public void ErrorSeverity_ThreeParameter()
+		{
+			var validationContext = new ValidationContext();
+
+			var error = validationContext.When("key", 12)
+				.Is(value => value == 12)
+				.AddError(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
+			
+			Assert.NotNull(error);
+			
+			Assert.Equal("key", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
 			Assert.Equal(ValidationSeverity.Error, error.Severity);
 		}
 		
@@ -74,7 +90,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", 12)
 					.Is(value => value == 12)
-					.Throw(() => new ValidationMessage<int>(() => "message: {0}"), 11));
+					.Throw(() => new ValidationMessage<int>(one => $"message: {one}"), 11));
 			
 			var error = Assert.Single(validationContext.Errors);
 			
@@ -91,7 +107,7 @@ namespace Phema.Validation.Tests
 			Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", 12)
 					.Is(value => value == 12)
-					.Throw(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22));
+					.Throw(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22));
 			
 			var error = Assert.Single(validationContext.Errors);
 			
@@ -121,7 +137,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddWarning(() => new ValidationMessage<int>(() => "message: {0}"), 11);
+				.AddWarning(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11", error.Message);
@@ -135,7 +151,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddWarning(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22);
+				.AddWarning(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
@@ -163,7 +179,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddInformation(() => new ValidationMessage<int>(() => "message: {0}"), 11);
+				.AddInformation(() => new ValidationMessage<int>(one=> $"message: {one}"), 11);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11", error.Message);
@@ -177,7 +193,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddInformation(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22);
+				.AddInformation(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
@@ -205,7 +221,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddDebug(() => new ValidationMessage<int>(() => "message: {0}"), 11);
+				.AddDebug(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11", error.Message);
@@ -219,7 +235,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddDebug(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22);
+				.AddDebug(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
@@ -247,7 +263,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddTrace(() => new ValidationMessage<int>(() => "message: {0}"), 11);
+				.AddTrace(() => new ValidationMessage<int>(one=> $"message: {one}"), 11);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11", error.Message);
@@ -261,7 +277,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
-				.AddTrace(() => new ValidationMessage<int, int>(() => "message: {0},{1}"), 11, 22);
+				.AddTrace(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22", error.Message);

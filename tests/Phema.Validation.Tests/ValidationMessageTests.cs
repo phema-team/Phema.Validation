@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Xunit;
+﻿using Xunit;
 
 namespace Phema.Validation
 {
@@ -10,7 +9,7 @@ namespace Phema.Validation
 		{
 			var message = new ValidationMessage(() => "message");
 
-			Assert.Equal("message", message.TemplateProvider());
+			Assert.Equal("message", message.TemplateProvider(null));
 		}
 		
 		[Fact]
@@ -18,40 +17,31 @@ namespace Phema.Validation
 		{
 			var message = new ValidationMessage(() => null);
 
-			Assert.Null(message.TemplateProvider());
+			Assert.Null(message.TemplateProvider(null));
 		}
 
 		[Fact]
 		public void ValidationMessageWithParameter()
 		{
-			var message = new ValidationMessage(() => "{0}");
+			var message = new ValidationMessage(args => $"{args[0]}");
 
-			Assert.Equal("1", message.GetMessage(new object[]
-			{
-				1
-			}, CultureInfo.InvariantCulture));
+			Assert.Equal("1", message.GetMessage(new object[] { 1 }));
 		}
 
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
-			var message = new ValidationMessage(() => "{0}{1}");
+			var message = new ValidationMessage(args => $"{args[0]}{args[1]}");
 
-			Assert.Equal("12", message.GetMessage(new object[]
-			{
-				1, 2
-			}, CultureInfo.InvariantCulture));
+			Assert.Equal("12", message.GetMessage(new object[] { 1, 2 }));
 		}
 
 		[Fact]
 		public void ValidationMessageWithInvalidParameterCount()
 		{
-			var message = new ValidationMessage(() => "{0}");
+			var message = new ValidationMessage(args => $"{args[0]}");
 
-			Assert.Equal("1", message.GetMessage(new object[]
-			{
-				1, 2
-			}, CultureInfo.InvariantCulture));
+			Assert.Equal("1", message.GetMessage(new object[] { 1, 2 }));
 		}
 
 		[Fact]
@@ -61,7 +51,7 @@ namespace Phema.Validation
 
 			var error = validationContext.When("key", "value")
 				.Is(value => true)
-				.Add(() => new ValidationMessage(() => "{0}"), new object[]{10}, ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]{10}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("10", error.Message);

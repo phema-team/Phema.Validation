@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 
 namespace Phema.Validation
 {
@@ -17,9 +12,7 @@ namespace Phema.Validation
 		public ProviderValidationContext(IServiceProvider provider, IOptions<ValidationOptions> options)
 		{
 			this.provider = provider;
-			validationContext = new ValidationContext(
-				options.Value.Severity,
-				TryGetCultureInfo(provider, options.Value));
+			validationContext = new ValidationContext(options.Value.Severity);
 		}
 
 		public ValidationSeverity Severity => validationContext.Severity;
@@ -36,30 +29,6 @@ namespace Phema.Validation
 		public object GetService(Type serviceType)
 		{
 			return provider.GetService(serviceType);
-		}
-
-		private CultureInfo TryGetCultureInfo(IServiceProvider provider, ValidationOptions options)
-		{
-			var httpContext = provider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-
-			if (httpContext == null)
-			{
-				return options.CultureInfo;
-			}
-			
-			var acceptLanguage = httpContext.Request.Headers[HeaderNames.AcceptLanguage];
-
-			if (acceptLanguage.Any())
-			{
-				var preferredCulture = acceptLanguage.FirstOrDefault();
-
-				var foundCulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
-					.FirstOrDefault(cultureInfo => cultureInfo.Name == preferredCulture);
-
-				return foundCulture ?? options.CultureInfo;
-			}
-
-			return options.CultureInfo;
 		}
 	}
 }

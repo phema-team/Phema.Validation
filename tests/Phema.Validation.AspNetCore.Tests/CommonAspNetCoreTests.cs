@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -6,20 +5,15 @@ namespace Phema.Validation.Tests
 {
 	public class CommonAspNetCoreTests
 	{
-		private readonly IServiceProvider provider;
-		
-		public CommonAspNetCoreTests()
+		[Fact]
+		public void EmptyValidationResolves()
 		{
 			var services = new ServiceCollection();
 			
 			services.AddValidation(validation => {});
 			
-			provider = services.BuildServiceProvider();
-		}
-		
-		[Fact]
-		public void EmptyValidationResolves()
-		{
+			var provider = services.BuildServiceProvider();
+			
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
 			Assert.IsType<ProviderValidationContext>(validationContext);

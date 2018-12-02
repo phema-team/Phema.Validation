@@ -22,6 +22,18 @@ namespace Phema.Validation
 			return validationContext.When(key, value);
 		}
 		
+		public static IValidationCondition<TValue> When<TModel, TValue>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TValue>> expression,
+			Func<TModel, TValue> selector)
+		{
+			var key = (ExpressionValidationKey<TModel, TValue>)expression;
+			var value = selector(model);
+			
+			return validationContext.When(key, value);
+		}
+
 		public static bool IsValid(this IValidationContext validationContext)
 		{
 			return !validationContext.Errors.Any(error => error.Severity >= validationContext.Severity);

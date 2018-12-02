@@ -35,8 +35,8 @@ namespace Phema.Validation.Tests
 			public ValidationComponent()
 			{
 				NameIsInvalid = new ValidationMessage(() => "message");
-				AgeIsInvalid =  new ValidationMessage<int>(() => "age: {0}");
-				PhoneIsInvalid = new ValidationMessage<long, int>(() => "phone: {0} age: {1}");
+				AgeIsInvalid =  new ValidationMessage<int>(age => $"age: {age}");
+				PhoneIsInvalid = new ValidationMessage<long, int>((phone, age) => $"phone: {phone} age: {age}");
 			}
 
 			public ValidationMessage NameIsInvalid { get; }

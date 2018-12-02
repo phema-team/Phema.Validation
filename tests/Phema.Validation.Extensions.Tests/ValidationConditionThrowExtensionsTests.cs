@@ -40,7 +40,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("age", 10)
 					.Is(value => value == 10)
-					.Throw(() => new ValidationMessage<int>(() => "template: {0}"), 11));
+					.Throw(() => new ValidationMessage<int>(one => $"template: {one}"), 11));
 
 			Assert.Equal("age", exception.Error.Key);
 			Assert.Equal("template: 11", exception.Error.Message);
@@ -52,7 +52,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.Is(value => value == 9)
-				.Throw(() => new ValidationMessage<int>(() => "template: {0}"), 11);
+				.Throw(() => new ValidationMessage<int>(one => $"template: {one}"), 11);
 			
 			Assert.True(validationContext.IsValid());
 		}
@@ -63,7 +63,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("age", 10)
 					.Is(value => value == 10)
-					.Throw(() => new ValidationMessage<int, int>(() => "template: {0},{1}"), 11, 22));
+					.Throw(() => new ValidationMessage<int, int>((one, two) => $"template: {one},{two}"), 11, 22));
 
 			Assert.Equal("age", exception.Error.Key);
 			Assert.Equal("template: 11,22", exception.Error.Message);
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.Is(value => value == 9)
-				.Throw(() => new ValidationMessage<int, int>(() => "template: {0},{1}"), 11, 22);
+				.Throw(() => new ValidationMessage<int, int>((one, two) => $"template: {one},{two}"), 11, 22);
 			
 			Assert.True(validationContext.IsValid());
 		}

@@ -5,7 +5,7 @@
 		public ModelValidationComponent()
 		{
 			NameMustBeSet = new ValidationMessage(() => "Name must be set");
-			AgeInRange = new ValidationMessage<int>(() => "Age {0} in range");
+			AgeInRange = new ValidationMessage<int>(age => $"Age {age} in range");
 		}
 
 		public ValidationMessage NameMustBeSet { get; }

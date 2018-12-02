@@ -44,13 +44,15 @@ namespace Phema.Validation.Tests
 			public ModelValidationComponent()
 			{
 				NoParameters = new ValidationMessage(() => "message");
-				OneParameter = new ValidationMessage<int>(() => "message: {0}");
-				TwoParameters = new ValidationMessage<int, int>(() => "message: {0},{1}");
+				OneParameter = new ValidationMessage<int>(one => $"message: {one}");
+				TwoParameters = new ValidationMessage<int, int>((one, two) => $"message: {one},{two}");
+				ThreeParameters = new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}");
 			}
 			
 			public ValidationMessage NoParameters { get; }
 			public ValidationMessage<int> OneParameter { get; }
 			public ValidationMessage<int, int> TwoParameters { get; }
+			public ValidationMessage<int, int, int> ThreeParameters { get; }
 		}
 
 		[Fact]
@@ -95,6 +97,21 @@ namespace Phema.Validation.Tests
 			Assert.NotNull(error);
 			Assert.Equal("name", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
+			Assert.Equal(ValidationSeverity.Error, error.Severity);
+		}
+		
+		[Fact]
+		public void AspNetErrorSeverity_ThreeParameters()
+		{
+			var model = new Model();
+
+			var error = validationContext.When(model, m => m.Name)
+				.Is(value => value == null)
+				.AddError<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
+			
+			Assert.NotNull(error);
+			Assert.Equal("name", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
 			Assert.Equal(ValidationSeverity.Error, error.Severity);
 		}
 		
@@ -144,6 +161,21 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void AspNetWarningSeverity_ThreeParameters()
+		{
+			var model = new Model();
+
+			var error = validationContext.When(model, m => m.Name)
+				.Is(value => value == null)
+				.AddWarning<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
+			
+			Assert.NotNull(error);
+			Assert.Equal("name", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
+			Assert.Equal(ValidationSeverity.Warning, error.Severity);
+		}
+		
+		[Fact]
 		public void AspNetInformationSeverity()
 		{
 			var model = new Model();
@@ -185,6 +217,21 @@ namespace Phema.Validation.Tests
 			Assert.NotNull(error);
 			Assert.Equal("name", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
+			Assert.Equal(ValidationSeverity.Information, error.Severity);
+		}
+		
+		[Fact]
+		public void AspNetInformationSeverity_ThreeParameters()
+		{
+			var model = new Model();
+
+			var error = validationContext.When(model, m => m.Name)
+				.Is(value => value == null)
+				.AddInformation<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
+			
+			Assert.NotNull(error);
+			Assert.Equal("name", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
 			Assert.Equal(ValidationSeverity.Information, error.Severity);
 		}
 		
@@ -234,6 +281,21 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void AspNetDebugSeverity_ThreeParameters()
+		{
+			var model = new Model();
+
+			var error = validationContext.When(model, m => m.Name)
+				.Is(value => value == null)
+				.AddDebug<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
+			
+			Assert.NotNull(error);
+			Assert.Equal("name", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
+			Assert.Equal(ValidationSeverity.Debug, error.Severity);
+		}
+		
+		[Fact]
 		public void AspNetTraceSeverity()
 		{
 			var model = new Model();
@@ -275,6 +337,21 @@ namespace Phema.Validation.Tests
 			Assert.NotNull(error);
 			Assert.Equal("name", error.Key);
 			Assert.Equal("message: 11,22", error.Message);
+			Assert.Equal(ValidationSeverity.Trace, error.Severity);
+		}
+		
+		[Fact]
+		public void AspNetTraceSeverity_ThreeParameters()
+		{
+			var model = new Model();
+
+			var error = validationContext.When(model, m => m.Name)
+				.Is(value => value == null)
+				.AddTrace<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
+			
+			Assert.NotNull(error);
+			Assert.Equal("name", error.Key);
+			Assert.Equal("message: 11,22,33", error.Message);
 			Assert.Equal(ValidationSeverity.Trace, error.Severity);
 		}
 	}

@@ -73,7 +73,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", 10)
 				.Is(value => true)
-				.Add(() => new ValidationMessage(() => "template {0}, {1}"), new object[]{12, 13}, ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(args => $"template {args[0]}, {args[1]}"), new object[]{12, 13}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template 12, 13", error.Message);

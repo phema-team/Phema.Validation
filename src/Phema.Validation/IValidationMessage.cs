@@ -1,29 +1,29 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Phema.Validation
 {
 	public interface IValidationMessage
 	{
-		string GetMessage(object[] arguments, CultureInfo cultureInfo);
+		string GetMessage(object[] arguments);
 	}
 	
 	public sealed class ValidationMessage : IValidationMessage
 	{
-		public ValidationMessage(Func<string> templateProvider)
+		public ValidationMessage(Func<object[], string> templateProvider)
 		{
 			TemplateProvider = templateProvider;
 		}
 		
-		public Func<string> TemplateProvider { get; }
-
-		public string GetMessage(object[] arguments, CultureInfo cultureInfo)
+		public ValidationMessage(Func<string> templateProvider)
 		{
-			var template = TemplateProvider();
-			
-			return arguments == null
-				? template
-				: string.Format(cultureInfo, template, arguments);
+			TemplateProvider = arguments => templateProvider();
+		}
+		
+		public Func<object[], string> TemplateProvider { get; }
+
+		public string GetMessage(object[] arguments)
+		{
+			return TemplateProvider(arguments);
 		}
 	}
 }
