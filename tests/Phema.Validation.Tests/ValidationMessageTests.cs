@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Microsoft.Extensions.Options;
+using Xunit;
 
 namespace Phema.Validation
 {
@@ -47,7 +48,7 @@ namespace Phema.Validation
 		[Fact]
 		public void AddMessageWithInvalidArguments()
 		{
-			var validationContext = new ValidationContext();
+			var validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
 
 			var error = validationContext.When("key", "value")
 				.Is(value => true)

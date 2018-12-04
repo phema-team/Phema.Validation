@@ -1,25 +1,22 @@
 ﻿namespace Phema.Validation
 {
-	public class ValidationKey
+	public sealed class ValidationKey : IValidationKey
 	{
-		protected ValidationKey(string key)
+		internal ValidationKey(string key)
 		{
 			Key = key;
 		}
 		
 		public string Key { get; }
 
-		protected bool Equals(ValidationKey other)
-		{
-			return string.Equals(Key, other.Key);
-		}
-
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
+			if (ReferenceEquals(null, obj))
+			{
+				return false;
+			}
 
-			return obj.GetType() == GetType() && Equals((ValidationKey)obj);
+			return ReferenceEquals(this, obj) || string.Equals(Key, ((IValidationKey)obj).Key);
 		}
 
 		public override int GetHashCode()

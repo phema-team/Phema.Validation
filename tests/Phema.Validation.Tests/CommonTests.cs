@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -9,7 +10,7 @@ namespace Phema.Validation.Tests
 
 		public CommonTests()
 		{
-			validationContext = new ValidationContext();
+			validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
 		}
 
 		[Fact]
