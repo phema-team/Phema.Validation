@@ -183,11 +183,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age1", 10)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError(() => new ValidationMessage(() => "template1"));
 			
 			validationContext.When("age2", 12)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError(() => new ValidationMessage(() => "template2"));
 
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid());
@@ -196,13 +196,33 @@ namespace Phema.Validation.Tests
 				e =>
 				{
 					Assert.Equal("age1", e.Key);
-					Assert.Equal("template", e.Message);
+					Assert.Equal("template1", e.Message);
 				},
 				e =>
 				{
 					Assert.Equal("age2", e.Key);
-					Assert.Equal("template", e.Message);
+					Assert.Equal("template2", e.Message);
 				});
+		}
+		
+		[Fact]
+		public void EnsureThrowsOnlySevereErrors()
+		{
+			validationContext.When("age1", 10)
+				.Is(value => true)
+				.AddWarning(() => new ValidationMessage(() => "template1"));
+			
+			validationContext.When("age2", 12)
+				.Is(value => true)
+				.AddError(() => new ValidationMessage(() => "template2"));
+
+			var exception = Assert.Throws<ValidationContextException>(
+				() => validationContext.EnsureIsValid());
+			
+			var error = Assert.Single(exception.Errors);
+
+			Assert.Equal("age2", error.Key);
+			Assert.Equal("template2", error.Message);
 		}
 
 		[Fact]

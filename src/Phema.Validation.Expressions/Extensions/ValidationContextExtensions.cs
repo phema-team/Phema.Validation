@@ -31,17 +31,14 @@ namespace Phema.Validation
 
 		public static bool IsValid(this IValidationContext validationContext)
 		{
-			return !validationContext.Errors.Any(error => error.Severity >= validationContext.Severity);
+			return !validationContext.SevereErrors().Any();
 		}
 		
 		public static bool IsValid<TModel>(
 			this IValidationContext validationContext,
 			Expression<Func<TModel, object>> expression)
 		{
-			var key = (ExpressionValidationKey<TModel, object>)expression;
-
-			return !validationContext.Errors
-				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
+			return validationContext.IsValid(default, expression);
 		}
 		
 		public static bool IsValid<TModel, TProperty>(
@@ -50,17 +47,15 @@ namespace Phema.Validation
 			Expression<Func<TModel, TProperty>> expression)
 		{
 			var key = (ExpressionValidationKey<TModel, TProperty>)expression;
-			
-			return !validationContext.Errors
-				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
+
+			return !validationContext.SevereErrors().Any(error => error.Key == key.Key);
 		}
 
-		public static void EnsureIsValid(
-			this IValidationContext validationContext)
+		public static void EnsureIsValid(this IValidationContext validationContext)
 		{
 			if (!validationContext.IsValid())
 			{
-				throw new ValidationContextException(validationContext.Errors);
+				throw new ValidationContextException(validationContext.SevereErrors().ToList());
 			}
 		}
 	}

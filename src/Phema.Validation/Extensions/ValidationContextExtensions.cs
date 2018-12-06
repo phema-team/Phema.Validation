@@ -18,8 +18,7 @@ namespace Phema.Validation
 			this IValidationContext validationContext, 
 			ValidationKey key)
 		{
-			return !validationContext.Errors
-				.Any(error => error.Key == key.Key && error.Severity >= validationContext.Severity);
+			return !validationContext.SevereErrors().Any(error => error.Key == key.Key);
 		}
 	}
 }

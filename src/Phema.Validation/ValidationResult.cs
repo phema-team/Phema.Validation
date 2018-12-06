@@ -7,11 +7,6 @@ namespace Phema.Validation
 {
 	internal sealed class ValidationResult : ObjectResult
 	{
-		public ValidationResult(IValidationError error)
-			: this(new[] { error })
-		{
-		}
-		
 		public ValidationResult(IEnumerable<IValidationError> errors)
 			: base(GetSummary(errors))
 		{

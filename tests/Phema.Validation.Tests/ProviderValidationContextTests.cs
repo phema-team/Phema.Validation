@@ -102,12 +102,12 @@ namespace Phema.Validation.Tests
 
 			var result = Assert.IsType<ValidationResult>(context.Result);
 
-			var value = Assert.IsType<Dictionary<string, string[]>>(result.Value);
+			var value = Assert.IsType<Dictionary<string, object>>(result.Value);
 
 			var (key, messages) = Assert.Single(value);
 
 			Assert.Equal("Age", key);
-			Assert.Equal("age: 12", Assert.Single(messages));
+			Assert.Equal("age: 12", Assert.IsType<string>(messages));
 		}
 
 		[Fact]
@@ -142,12 +142,12 @@ namespace Phema.Validation.Tests
 
 			var result = Assert.IsType<ValidationResult>(context.Result);
 
-			var value = Assert.IsType<Dictionary<string, string[]>>(result.Value);
+			var value = Assert.IsType<Dictionary<string, object>>(result.Value);
 
 			var (key, messages) = Assert.Single(value);
 
 			Assert.Equal("Phone", key);
-			Assert.Equal("phone: 88005553535 age: 322", Assert.Single(messages));
+			Assert.Equal("phone: 88005553535 age: 322", Assert.IsType<string>(messages));
 		}
 	}
 }

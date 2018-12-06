@@ -9,7 +9,7 @@ namespace Phema.Validation
 		{
 			Errors = errors;
 		}
-
+		
 		public IReadOnlyCollection<IValidationError> Errors { get; }
 	}
 }

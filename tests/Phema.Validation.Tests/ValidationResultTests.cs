@@ -7,22 +7,6 @@ namespace Phema.Validation.Tests
 	public class ValidationResultTests
 	{
 		[Fact]
-		public void ValidationResultSingleError()
-		{
-			var result = new ValidationResult(new ValidationError("key", "template", ValidationSeverity.Debug));
-
-			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
-
-			var dictionary = Assert.IsType<Dictionary<string, object>>(result.Value);
-			Assert.Equal(1, dictionary.Count);
-
-			var (key, messages) = Assert.Single(dictionary);
-
-			Assert.Equal("key", key);
-			Assert.Equal("template", Assert.IsType<string>(messages));
-		}
-
-		[Fact]
 		public void ValidationResultMultipleErrors()
 		{
 			var result = new ValidationResult(new List<IValidationError>
