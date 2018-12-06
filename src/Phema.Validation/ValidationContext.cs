@@ -28,5 +28,11 @@ namespace Phema.Validation
 		{
 			return provider.GetService(serviceType);
 		}
+
+		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
+		{
+			return When(new ValidationKey(""), (object)null)
+				.Add(selector, arguments, severity);
+		}
 	}
 }

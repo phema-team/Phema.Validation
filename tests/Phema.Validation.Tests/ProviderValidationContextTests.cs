@@ -48,19 +48,15 @@ namespace Phema.Validation.Tests
 
 		public ProviderValidationContextTests()
 		{
-			var services = new ServiceCollection();
-
-			services.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>());
-
-			services.AddScoped<IHttpContextAccessor>(sp =>
-				new HttpContextAccessor
-				{
-					HttpContext = new DefaultHttpContext()
-				});
-			
-			provider = services.BuildServiceProvider();
+			provider = new ServiceCollection()
+				.AddValidation(v => v.Add<TestModel, Validation, ValidationComponent>())
+				.AddScoped<IHttpContextAccessor>(sp =>
+					new HttpContextAccessor
+					{
+						HttpContext = new DefaultHttpContext()
+					})
+				.BuildServiceProvider();
 		}
-
 
 		[Fact]
 		public void ProviderValidationContext()
