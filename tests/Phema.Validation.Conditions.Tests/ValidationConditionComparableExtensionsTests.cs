@@ -1,5 +1,5 @@
 using System.Linq;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -10,7 +10,10 @@ namespace Phema.Validation.Tests
 
 		public ValidationConditionComparableExtensionsTests()
 		{
-			validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
+			validationContext = new ServiceCollection()
+				.AddValidation(c => {})
+				.BuildServiceProvider()
+				.GetRequiredService<IValidationContext>();
 		}
 		
 		[Fact]

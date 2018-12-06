@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -9,7 +10,10 @@ namespace Phema.Validation.Tests
 
 		public ValidationConditionSeverityExtensionsTests()
 		{
-			validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
+			validationContext = new ServiceCollection()
+				.AddValidation(c => {})
+				.BuildServiceProvider()
+				.GetRequiredService<IValidationContext>();
 		}
 		
 		[Fact]

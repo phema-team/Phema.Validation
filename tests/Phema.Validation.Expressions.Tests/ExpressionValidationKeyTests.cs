@@ -425,6 +425,30 @@ namespace Phema.Validation.Tests
 			Assert.Equal("array:0:address:floor:array:1:name", error.Key);
 		}
 		
+		[Fact]
+		public void ExpressionValidationKeyIndexString()
+		{
+			var error = validationContext.When("e", p => p[0])
+				.Is(value => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.Equal("0", error.Key);
+		}
+		
+		[Fact]
+		public void ExpressionValidationKeyModelIndexString()
+		{
+			var model = new
+			{
+				Name = "Sarah"
+			};
+			
+			var error = validationContext.When(model, m => m.Name[0])
+				.Is(value => true)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			Assert.Equal("Name:0", error.Key);
+		}
 		
 		[Fact]
 		public void ExpressionValidationKey()
@@ -433,7 +457,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Length", key.Key);
 		}
-
+		
 		[Fact]
 		public void NullExpressionValidationKey()
 		{
