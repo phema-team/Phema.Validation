@@ -16,13 +16,7 @@ namespace Phema.Validation
 		{
 			if (!validationContext.IsValid(validationKey))
 			{
-				var errors = validationContext
-					.Errors
-					.Where(error => error.Severity >= validationContext.Severity)
-					.Where(error => validationKey == null || error.Key == validationKey.Key)
-					.ToList();
-				
-				throw new ValidationContextException(errors);
+				throw new ValidationContextException(validationContext.Errors, validationContext.Severity);
 			}
 		}
 	}

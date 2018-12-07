@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -133,7 +134,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid());
 			
-			var error = Assert.Single(exception.Errors);
+			var error = Assert.Single(exception.Errors.Where(err => err.Severity >= exception.Severity));
 
 			Assert.Equal("age2", error.Key);
 			Assert.Equal("template2", error.Message);

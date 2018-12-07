@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Phema.Validation
@@ -9,7 +10,11 @@ namespace Phema.Validation
 			switch (context.Exception)
 			{
 				case ValidationContextException exception:
-					context.Result = new ValidationResult(exception.Errors);
+
+					var errors = exception.Errors
+						.Where(error => error.Severity >= exception.Severity);
+					
+					context.Result = new ValidationResult(errors);
 					break;
 				
 				case ValidationConditionException exception:
