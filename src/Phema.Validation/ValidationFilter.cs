@@ -22,7 +22,7 @@ namespace Phema.Validation
 				}
 			}
 
-			if (validationContext.Errors.Any(x => x.Severity >= validationContext.Severity))
+			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
 			{
 				context.Result = new ValidationResult(validationContext.Errors);
 			}
@@ -32,7 +32,7 @@ namespace Phema.Validation
 		{
 			var validationContext = context.HttpContext.RequestServices.GetRequiredService<IValidationContext>();
 
-			if (validationContext.Errors.Any(x => x.Severity >= validationContext.Severity))
+			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
 			{
 				context.Result = new ValidationResult(validationContext.Errors);
 			}

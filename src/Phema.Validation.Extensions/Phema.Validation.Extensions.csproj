@@ -4,7 +4,10 @@
 		<TargetFramework>netcoreapp2.1</TargetFramework>
 		<RootNamespace>Phema.Validation</RootNamespace>
 		<LangVersion>7.3</LangVersion>
-		<Version>1.1.1</Version>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Phema.Validation.Core\Phema.Validation.Core.csproj" />
+	</ItemGroup>
 
 </Project>

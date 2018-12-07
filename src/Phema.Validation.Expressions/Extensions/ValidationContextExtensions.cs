@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Phema.Validation
@@ -29,11 +28,6 @@ namespace Phema.Validation
 			return validationContext.When(key, value);
 		}
 
-		public static bool IsValid(this IValidationContext validationContext)
-		{
-			return !validationContext.SevereErrors().Any();
-		}
-		
 		public static bool IsValid<TModel>(
 			this IValidationContext validationContext,
 			Expression<Func<TModel, object>> expression)
@@ -48,15 +42,24 @@ namespace Phema.Validation
 		{
 			var key = (ExpressionValidationKey<TModel, TProperty>)expression;
 
-			return !validationContext.SevereErrors().Any(error => error.Key == key.Key);
+			return validationContext.IsValid(key);
 		}
 
-		public static void EnsureIsValid(this IValidationContext validationContext)
+		public static void EnsureIsValid<TModel>(
+			this IValidationContext validationContext,
+			Expression<Func<TModel, object>> expression)
 		{
-			if (!validationContext.IsValid())
-			{
-				throw new ValidationContextException(validationContext.SevereErrors().ToList());
-			}
+			validationContext.EnsureIsValid(default, expression);
+		}
+		
+		public static void EnsureIsValid<TModel, TProperty>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TProperty>> expression)
+		{
+			var key = (ExpressionValidationKey<TModel, TProperty>)expression;
+
+			validationContext.EnsureIsValid(key);
 		}
 	}
 }

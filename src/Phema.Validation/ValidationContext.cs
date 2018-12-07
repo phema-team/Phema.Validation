@@ -24,15 +24,14 @@ namespace Phema.Validation
 			return new ValidationCondition<TValue>(key, value, errors, provider);
 		}
 
+		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
+		{
+			return this.When().Add(selector, arguments, severity);
+		}
+		
 		object IServiceProvider.GetService(Type serviceType)
 		{
 			return provider.GetService(serviceType);
-		}
-
-		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
-		{
-			return When(new ValidationKey(""), (object)null)
-				.Add(selector, arguments, severity);
 		}
 	}
 }

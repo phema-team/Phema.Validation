@@ -9,12 +9,7 @@ namespace Phema.Validation
 			Func<ValidationMessage> selector,
 			object[] arguments = null)
 		{
-			var error = builder.Add(selector, arguments, ValidationSeverity.Fatal);
-
-			if (error != null)
-			{
-				throw new ValidationConditionException(error);
-			}
+			builder.Throw((Func<IValidationMessage>)selector, arguments);
 		}
 		
 		public static void Throw<TArgument>(
@@ -22,15 +17,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			var error = builder.Add(
-				selector, 
-				new object[] { argument },
-				ValidationSeverity.Fatal);
-
-			if (error != null)
-			{
-				throw new ValidationConditionException(error);
-			}
+			builder.Throw(selector, new object[] { argument });
 		}
 
 		public static void Throw<TArgument1, TArgument2>(
@@ -39,15 +26,17 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			var error = builder.Add(
-				selector, 
-				new object[] { argument1, argument2 },
-				ValidationSeverity.Fatal);
-
-			if (error != null)
-			{
-				throw new ValidationConditionException(error);
-			}
+			builder.Throw(selector, new object[] { argument1, argument2 });
+		}
+		
+		public static void Throw<TArgument1, TArgument2, TArgument3>(
+			this IValidationCondition builder,
+			Func<ValidationMessage<TArgument1, TArgument2, TArgument3>> selector,
+			TArgument1 argument1,
+			TArgument2 argument2,
+			TArgument3 argument3)
+		{
+			builder.Throw(selector, new object[] { argument1, argument2, argument3 });
 		}
 	}
 }

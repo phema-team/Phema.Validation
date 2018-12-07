@@ -45,7 +45,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 
 			var dictionary = Assert.IsType<Dictionary<string, object>>(result.Value);
-			Assert.Equal(1, dictionary.Count);
+			Assert.Single(dictionary);
 
 			Assert.Collection(dictionary,
 				item =>

@@ -20,7 +20,7 @@ namespace Phema.Validation.Tests
 		public void AddReturnsSameErrorAsContext()
 		{
 			var error1 = validationContext.When("key", 10)
-				.Is(value => true)
+				.Is(() => true)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			var error2 = Assert.Single(validationContext.Errors);

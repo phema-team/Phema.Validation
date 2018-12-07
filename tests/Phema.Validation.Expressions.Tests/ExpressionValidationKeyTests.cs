@@ -2,71 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
 	public class ExpressionValidationKeyTests
 	{
-		[DataContract]
-		private class Person
-		{
-			[DataMember(Name = "name")]
-			public string Name { get; set; }
-			
-			[DataMember(Name = "address")]
-			public Address Address { get; set; }
-			
-			[DataMember(Name = "list")]
-			public IList<Children> List { get; set; }
-			
-			[DataMember(Name = "array")]
-			public Children[] Array { get; set; }
-		}
-
-		[DataContract]
-		private class Address
-		{
-			[DataMember(Name = "street")]
-			public string Street { get; set; }
-
-			[DataMember(Name = "floor")]
-			public Floor Floor { get; set; }
-		}
-		
-		[DataContract]
-		public class Floor
-		{
-			[DataMember(Name = "list")]
-			public IList<Room> List { get; set; }
-			
-			[DataMember(Name = "array")]
-			public Room[] Array { get; set; }
-		}
-		
-		[DataContract]
-		public class Room
-		{
-			[DataMember(Name = "name")]
-			public string Name { get; set; }
-		}
-
-		[DataContract]
-		private class Children
-		{
-			[DataMember(Name = "name")]
-			public string Name { get; set; }
-
-			[DataMember(Name = "address")]
-			public Address Address { get; set; }
-		}
-
 		private readonly IValidationContext validationContext;
 		
 		public ExpressionValidationKeyTests()
 		{
-			validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
+			validationContext = new ServiceCollection()
+				.AddValidation(c => {})
+				.BuildServiceProvider()
+				.GetRequiredService<IValidationContext>();
 		}
 
 		[Fact]
@@ -86,7 +36,7 @@ namespace Phema.Validation.Tests
 			var person = new Person();
 
 			var error = validationContext.When(person, p => p.Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
