@@ -1,6 +1,6 @@
 namespace Phema.Validation
 {
-	public static class ValidationConditionExtensions
+	public static class ValidationConditionIsExtensions
 	{
 		public static IValidationCondition<TValue> IsNull<TValue>(
 			this IValidationCondition<TValue> builder)

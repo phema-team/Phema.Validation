@@ -50,7 +50,7 @@ namespace Phema.Validation
 		{
 			var validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
 
-			var error = validationContext.When("key", "value")
+			var error = validationContext.Validate("key", "value")
 				.Is(value => true)
 				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]{10}, ValidationSeverity.Error);
 

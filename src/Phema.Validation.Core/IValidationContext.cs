@@ -6,6 +6,6 @@ namespace Phema.Validation
 	{
 		ValidationSeverity Severity { get; }
 		IReadOnlyCollection<IValidationError> Errors { get; }
-		IValidationCondition<TValue> When<TValue>(IValidationKey key, TValue value);
+		IValidationCondition<TValue> Validate<TValue>(IValidationKey key, TValue value);
 	}
 }

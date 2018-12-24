@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Phema.Validation
 {
@@ -9,18 +10,22 @@ namespace Phema.Validation
 		private readonly TValue value;
 		private readonly List<IValidationError> errors;
 		private readonly IServiceProvider provider;
-		private readonly IList<Func<TValue, bool>> conditions;
+		private readonly IList<Func<TValue, bool, bool>> conditions;
 
-		public ValidationCondition(IValidationKey key, TValue value, List<IValidationError> errors, IServiceProvider provider)
+		public ValidationCondition(
+			IValidationKey key, 
+			TValue value, 
+			List<IValidationError> errors,
+			IServiceProvider provider)
 		{
 			this.key = key;
 			this.value = value;
 			this.errors = errors;
 			this.provider = provider;
-			conditions = new List<Func<TValue, bool>>();
+			conditions = new List<Func<TValue, bool, bool>>();
 		}
 
-		public IValidationCondition<TValue> Is(Func<TValue, bool> condition)
+		public IValidationCondition<TValue> Condition(Func<TValue, bool, bool> condition)
 		{
 			conditions.Add(condition);
 			return this;
@@ -33,15 +38,11 @@ namespace Phema.Validation
 				return AddError(selector, arguments, severity);
 			}
 
-			foreach (var condition in conditions)
-			{
-				if (condition(value))
-				{
-					return AddError(selector, arguments, severity);
-				}
-			}
+			var sameKeyErrorAlreadyAdded = errors.Any(error => error.Key == key.Key);
 
-			return null;
+			return conditions.Any(condition => condition(value, sameKeyErrorAlreadyAdded)) 
+				? AddError(selector, arguments, severity) 
+				: null;
 		}
 		
 		private IValidationError AddError(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)

@@ -58,7 +58,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddError<ModelValidationComponent>(c => c.NoParameters);
 
@@ -73,7 +73,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddError<ModelValidationComponent, int>(c => c.OneParameter, 11);
 
@@ -88,7 +88,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddError<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 
@@ -103,7 +103,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddError<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
 
@@ -118,7 +118,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent>(c => c.NoParameters);
 
@@ -133,7 +133,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent, int>(c => c.OneParameter, 11);
 
@@ -148,7 +148,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 
@@ -163,7 +163,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddWarning<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
 
@@ -178,7 +178,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent>(c => c.NoParameters);
 
@@ -193,7 +193,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent, int>(c => c.OneParameter, 11);
 
@@ -208,7 +208,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 
@@ -223,7 +223,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddInformation<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
 
@@ -238,7 +238,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent>(c => c.NoParameters);
 
@@ -253,7 +253,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent, int>(c => c.OneParameter, 11);
 
@@ -268,7 +268,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 
@@ -283,7 +283,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddDebug<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
 
@@ -298,7 +298,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent>(c => c.NoParameters);
 
@@ -313,7 +313,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent, int>(c => c.OneParameter, 11);
 
@@ -328,7 +328,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent, int, int>(c => c.TwoParameters, 11, 22);
 
@@ -343,7 +343,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new Model();
 
-			var error = validationContext.When(nameof(model.Name), model.Name)
+			var error = validationContext.Validate(nameof(model.Name), model.Name)
 				.Is(value => value == null)
 				.AddTrace<ModelValidationComponent, int, int, int>(c => c.ThreeParameters, 11, 22, 33);
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Phema.Validation
 {
-	public static class ValidationConditionEnumerableExtensionsValidationConditionEnumerableExtensions
+	public static class ValidationConditionIsEnumerableExtensions
 	{
 		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> builder)

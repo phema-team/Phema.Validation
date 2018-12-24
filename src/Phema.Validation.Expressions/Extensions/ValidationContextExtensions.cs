@@ -13,7 +13,7 @@ namespace Phema.Validation
 			var key = (ExpressionValidationKey<TModel, TValue>)expression;
 			var value = key.GetValue(model);
 			
-			return validationContext.When(key, value);
+			return validationContext.Validate(key, value);
 		}
 		
 		public static IValidationCondition<TValue> When<TModel, TValue>(
@@ -25,7 +25,7 @@ namespace Phema.Validation
 			var key = (ExpressionValidationKey<TModel, TValue>)expression;
 			var value = selector(model);
 			
-			return validationContext.When(key, value);
+			return validationContext.Validate(key, value);
 		}
 
 		public static bool IsValid<TModel>(

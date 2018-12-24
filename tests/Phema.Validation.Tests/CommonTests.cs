@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddReturnsSameErrorAsContext()
 		{
-			var error1 = validationContext.When("key", 10)
+			var error1 = validationContext.Validate("key", 10)
 				.Is(() => true)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
@@ -32,7 +32,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfIsConditionIsTrueAddsError()
 		{
-			var error = validationContext.When("key", 10)
+			var error = validationContext.Validate("key", 10)
 				.Is(value => true)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
@@ -43,7 +43,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfNoIsConditionAddsError()
 		{
-			var error =validationContext.When("key", 10)
+			var error =validationContext.Validate("key", 10)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
@@ -53,7 +53,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfAnyIsConditionIsTrueAddsError()
 		{
-			var error =validationContext.When("key", 10)
+			var error =validationContext.Validate("key", 10)
 				.Is(value => false)
 				.Is(value => true)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsConditionIsTrueNotAddsError()
 		{
-			validationContext.When("key", 10)
+			validationContext.Validate("key", 10)
 				.Is(value => false)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
-			var error = validationContext.When("key", 10)
+			var error = validationContext.Validate("key", 10)
 				.Is(value => true)
 				.Add(() => new ValidationMessage(args => $"template {args[0]}, {args[1]}"), new object[]{12, 13}, ValidationSeverity.Error);
 
@@ -87,7 +87,7 @@ namespace Phema.Validation.Tests
 		public void ThrowsSameExceptionInIsCondition()
 		{
 			Assert.Throws<Exception>(() =>
-				validationContext.When("key", 10)
+				validationContext.Validate("key", 10)
 					.Is(value => throw new Exception())
 					.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error));
 		}
@@ -96,7 +96,7 @@ namespace Phema.Validation.Tests
 		public void ThrowsSameExceptionInAdd()
 		{
 			Assert.Throws<Exception>(() =>
-				validationContext.When("key", 10)
+				validationContext.Validate("key", 10)
 					.Is(value => true)
 					.Add(() => throw new Exception(), ValidationSeverity.Error));
 		}

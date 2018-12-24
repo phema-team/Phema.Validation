@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	public static class ValidationConditionCollectonExtensions
+	public static class ValidationConditionIsCollectonExtensions
 	{
 		public static IValidationCondition<ICollection<TElement>> IsEmpty<TElement>(
 			this IValidationCondition<ICollection<TElement>> builder)
