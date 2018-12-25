@@ -19,11 +19,11 @@ namespace Phema.Validation.Tests
 		public void Validate(IValidationContext validationContext, TestModel model)
 		{
 			validationContext.Validate(nameof(model.Name), model.Name)
-				.Is(value => value == null)
+				.Condition((value, added) => value == null)
 				.AddError(() => component.NameIsNull);
 
 			validationContext.Validate(nameof(model.Age), model.Age)
-				.Is(value => value > 0 && value < 17)
+				.Condition((value, added) => value > 0 && value < 17)
 				.AddError(() => component.IsUnderage);
 		}
 	}
