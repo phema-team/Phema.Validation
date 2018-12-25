@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Phema.Validation
@@ -7,6 +8,9 @@ namespace Phema.Validation
 	{
 		public ValidationContextException(IReadOnlyCollection<IValidationError> errors, ValidationSeverity severity)
 		{
+			if (errors == null)
+				throw new ArgumentNullException(nameof(errors));
+			
 			Errors = errors;
 			Severity = severity;
 		}

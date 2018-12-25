@@ -1,9 +1,14 @@
-﻿namespace Phema.Validation
+﻿using System;
+
+namespace Phema.Validation
 {
 	public sealed class ValidationKey : IValidationKey
 	{
 		internal ValidationKey(string key)
 		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			
 			Key = key;
 		}
 		

@@ -8,6 +8,12 @@ namespace Phema.Validation
 			this IValidationCondition<TElement> builder,
 			Func<TElement, bool> condition)
 		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			
+			if (condition == null)
+				throw new ArgumentNullException(nameof(condition));
+			
 			return builder.Condition((value, _) => condition(value));
 		}
 		
@@ -15,6 +21,12 @@ namespace Phema.Validation
 			this IValidationCondition<TElement> builder,
 			Func<TElement, bool> condition)
 		{
+			if (builder == null)
+				throw new ArgumentNullException(nameof(builder));
+			
+			if (condition == null)
+				throw new ArgumentNullException(nameof(condition));
+			
 			return builder.Condition((value, added) => !added && condition(value));
 		}
 	}

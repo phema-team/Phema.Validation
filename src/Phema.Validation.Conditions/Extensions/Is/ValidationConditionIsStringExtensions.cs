@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Phema.Validation
 {
-	public static class ValidationConditionStringExtensions
+	public static class ValidationConditionIsStringExtensions
 	{
 		public static IValidationCondition<string> IsEmpty(
 			this IValidationCondition<string> builder)

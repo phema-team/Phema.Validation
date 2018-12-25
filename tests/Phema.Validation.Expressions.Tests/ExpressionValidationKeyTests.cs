@@ -35,7 +35,7 @@ namespace Phema.Validation.Tests
 		{
 			var person = new Person();
 
-			var error = validationContext.When(person, p => p.Name)
+			var error = validationContext.Validate(person, p => p.Name)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -52,7 +52,7 @@ namespace Phema.Validation.Tests
 				Address = new Address()
 			};
 
-			var error = validationContext.When(person, p => p.Address.Street)
+			var error = validationContext.Validate(person, p => p.Address.Street)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -69,9 +69,7 @@ namespace Phema.Validation.Tests
 				List = new List<Children> { new Children() }
 			};
 
-			Expression<Func<Person, Children>> e = p => p.List[0];
-
-			var error = validationContext.When(person, e)
+			var error = validationContext.Validate(person, p => p.List[0])
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -88,7 +86,7 @@ namespace Phema.Validation.Tests
 				Array = new[] { new Children() }
 			};
 
-			var error = validationContext.When(person, p => p.Array[0].Name)
+			var error = validationContext.Validate(person, p => p.Array[0].Name)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -105,7 +103,7 @@ namespace Phema.Validation.Tests
 				List = new List<Children> { new Children() }
 			};
 
-			var error = validationContext.When(person, p => p.List[0].Name)
+			var error = validationContext.Validate(person, p => p.List[0].Name)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -124,7 +122,7 @@ namespace Phema.Validation.Tests
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.Array[index].Name)
+			var error = validationContext.Validate(person, p => p.Array[index].Name)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -143,7 +141,7 @@ namespace Phema.Validation.Tests
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.List[index].Name)
+			var error = validationContext.Validate(person, p => p.List[index].Name)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -160,7 +158,7 @@ namespace Phema.Validation.Tests
 				Array = new [] { new Children { Address = new Address() } }
 			};
 
-			var error = validationContext.When(person, p => p.Array[0].Address.Street)
+			var error = validationContext.Validate(person, p => p.Array[0].Address.Street)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -177,7 +175,7 @@ namespace Phema.Validation.Tests
 				List = new List<Children> { new Children { Address = new Address() } }
 			};
 
-			var error = validationContext.When(person, p => p.List[0].Address.Street)
+			var error = validationContext.Validate(person, p => p.List[0].Address.Street)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -196,7 +194,7 @@ namespace Phema.Validation.Tests
 
 			var index = 1;
 			
-			var error = validationContext.When(person, p => p.Array[index].Address.Street)
+			var error = validationContext.Validate(person, p => p.Array[index].Address.Street)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -215,7 +213,7 @@ namespace Phema.Validation.Tests
 
 			var index = 1;
 			
-			var error = validationContext.When(person, p => p.List[index].Address.Street)
+			var error = validationContext.Validate(person, p => p.List[index].Address.Street)
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -243,7 +241,7 @@ namespace Phema.Validation.Tests
 				Index = 1
 			};
 			
-			var error = validationContext.When(person, d => d.List[model.Index])
+			var error = validationContext.Validate(person, d => d.List[model.Index])
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -265,7 +263,7 @@ namespace Phema.Validation.Tests
 				Index = 1
 			};
 			
-			var error = validationContext.When(person, d => d.Array[model.Index])
+			var error = validationContext.Validate(person, d => d.Array[model.Index])
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -286,7 +284,7 @@ namespace Phema.Validation.Tests
 				}
 			};
 			
-			var error = validationContext.When(dimensional, d => d.Array[1, 0])
+			var error = validationContext.Validate(dimensional, d => d.Array[1, 0])
 				.Is(() => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -328,7 +326,7 @@ namespace Phema.Validation.Tests
 				Index2 = 1
 			};
 
-			var error = validationContext.When(person, p => p.List[model.Index1].Address.Floor.List[model.Index2].Name)
+			var error = validationContext.Validate(person, p => p.List[model.Index1].Address.Floor.List[model.Index2].Name)
 				.Is(value => value == "room")
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -368,7 +366,7 @@ namespace Phema.Validation.Tests
 				Index2 = 1
 			};
 
-			var error = validationContext.When(person, p => p.Array[model.Index1].Address.Floor.Array[model.Index2].Name)
+			var error = validationContext.Validate(person, p => p.Array[model.Index1].Address.Floor.Array[model.Index2].Name)
 				.Is(value => value == "room")
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -378,7 +376,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKeyIndexString()
 		{
-			var error = validationContext.When("e", p => p[0])
+			var error = validationContext.Validate("e", p => p[0])
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -393,7 +391,7 @@ namespace Phema.Validation.Tests
 				Name = "Sarah"
 			};
 			
-			var error = validationContext.When(model, m => m.Name[0])
+			var error = validationContext.Validate(model, m => m.Name[0])
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			

@@ -1,9 +1,17 @@
-﻿namespace Phema.Validation
+﻿using System;
+
+namespace Phema.Validation
 {
 	internal sealed class ValidationError : IValidationError
 	{
 		public ValidationError(string key, string message, ValidationSeverity severity)
 		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			
+			if (message == null)
+				throw new ArgumentNullException(nameof(message));
+			
 			Key = key;
 			Message = message;
 			Severity = severity;

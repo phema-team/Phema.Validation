@@ -9,6 +9,9 @@ namespace Phema.Validation
 		
 		private ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression)
 		{
+			if (expression == null)
+				throw new ArgumentNullException(nameof(expression));
+			
 			this.expression = expression;
 			Key = FormatKeyFromExpression(expression);
 		}
@@ -22,9 +25,6 @@ namespace Phema.Validation
 
 		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression)
 		{
-			if (expression == null)
-				throw new ArgumentNullException(nameof(expression));
-			
 			var visitor = new ExpressionValidationKeyVisitor();
 
 			visitor.Visit(expression);

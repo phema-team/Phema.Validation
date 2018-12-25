@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Phema.Validation
 {
@@ -6,6 +7,9 @@ namespace Phema.Validation
 	{
 		public ValidationConditionException(IValidationError error)
 		{
+			if (error == null)
+				throw new ArgumentNullException(nameof(error));
+			
 			Error = error;
 		}
 

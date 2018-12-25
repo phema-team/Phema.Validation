@@ -21,6 +21,9 @@ namespace Phema.Validation
 		
 		public IValidationCondition<TValue> Validate<TValue>(IValidationKey key, TValue value)
 		{
+			if (key == null)
+				throw new ArgumentNullException(nameof(key));
+			
 			return new ValidationCondition<TValue>(key, value, errors, provider);
 		}
 

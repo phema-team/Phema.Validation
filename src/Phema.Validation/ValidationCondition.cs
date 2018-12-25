@@ -27,12 +27,18 @@ namespace Phema.Validation
 
 		public IValidationCondition<TValue> Condition(Func<TValue, bool, bool> condition)
 		{
+			if (condition == null)
+				throw new ArgumentNullException(nameof(condition));
+			
 			conditions.Add(condition);
 			return this;
 		}
 
 		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
 		{
+			if (selector == null)
+				throw new ArgumentNullException(nameof(selector));
+			
 			if (conditions.Count == 0)
 			{
 				return AddError(selector, arguments, severity);

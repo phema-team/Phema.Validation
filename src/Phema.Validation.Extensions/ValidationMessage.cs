@@ -6,11 +6,17 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<object[], string> templateProvider)
 		{
+			if (templateProvider == null)
+				throw new ArgumentNullException(nameof(templateProvider));
+			
 			TemplateProvider = templateProvider;
 		}
 		
 		public ValidationMessage(Func<string> templateProvider)
 		{
+			if (templateProvider == null)
+				throw new ArgumentNullException(nameof(templateProvider));
+			
 			TemplateProvider = arguments => templateProvider();
 		}
 		
@@ -26,6 +32,9 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument, string> templateProvider)
 		{
+			if (templateProvider == null)
+				throw new ArgumentNullException(nameof(templateProvider));
+			
 			TemplateProvider = templateProvider;
 		}
 
@@ -48,6 +57,9 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument1, TArgument2, string> templateProvider)
 		{
+			if (templateProvider == null)
+				throw new ArgumentNullException(nameof(templateProvider));
+			
 			TemplateProvider = templateProvider;
 		}
 
@@ -71,6 +83,9 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument1, TArgument2, TArgument3, string> templateProvider)
 		{
+			if (templateProvider == null)
+				throw new ArgumentNullException(nameof(templateProvider));
+			
 			TemplateProvider = templateProvider;
 		}
 

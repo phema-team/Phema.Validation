@@ -5,7 +5,7 @@ namespace Phema.Validation
 {
 	public static class ValidationContextExtensions
 	{
-		public static IValidationCondition<TValue> When<TModel, TValue>(
+		public static IValidationCondition<TValue> Validate<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
@@ -16,7 +16,7 @@ namespace Phema.Validation
 			return validationContext.Validate(key, value);
 		}
 		
-		public static IValidationCondition<TValue> When<TModel, TValue>(
+		public static IValidationCondition<TValue> Validate<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression,
