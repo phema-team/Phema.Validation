@@ -5,20 +5,27 @@ namespace Phema.Validation
 {
 	internal sealed class ValidationExceptionFilter : IExceptionFilter
 	{
+		private readonly IValidationOutputFormatter formatter;
+
+		public ValidationExceptionFilter(IValidationOutputFormatter formatter)
+		{
+			this.formatter = formatter;
+		}
+		
 		public void OnException(ExceptionContext context)
 		{
 			switch (context.Exception)
 			{
 				case ValidationContextException exception:
-
-					var errors = exception.Errors
-						.Where(error => error.Severity >= exception.Severity);
-					
-					context.Result = new ValidationResult(errors);
+					context.Result = new ValidationResult(
+						formatter.FormatOutput(
+							exception.Errors
+								.Where(error => error.Severity >= exception.Severity)));
 					break;
 				
 				case ValidationConditionException exception:
-					context.Result = new ValidationResult(exception.Error);
+					context.Result = new ValidationResult(
+						formatter.FormatOutput(new[] { exception.Error }));
 					break;
 			}
 		}

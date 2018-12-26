@@ -9,11 +9,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultMultipleErrors()
 		{
-			var result = new ValidationResult(new List<IValidationError>
+			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
 			{
 				new ValidationError("key1", "template1", ValidationSeverity.Debug),
 				new ValidationError("key2", "template2", ValidationSeverity.Debug),
 			});
+			
+			var result = new ValidationResult(errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 
@@ -36,11 +38,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultMultipleErrorsSameKey()
 		{
-			var result = new ValidationResult(new List<IValidationError>
+			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
 			{
 				new ValidationError("key", "template1", ValidationSeverity.Debug),
 				new ValidationError("key", "template2", ValidationSeverity.Debug),
 			});
+			
+			var result = new ValidationResult(errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 
@@ -64,12 +68,14 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultCombinationOfMultipleErrorsSameKeyAndSingleError()
 		{
-			var result = new ValidationResult(new List<IValidationError>
+			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
 			{
 				new ValidationError("key1", "template1", ValidationSeverity.Debug),
 				new ValidationError("key1", "template2", ValidationSeverity.Debug),
 				new ValidationError("key2", "template1", ValidationSeverity.Debug),
 			});
+			
+			var result = new ValidationResult(errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 

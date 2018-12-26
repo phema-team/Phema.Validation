@@ -26,6 +26,8 @@ namespace Phema.Validation
 						options.Filters.Add<ValidationFilter>();
 					}
 				});
+
+				services.AddSingleton<IValidationOutputFormatter, KeyValidationOutputFormatter>();
 			}
 			
 			configuration(new ValidationConfiguration(services));

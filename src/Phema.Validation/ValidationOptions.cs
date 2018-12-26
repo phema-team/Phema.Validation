@@ -9,9 +9,12 @@ namespace Phema.Validation
 		{
 			Severity = ValidationSeverity.Error;
 			Validations = new Dictionary<Type, Action<IServiceProvider, object>>();
+			Separator = ":";
 		}
 		
 		public ValidationSeverity Severity { get; set; }
+
+		public string Separator { get; set; }
 		internal IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
 	}
 }

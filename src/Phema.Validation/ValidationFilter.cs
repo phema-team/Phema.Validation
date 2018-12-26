@@ -11,7 +11,8 @@ namespace Phema.Validation
 		{
 			var provider = context.HttpContext.RequestServices;
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-
+			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
+			
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			
 			foreach (var model in context.ActionArguments.Values)
@@ -24,17 +25,20 @@ namespace Phema.Validation
 
 			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
 			{
-				context.Result = new ValidationResult(validationContext.Errors);
+				context.Result = new ValidationResult(formatter.FormatOutput(validationContext.Errors));
 			}
 		}
 
 		public void OnActionExecuted(ActionExecutedContext context)
 		{
-			var validationContext = context.HttpContext.RequestServices.GetRequiredService<IValidationContext>();
+			var provider = context.HttpContext.RequestServices;
+			
+			var validationContext = provider.GetRequiredService<IValidationContext>();
+			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
 
 			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
 			{
-				context.Result = new ValidationResult(validationContext.Errors);
+				context.Result = new ValidationResult(formatter.FormatOutput(validationContext.Errors));
 			}
 		}
 	}
