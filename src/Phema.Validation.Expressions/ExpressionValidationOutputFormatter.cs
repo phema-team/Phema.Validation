@@ -16,104 +16,107 @@ namespace Phema.Validation
 		{
 			var result = new Dictionary<string, object>();
 
-			foreach (var error in errors)
+			foreach (var (key, message) in errors)
 			{
-				Fill(result, error);
+				var parts = key.Split(options.Separator);
+				
+				Fill(null, result, parts, 0, message);
 			}
+			
 
 			return result;
 		}
-		
-		private void Fill(Dictionary<string, object> current, IValidationError error)
+
+		private void Fill(Dictionary<string, object> root, object current, string[] parts, int index, string message)
 		{
-			var parts = error.Key.Split(options.Separator);
-			var message = error.Message;
-			
-			for (int i = 0; i < parts.Length; i++)
+			if (index == parts.Length)
+				return;
+
+			switch (current)
 			{
-				var part = parts[i];
+				case Dictionary<string, object> node:
+					FillNode(node, parts, index, message);
+					break;
 
-				if (current.TryGetValue(part, out var value))
+				case object @object:
+					FillObject(@object, root, parts, index, message);
+					break;
+			}
+		}
+
+		private void FillNode(Dictionary<string, object> node, string[] parts, int index, string message)
+		{
+			var key = parts[index];
+			var isLast = index + 1 == parts.Length;
+			
+			if (node.TryGetValue(key, out var next))
+			{
+				if (isLast)
 				{
-					if (value is List<string> l)
+					switch (next)
 					{
-						l.Add(message);
-						break;
-					}
-			
-					if (value is Dictionary<string, object> nxt)
-					{
-						if (i + 1 == parts.Length)
-						{
-							if (nxt.TryGetValue(part, out var vv))
-							{
-								if (vv is string ss)
-								{
-									nxt[part] = new List<string>
-									{
-										ss,
-										message
-									};
-								}
-							}
-							else
-							{
-								if (nxt.TryGetValue("", out var vvv))
-								{
-									if (vvv is List<string> lll)
-									{
-										lll.Add(message);
-										break;
-									}
-							
-									if(vvv is string sss)
-									{
-										nxt[""] = new List<string>
-										{
-											sss,
-											message
-										};
-									}
-								}
-								else
-								{
-									nxt[""] = message;
-								}
-							}
-					
+						case string @string:
+							node[key] = new List<string> { @string, message };
 							break;
-						}
-
-						current = nxt;
-						continue;
-					}
-			
-					if (value is string s)
-					{
-						current[part] = new List<string>
-						{
-							s,
-							message
-						};
-				
-						break;
+								
+						case List<string> messages:
+							messages.Add(message);
+							break;
+								
+						case Dictionary<string, object> dictionary:
+							FillGlobal(dictionary, message);
+							break;
 					}
 				}
 				else
 				{
-					if (i + 1 == parts.Length)
-					{
-						current[part] = message;
-						break;
-					}
-			
-					var next = new Dictionary<string, object>();
-
-					current.Add(part, next);
-
-					current = next;
+					Fill(node, next, parts, index + 1, message);
 				}
 			}
+			else
+			{
+				if (isLast)
+				{
+					node[key] = message;
+				}
+				else
+				{
+					Fill(node, node[key] = new Dictionary<string, object>(), parts, index + 1, message);
+				}
+			}
+		}
+
+		private void FillGlobal(Dictionary<string, object> node, string message)
+		{
+			if (node.TryGetValue(options.Global, out var value))
+			{
+				switch (value)
+				{
+					case string @string:
+						node[options.Global] = new List<string> { @string, message };
+						break;
+
+					case List<string> messages:
+						messages.Add(message);
+						break;
+				}
+			}
+			else
+			{
+				node[options.Global] = message;
+			}
+		}
+
+		private void FillObject(object @object, Dictionary<string, object> root, string[] parts, int index, string message)
+		{
+			var prevKey = parts[index - 1];
+					
+			root[prevKey] = new Dictionary<string, object>
+			{
+				[options.Global] = @object
+			};
+					
+			Fill(root, root[prevKey], parts, index, message);
 		}
 	}
 }
