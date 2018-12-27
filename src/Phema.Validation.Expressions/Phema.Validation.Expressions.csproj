@@ -11,4 +11,10 @@
 	  <ProjectReference Include="..\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="Microsoft.Extensions.Options, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+	    <HintPath>..\..\..\..\..\..\..\usr\share\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 </Project>

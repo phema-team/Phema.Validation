@@ -15,6 +15,6 @@ namespace Phema.Validation
 		public ValidationSeverity Severity { get; set; }
 
 		public string Separator { get; set; }
-		internal IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
+		public IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
 	}
 }
