@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Phema.Validation
 {
 	public static class ValidationContextEnsureIsValidExtensions
@@ -6,7 +8,11 @@ namespace Phema.Validation
 		{
 			if (!validationContext.IsValid(validationKey))
 			{
-				throw new ValidationContextException(validationContext.Errors, validationContext.Severity);
+				var errors = validationContext.Errors
+					.Where(error => error.Severity >= validationContext.Severity)
+					.ToList();
+
+				throw new ValidationContextException(errors, validationContext.Severity);
 			}
 		}
 
