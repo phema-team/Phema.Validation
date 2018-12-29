@@ -45,11 +45,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SimpleNamedMessage()
 		{
-			validationContext.Validate("messages")
+			validationContext.When("messages")
 				.AddError(() => new ValidationMessage(() => "message1"));
-			validationContext.Validate("messages")
+			validationContext.When("messages")
 				.AddError(() => new ValidationMessage(() => "message2"));
-			validationContext.Validate("messages")
+			validationContext.When("messages")
 				.AddError(() => new ValidationMessage(() => "message3"));
 			
 			var options = Options.Create(new ValidationOptions());
@@ -73,13 +73,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SimpleNamedMessagesInSameTier()
 		{
-			validationContext.Validate("message1")
+			validationContext.When("message1")
 				.AddError(() => new ValidationMessage(() => "message1"));
-			validationContext.Validate("message2")
+			validationContext.When("message2")
 				.AddError(() => new ValidationMessage(() => "message2"));
-			validationContext.Validate("message3")
+			validationContext.When("message3")
 				.AddError(() => new ValidationMessage(() => "message3"));
-			validationContext.Validate("message3")
+			validationContext.When("message3")
 				.AddError(() => new ValidationMessage(() => "message4"));
 			
 			var options = Options.Create(new ValidationOptions());
@@ -122,13 +122,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MessageAndNestedMessage_GlobalPrefix()
 		{
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
 			
 			var options = Options.Create(new ValidationOptions());
@@ -163,11 +163,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SingleMessageAndNestedMessage_GlobalPrefix()
 		{
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
 
 			var options = Options.Create(new ValidationOptions());
@@ -200,13 +200,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SingleMessageAndNestedMessage_GlobalPrefix_Doubled()
 		{
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
-			validationContext.Validate("address:road")
+			validationContext.When("address:road")
 				.AddError(() => new ValidationMessage(() => "Road is invalid1"));
 			
 			var options = Options.Create(new ValidationOptions());
@@ -247,17 +247,17 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Multiple_MessageAndNestedMessage_GlobalPrefix_Doubled()
 		{
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
-			validationContext.Validate("address:road")
+			validationContext.When("address:road")
 				.AddError(() => new ValidationMessage(() => "Road is invalid1"));
-			validationContext.Validate("address:road")
+			validationContext.When("address:road")
 				.AddError(() => new ValidationMessage(() => "Road is invalid2"));
 
 			var options = Options.Create(new ValidationOptions());
@@ -302,13 +302,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MessageAndNestedMessage_GlobalPrefix_Reversed()
 		{
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
 			
 			var options = Options.Create(new ValidationOptions());
@@ -343,19 +343,19 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MultipleNested_Global_Simple()
 		{
-			validationContext.Validate()
+			validationContext.When()
 				.AddError(() => new ValidationMessage(() => "Global is invalid"));
-			validationContext.Validate("nested")
+			validationContext.When("nested")
 				.AddError(() => new ValidationMessage(() => "Nested is invalid"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
-			validationContext.Validate("address:street")
+			validationContext.When("address:street")
 				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
-			validationContext.Validate("address")
+			validationContext.When("address")
 				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
-			validationContext.Validate("address:city")
+			validationContext.When("address:city")
 				.AddError(() => new ValidationMessage(() => "City is invalid"));
 			
 			var options = Options.Create(new ValidationOptions());

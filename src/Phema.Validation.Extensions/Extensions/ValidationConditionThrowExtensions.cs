@@ -9,6 +9,8 @@ namespace Phema.Validation
 			Func<IValidationMessage> selector,
 			object[] arguments = null)
 		{
+			arguments = arguments ?? Array.Empty<object>();
+			
 			var error = builder.Add(selector, arguments, ValidationSeverity.Fatal);
 
 			if (error != null)

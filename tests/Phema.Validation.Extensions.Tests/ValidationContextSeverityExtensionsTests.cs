@@ -10,7 +10,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddWarning(() => new ValidationMessage(() => "message"));
 			
@@ -24,7 +24,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddWarning(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
@@ -38,7 +38,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddWarning(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
@@ -52,7 +52,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddWarning(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
 			
@@ -66,7 +66,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Information);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddInformation(() => new ValidationMessage(() => "message"));
 			
@@ -80,7 +80,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Information);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddInformation(() => new ValidationMessage<int>(one=> $"message: {one}"), 11);
 			
@@ -94,7 +94,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Information);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddInformation(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
@@ -108,7 +108,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Information);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddInformation(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
 			
@@ -122,7 +122,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddDebug(() => new ValidationMessage(() => "message"));
 			
@@ -136,7 +136,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddDebug(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
@@ -150,7 +150,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddDebug(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
@@ -164,7 +164,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddDebug(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
 			
@@ -178,7 +178,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Trace);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage(() => "message"));
 			
@@ -192,7 +192,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Trace);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage<int>(one=> $"message: {one}"), 11);
 			
@@ -206,7 +206,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Trace);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
@@ -220,7 +220,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Trace);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
 			
@@ -234,7 +234,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage(() => "message"));
 			
@@ -249,11 +249,11 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(ValidationSeverity.Debug);
 
-			validationContext.Validate("key1", 12)
+			validationContext.When("key1", 12)
 				.Is(value => value == 12)
 				.AddTrace(() => new ValidationMessage(() => "message"));
 			
-			validationContext.Validate("key2", 12)
+			validationContext.When("key2", 12)
 				.Is(value => value == 12)
 				.AddInformation(() => new ValidationMessage(() => "message"));
 			

@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EmptyWhen()
 		{
-			var error = validationContext.Validate()
+			var error = validationContext.When()
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("", error.Key);
@@ -30,7 +30,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfAnyErrorIsValidIsFalse()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 10)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -41,7 +41,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfNoErrorIsValidIsTrue()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -60,7 +60,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsInvalidByKey()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 10)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -70,7 +70,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsValidByKey()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -80,7 +80,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureThrowsIfAnyError()
 		{
-			validationContext.Validate("key", 10)
+			validationContext.When("key", 10)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -96,11 +96,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureThrowsMultipleError()
 		{
-			validationContext.Validate("age1", 10)
+			validationContext.When("age1", 10)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template1"));
 			
-			validationContext.Validate("age2", 12)
+			validationContext.When("age2", 12)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template2"));
 
@@ -123,11 +123,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureThrowsOnlySevereErrors()
 		{
-			validationContext.Validate("age1", 10)
+			validationContext.When("age1", 10)
 				.Is(value => true)
 				.AddWarning(() => new ValidationMessage(() => "template1"));
 			
-			validationContext.Validate("age2", 12)
+			validationContext.When("age2", 12)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template2"));
 
@@ -143,7 +143,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureIsValidNotThrowsIfValid()
 		{
-			validationContext.Validate("key", 10)
+			validationContext.When("key", 10)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -153,7 +153,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureIsValidNotThrowsIfValidByKey()
 		{
-			validationContext.Validate("key1", 10)
+			validationContext.When("key1", 10)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -163,7 +163,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EnsureIsValidThrowsIfValidByKey()
 		{
-			validationContext.Validate("key1", 10)
+			validationContext.When("key1", 10)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 

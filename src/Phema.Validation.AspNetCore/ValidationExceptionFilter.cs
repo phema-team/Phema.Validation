@@ -12,24 +12,24 @@ namespace Phema.Validation
 		{
 			if (formatter == null)
 				throw new ArgumentNullException(nameof(formatter));
-			
+
 			this.formatter = formatter;
 		}
-		
+
 		public void OnException(ExceptionContext context)
 		{
 			switch (context.Exception)
 			{
 				case ValidationContextException exception:
-					context.Result = new ValidationResult(
-						formatter.FormatOutput(
-							exception.Errors
-								.Where(error => error.Severity >= exception.Severity)));
+					var errors = exception.Errors
+						.Where(error => error.Severity >= exception.Severity)
+						.ToList();
+
+					context.Result = new ValidationResult(formatter, errors);
 					break;
-				
+
 				case ValidationConditionException exception:
-					context.Result = new ValidationResult(
-						formatter.FormatOutput(new[] { exception.Error }));
+					context.Result = new ValidationResult(formatter, new[] {exception.Error});
 					break;
 			}
 		}

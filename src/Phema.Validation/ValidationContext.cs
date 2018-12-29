@@ -19,7 +19,7 @@ namespace Phema.Validation
 		public ValidationSeverity Severity { get; }
 		public IReadOnlyCollection<IValidationError> Errors => errors;
 		
-		public IValidationCondition<TValue> Validate<TValue>(IValidationKey key, TValue value)
+		public IValidationCondition<TValue> When<TValue>(IValidationKey key, TValue value)
 		{
 			if (key == null)
 				throw new ArgumentNullException(nameof(key));
@@ -29,7 +29,7 @@ namespace Phema.Validation
 
 		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
 		{
-			return Validate((ValidationKey)string.Empty, (object)null).Add(selector, arguments, severity);
+			return this.When(string.Empty).Add(selector, arguments, severity);
 		}
 		
 		object IServiceProvider.GetService(Type serviceType)

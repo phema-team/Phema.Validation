@@ -31,7 +31,7 @@ namespace Phema.Validation
 		{
 			services.TryAddScoped<TValidation>();
 
-			services.Configure<ValidationOptions>(options =>
+			services.Configure<ValidationComponentOptions>(options =>
 			{
 				options.Validations.TryAdd(
 					typeof(TModel),

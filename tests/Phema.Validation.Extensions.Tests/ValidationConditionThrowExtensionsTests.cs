@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 		public void Throw()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("age", 10)
+				validationContext.When("age", 10)
 					.Is(value => value == 10)
 					.Throw(() => new ValidationMessage(() => "template")));
 
@@ -31,7 +31,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Throw_Valid()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage(() => "template"));
 			
@@ -42,7 +42,7 @@ namespace Phema.Validation.Tests
 		public void Throw_OneParameter()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("age", 10)
+				validationContext.When("age", 10)
 					.Is(value => value == 10)
 					.Throw(() => new ValidationMessage<int>(one => $"template: {one}"), 11));
 
@@ -54,7 +54,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Throw_OneParameter_Valid()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage<int>(one => $"template: {one}"), 11);
 			
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		public void Throw_TwoParameters()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("age", 10)
+				validationContext.When("age", 10)
 					.Is(value => value == 10)
 					.Throw(() => new ValidationMessage<int, int>((one, two) => $"template: {one},{two}"), 11, 22));
 
@@ -77,7 +77,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Throw_TwoParameters_Valid()
 		{
-			validationContext.Validate("age", 10)
+			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage<int, int>((one, two) => $"template: {one},{two}"), 11, 22);
 			
@@ -88,7 +88,7 @@ namespace Phema.Validation.Tests
 		public void ThrowAddsSameErrorAsContext()
 		{
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("age", 10)
+				validationContext.When("age", 10)
 					.Is(value => value == 10)
 					.Throw(() => new ValidationMessage(() => "template")));
 

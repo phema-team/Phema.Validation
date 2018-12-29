@@ -21,7 +21,7 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new TestModel();
 
-			validationContext.Validate(stab, s => s.Name)
+			validationContext.When(stab, s => s.Name)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -36,7 +36,7 @@ namespace Phema.Validation.Tests
 		{
 			var stab = new TestModel();
 
-			validationContext.Validate(stab, s => s.Name, s => s.Name)
+			validationContext.When(stab, s => s.Name, s => s.Name)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -51,7 +51,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -63,7 +63,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template"));
 
@@ -87,7 +87,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -99,7 +99,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
@@ -111,11 +111,11 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template1"));
 			
-			validationContext.Validate(model, s => s.Name)
+			validationContext.When(model, s => s.Name)
 				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template2"));
 

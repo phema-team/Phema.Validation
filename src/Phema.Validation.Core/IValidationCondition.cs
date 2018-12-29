@@ -9,6 +9,6 @@ namespace Phema.Validation
 	
 	public interface IValidationCondition<out TValue> : IValidationCondition
 	{
-		IValidationCondition<TValue> Condition(Func<TValue, bool, bool> condition);
+		IValidationCondition<TValue> Is(Func<TValue, bool> condition);
 	}
 }

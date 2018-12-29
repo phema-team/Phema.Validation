@@ -20,14 +20,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultMultipleErrors()
 		{
-			validationContext.Validate("key1")
+			validationContext.When("key1")
 				.AddError(() => new ValidationMessage(() => "template1"));
-			validationContext.Validate("key2")
+			validationContext.When("key2")
 				.AddError(() => new ValidationMessage(() => "template2"));
 			
-			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
-			
-			var result = new ValidationResult(errors);
+			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 
@@ -50,14 +48,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultMultipleErrorsSameKey()
 		{
-			validationContext.Validate("key")
+			validationContext.When("key")
 				.AddError(() => new ValidationMessage(() => "template1"));
-			validationContext.Validate("key")
+			validationContext.When("key")
 				.AddError(() => new ValidationMessage(() => "template2"));
 			
-			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
-			
-			var result = new ValidationResult(errors);
+			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 
@@ -81,16 +77,14 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultCombinationOfMultipleErrorsSameKeyAndSingleError()
 		{
-			validationContext.Validate("key1")
+			validationContext.When("key1")
 				.AddError(() => new ValidationMessage(() => "template1"));
-			validationContext.Validate("key1")
+			validationContext.When("key1")
 				.AddError(() => new ValidationMessage(() => "template2"));
-			validationContext.Validate("key2")
+			validationContext.When("key2")
 				.AddError(() => new ValidationMessage(() => "template1"));
 			
-			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
-			
-			var result = new ValidationResult(errors);
+			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
 

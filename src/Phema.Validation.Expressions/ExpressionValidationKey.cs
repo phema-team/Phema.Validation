@@ -6,14 +6,14 @@ namespace Phema.Validation
 	internal sealed class ExpressionValidationKey<TModel, TProperty> : IValidationKey
 	{
 		private readonly Expression<Func<TModel, TProperty>> expression;
-		
-		private ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression)
+
+		internal ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression, string separator)
 		{
 			if (expression == null)
 				throw new ArgumentNullException(nameof(expression));
 			
 			this.expression = expression;
-			Key = FormatKeyFromExpression(expression);
+			Key = FormatKeyFromExpression(expression, separator);
 		}
 		
 		public string Key { get; }
@@ -23,19 +23,13 @@ namespace Phema.Validation
 			return ExpressionCache.GetFromExpression(expression)(model);
 		}
 
-		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression)
+		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression, string separator)
 		{
-			var visitor = new ExpressionValidationKeyVisitor();
+			var visitor = new ExpressionValidationKeyVisitor(separator);
 
 			visitor.Visit(expression);
 
 			return visitor.Result;
-		}
-		
-		public static implicit operator ExpressionValidationKey<TModel, TProperty>(
-			Expression<Func<TModel, TProperty>> expression)
-		{
-			return new ExpressionValidationKey<TModel, TProperty>(expression);
 		}
 	}
 }

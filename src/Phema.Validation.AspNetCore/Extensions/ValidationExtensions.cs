@@ -11,7 +11,7 @@ namespace Phema.Validation
 		public static IServiceCollection AddPhemaValidation(this IServiceCollection services, Action<IValidationConfiguration> configuration)
 		{
 			services.AddPhemaValidation();
-			
+
 			services.Configure<MvcOptions>(options =>
 			{
 				if (!options.Filters.Any(x => x is ValidationExceptionFilter))

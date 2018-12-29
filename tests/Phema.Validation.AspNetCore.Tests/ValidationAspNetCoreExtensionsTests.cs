@@ -11,12 +11,12 @@ namespace Phema.Validation.Tests
 	{
 		public void Validate(IValidationContext validationContext, TestModel model)
 		{
-			validationContext.Validate(nameof(model.Name), model.Name)
-				.Condition((value, added) => value == null)
+			validationContext.When(nameof(model.Name), model.Name)
+				.Is((value) => value == null)
 				.AddError<TestValidationComponent>(c => c.NameIsNull);
 
-			validationContext.Validate(nameof(model.Age), model.Age)
-				.Condition((value, added) => value > 0 && value < 17)
+			validationContext.When(nameof(model.Age), model.Age)
+				.Is((value) => value > 0 && value < 17)
 				.AddError<TestValidationComponent>(c => c.IsUnderage);
 		}
 	}
@@ -63,7 +63,7 @@ namespace Phema.Validation.Tests
 
 			var provider = services.BuildServiceProvider();
 
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
+			var options = provider.GetRequiredService<IOptions<ValidationComponentOptions>>().Value;
 
 			var (type, _) = Assert.Single(options.Validations);
 

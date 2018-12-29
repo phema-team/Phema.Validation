@@ -83,7 +83,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ErrorSeverity()
 		{
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddError(() => new ValidationMessage(() => "message"));
 			
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ErrorSeverity_OneParameter()
 		{
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddError(() => new ValidationMessage<int>(one => $"message: {one}"), 11);
 			
@@ -112,7 +112,7 @@ namespace Phema.Validation.Tests
 		public void Throws_OneParameters()
 		{
 			Assert.Throws<ArgumentNullException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int>(one => $"message: {one}"), null, ValidationSeverity.Error));
 		}
@@ -121,7 +121,7 @@ namespace Phema.Validation.Tests
 		public void Throws_OneParameters_ButZero()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int>(one => $"message: {one}"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
@@ -129,7 +129,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ErrorSeverity_TwoParameter()
 		{
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddError(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22);
 			
@@ -144,7 +144,7 @@ namespace Phema.Validation.Tests
 		public void Throws_TwoParameters()
 		{
 			Assert.Throws<ArgumentNullException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), null, ValidationSeverity.Error));
 		}
@@ -153,7 +153,7 @@ namespace Phema.Validation.Tests
 		public void Throws_TwoParameters_ButZero()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
@@ -161,7 +161,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ErrorSeverity_ThreeParameter()
 		{
-			var error = validationContext.Validate("key", 12)
+			var error = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.AddError(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33);
 			
@@ -176,7 +176,7 @@ namespace Phema.Validation.Tests
 		public void Throws_ThreeParameters()
 		{
 			Assert.Throws<ArgumentNullException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), null, ValidationSeverity.Error));
 		}
@@ -185,7 +185,7 @@ namespace Phema.Validation.Tests
 		public void Throws_ThreeParameters_ButZero()
 		{
 			Assert.Throws<ArgumentException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Add(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
@@ -193,7 +193,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void FatalSeverity()
 		{
-			var (key, message, severity) = validationContext.Validate("key", 12)
+			var (key, message, severity) = validationContext.When("key", 12)
 				.Is(value => value == 12)
 				.Add(() => new ValidationMessage(() => "message"), ValidationSeverity.Fatal);
 			
@@ -206,7 +206,7 @@ namespace Phema.Validation.Tests
 		public void FatalSeverity_OneParameter()
 		{
 			Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Throw(() => new ValidationMessage<int>(one => $"message: {one}"), 11));
 			
@@ -221,7 +221,7 @@ namespace Phema.Validation.Tests
 		public void FatalSeverity_TwoParameters()
 		{
 			Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Throw(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), 11, 22));
 			
@@ -236,7 +236,7 @@ namespace Phema.Validation.Tests
 		public void FatalSeverity_ThreeParameters()
 		{
 			Assert.Throws<ValidationConditionException>(() =>
-				validationContext.Validate("key", 12)
+				validationContext.When("key", 12)
 					.Is(value => value == 12)
 					.Throw(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), 11, 22, 33));
 			

@@ -31,6 +31,13 @@ namespace Phema.Validation
 		}
 		
 		[Fact]
+		public void Throws_ValidationMessageWithNullTemplateProvider()
+		{
+			Assert.Throws<ArgumentNullException>(() => new ValidationMessage((Func<string>)null));
+			Assert.Throws<ArgumentNullException>(() => new ValidationMessage((Func<object[], string>)null));
+		}
+		
+		[Fact]
 		public void ValidationMessageWithParameter()
 		{
 			var message = new ValidationMessage(args => $"{args[0]}");
@@ -59,7 +66,7 @@ namespace Phema.Validation
 		{
 			var validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
 
-			var error = validationContext.Validate((ValidationKey)"key", "value")
+			var error = validationContext.When((ValidationKey)"key", "value")
 				.Is(value => true)
 				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]{10}, ValidationSeverity.Error);
 

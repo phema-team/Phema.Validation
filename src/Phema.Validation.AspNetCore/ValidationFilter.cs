@@ -10,7 +10,7 @@ namespace Phema.Validation
 		public void OnActionExecuting(ActionExecutingContext context)
 		{
 			var provider = context.HttpContext.RequestServices;
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
+			var options = provider.GetRequiredService<IOptions<ValidationComponentOptions>>().Value;
 			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
 			
 			var validationContext = provider.GetRequiredService<IValidationContext>();
@@ -23,9 +23,13 @@ namespace Phema.Validation
 				}
 			}
 
-			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
+			var errors = validationContext.Errors
+				.Where(error => error.Severity >= validationContext.Severity)
+				.ToList();
+
+			if (validationContext.Errors.Any())
 			{
-				context.Result = new ValidationResult(formatter.FormatOutput(validationContext.Errors));
+				context.Result = new ValidationResult(formatter, errors);
 			}
 		}
 
@@ -36,9 +40,13 @@ namespace Phema.Validation
 			var validationContext = provider.GetRequiredService<IValidationContext>();
 			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
 
-			if (validationContext.Errors.Any(error => error.Severity >= validationContext.Severity))
+			var errors = validationContext.Errors
+				.Where(error => error.Severity >= validationContext.Severity)
+				.ToList();
+
+			if (validationContext.Errors.Any())
 			{
-				context.Result = new ValidationResult(formatter.FormatOutput(validationContext.Errors));
+				context.Result = new ValidationResult(formatter, errors);
 			}
 		}
 	}

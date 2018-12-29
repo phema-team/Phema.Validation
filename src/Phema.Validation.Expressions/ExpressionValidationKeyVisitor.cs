@@ -8,9 +8,15 @@ namespace Phema.Validation
 {
 	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
+		private readonly string separator;
 		private readonly IList<string> keys = new List<string>();
-		
-		public string Result => string.Join(":", keys.Reverse());
+
+		public ExpressionValidationKeyVisitor(string separator)
+		{
+			this.separator = separator;
+		}
+
+		public string Result => string.Join(separator, keys.Reverse());
 		
 		protected override Expression VisitMember(MemberExpression node)
 		{

@@ -10,7 +10,7 @@ namespace Phema.Validation
 		private readonly TValue value;
 		private readonly List<IValidationError> errors;
 		private readonly IServiceProvider provider;
-		private readonly IList<Func<TValue, bool, bool>> conditions;
+		private readonly IList<Func<TValue,  bool>> conditions;
 
 		public ValidationCondition(
 			IValidationKey key, 
@@ -22,10 +22,10 @@ namespace Phema.Validation
 			this.value = value;
 			this.errors = errors;
 			this.provider = provider;
-			conditions = new List<Func<TValue, bool, bool>>();
+			conditions = new List<Func<TValue, bool>>();
 		}
 
-		public IValidationCondition<TValue> Condition(Func<TValue, bool, bool> condition)
+		public IValidationCondition<TValue> Is(Func<TValue, bool> condition)
 		{
 			if (condition == null)
 				throw new ArgumentNullException(nameof(condition));
@@ -38,24 +38,23 @@ namespace Phema.Validation
 		{
 			if (selector == null)
 				throw new ArgumentNullException(nameof(selector));
-			
-			if (conditions.Count == 0)
-			{
-				return AddError(selector, arguments, severity);
-			}
 
-			var sameKeyErrorAlreadyAdded = errors.Any(error => error.Key == key.Key);
-
-			return conditions.Any(condition => condition(value, sameKeyErrorAlreadyAdded)) 
+			return conditions.All(condition => condition(value)) 
 				? AddError(selector, arguments, severity) 
 				: null;
 		}
 		
 		private IValidationError AddError(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
 		{
+			if(selector == null)
+				throw new ArgumentNullException(nameof(selector));
+			
 			var validationMessage = selector();
 
-			var message = validationMessage?.GetMessage(arguments);
+			if (validationMessage == null)
+				throw new ArgumentNullException(nameof(validationMessage));
+			
+			var message = validationMessage.GetMessage(arguments);
 			
 			var error = new ValidationError(key.Key, message, severity);
 			errors.Add(error);
