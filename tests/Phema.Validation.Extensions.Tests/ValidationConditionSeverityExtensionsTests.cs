@@ -1,8 +1,11 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
+	
+	
 	public class ValidationConditionSeverityExtensionsTests
 	{
 		private readonly IValidationContext validationContext;
@@ -10,9 +13,71 @@ namespace Phema.Validation.Tests
 		public ValidationConditionSeverityExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
+		}
+		
+		
+		[Fact]
+		public void EmptyAddDebugWorks()
+		{
+			var error = validationContext.AddDebug(() => new ValidationMessage(() => "template"));
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("template", error.Message);
+			Assert.Equal(ValidationSeverity.Debug, error.Severity);
+		}
+		
+		[Fact]
+		public void EmptyAddErrorWorks()
+		{
+			var error = validationContext.AddError(() => new ValidationMessage(() => "template"));
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("template", error.Message);
+			Assert.Equal(ValidationSeverity.Error, error.Severity);
+		}
+		
+		[Fact]
+		public void EmptyAddTraceWorks()
+		{
+			var error = validationContext.AddTrace(() => new ValidationMessage(() => "template"));
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("template", error.Message);
+			Assert.Equal(ValidationSeverity.Trace, error.Severity);
+		}
+		
+		[Fact]
+		public void EmptyAddInformationWorks()
+		{
+			var error = validationContext.AddInformation(() => new ValidationMessage(() => "template"));
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("template", error.Message);
+			Assert.Equal(ValidationSeverity.Information, error.Severity);
+		}
+		
+		[Fact]
+		public void EmptyAddWarningWorks()
+		{
+			var error = validationContext.AddWarning(() => new ValidationMessage(() => "template"));
+
+			Assert.Equal("", error.Key);
+			Assert.Equal("template", error.Message);
+			Assert.Equal(ValidationSeverity.Warning, error.Severity);
+		}
+		
+		[Fact]
+		public void EmptyThrowsWorks()
+		{
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.Throw(() => new ValidationMessage(() => "template")));
+
+			Assert.Equal("", exception.Error.Key);
+			Assert.Equal("template", exception.Error.Message);
+			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
 		}
 		
 		[Fact]
@@ -44,6 +109,24 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void Throws_OneParameters()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int>(one => $"message: {one}"), null, ValidationSeverity.Error));
+		}
+		
+		[Fact]
+		public void Throws_OneParameters_ButZero()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int>(one => $"message: {one}"), Array.Empty<object>(), ValidationSeverity.Error));
+		}
+		
+		[Fact]
 		public void ErrorSeverity_TwoParameter()
 		{
 			var error = validationContext.Validate("key", 12)
@@ -56,7 +139,25 @@ namespace Phema.Validation.Tests
 			Assert.Equal("message: 11,22", error.Message);
 			Assert.Equal(ValidationSeverity.Error, error.Severity);
 		}
+
+		[Fact]
+		public void Throws_TwoParameters()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), null, ValidationSeverity.Error));
+		}
 		
+		[Fact]
+		public void Throws_TwoParameters_ButZero()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int, int>((one, two) => $"message: {one},{two}"), Array.Empty<object>(), ValidationSeverity.Error));
+		}
+
 		[Fact]
 		public void ErrorSeverity_ThreeParameter()
 		{
@@ -69,6 +170,24 @@ namespace Phema.Validation.Tests
 			Assert.Equal("key", error.Key);
 			Assert.Equal("message: 11,22,33", error.Message);
 			Assert.Equal(ValidationSeverity.Error, error.Severity);
+		}
+		
+		[Fact]
+		public void Throws_ThreeParameters()
+		{
+			Assert.Throws<ArgumentNullException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), null, ValidationSeverity.Error));
+		}
+		
+		[Fact]
+		public void Throws_ThreeParameters_ButZero()
+		{
+			Assert.Throws<ArgumentException>(() =>
+				validationContext.Validate("key", 12)
+					.Is(value => value == 12)
+					.Add(() => new ValidationMessage<int, int, int>((one, two, three) => $"message: {one},{two},{three}"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
 		
 		[Fact]

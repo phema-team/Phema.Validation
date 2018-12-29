@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Phema.Validation
 {
-	public class KeyValidationOutputFormatter : IValidationOutputFormatter
+	public class SimpleValidationOutputFormatter : IValidationOutputFormatter
 	{
 		public IDictionary<string, object> FormatOutput(IEnumerable<IValidationError> errors)
 		{

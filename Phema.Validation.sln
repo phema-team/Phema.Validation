@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Extensions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Extensions.Tests", "tests\Phema.Validation.Extensions.Tests\Phema.Validation.Extensions.Tests.csproj", "{D6208F30-08EC-4C11-B216-80BD7CB01D32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.AspNetCore", "src\Phema.Validation.AspNetCore\Phema.Validation.AspNetCore.csproj", "{14CA54D2-1BA2-461B-B122-2B32F255F406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.AspNetCore.Tests", "tests\Phema.Validation.AspNetCore.Tests\Phema.Validation.AspNetCore.Tests.csproj", "{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,8 @@ Global
 		{0C188AAB-C44D-4DC4-AC68-49C2E770F859} = {6CDE176E-914E-42BE-94DE-AF2F8266C77F}
 		{B86FD7C3-ED50-4D82-AA4B-7FEDA0EFD5F1} = {7604BD73-B9F9-4685-A350-E90D4D0AB2DC}
 		{D6208F30-08EC-4C11-B216-80BD7CB01D32} = {6CDE176E-914E-42BE-94DE-AF2F8266C77F}
+		{14CA54D2-1BA2-461B-B122-2B32F255F406} = {7604BD73-B9F9-4685-A350-E90D4D0AB2DC}
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3} = {6CDE176E-914E-42BE-94DE-AF2F8266C77F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0E677E35-B447-4A68-A2BF-778897A4419B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -157,5 +163,29 @@ Global
 		{D6208F30-08EC-4C11-B216-80BD7CB01D32}.Release|x64.Build.0 = Release|Any CPU
 		{D6208F30-08EC-4C11-B216-80BD7CB01D32}.Release|x86.ActiveCfg = Release|Any CPU
 		{D6208F30-08EC-4C11-B216-80BD7CB01D32}.Release|x86.Build.0 = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|x64.Build.0 = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Debug|x86.Build.0 = Debug|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|x64.ActiveCfg = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|x64.Build.0 = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|x86.ActiveCfg = Release|Any CPU
+		{14CA54D2-1BA2-461B-B122-2B32F255F406}.Release|x86.Build.0 = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|x64.Build.0 = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Debug|x86.Build.0 = Debug|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|x64.ActiveCfg = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|x64.Build.0 = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|x86.ActiveCfg = Release|Any CPU
+		{B54298E9-9A54-40D6-BB6C-2EEBD95C21C3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

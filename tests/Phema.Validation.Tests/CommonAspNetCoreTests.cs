@@ -10,7 +10,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection();
 			
-			services.AddValidation(validation => {});
+			services.AddPhemaValidation();
 			
 			var provider = services.BuildServiceProvider();
 			
@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection();
 			
-			services.AddValidation(validation => {});
+			services.AddPhemaValidation();
 
 			services.Configure<ValidationOptions>(options => options.Severity = ValidationSeverity.Debug);
 

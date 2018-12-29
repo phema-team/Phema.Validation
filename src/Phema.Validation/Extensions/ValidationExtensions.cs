@@ -1,36 +1,15 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Phema.Validation
 {
 	public static class ValidationExtensions
 	{
-		public static IServiceCollection AddValidation(this IServiceCollection services, Action<IValidationConfiguration> configuration)
+		public static IServiceCollection AddPhemaValidation(this IServiceCollection services)
 		{
-			if (!services.Any(s => s.ServiceType == typeof(IValidationContext)))
-			{
-				services.AddHttpContextAccessor();
-				services.AddScoped<IValidationContext, ValidationContext>();
-				
-				services.Configure<MvcOptions>(options =>
-				{
-					if (!options.Filters.Any(x => x is ValidationExceptionFilter))
-					{
-						options.Filters.Add<ValidationExceptionFilter>();
-					}
-
-					if (!options.Filters.Any(x => x is ValidationFilter))
-					{
-						options.Filters.Add<ValidationFilter>();
-					}
-				});
-
-				services.AddSingleton<IValidationOutputFormatter, KeyValidationOutputFormatter>();
-			}
+			services.AddOptions<ValidationOptions>();
+			services.TryAddScoped<IValidationContext, ValidationContext>();
 			
-			configuration(new ValidationConfiguration(services));
 			return services;
 		}
 	}

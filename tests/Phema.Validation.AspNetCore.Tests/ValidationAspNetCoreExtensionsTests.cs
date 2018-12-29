@@ -9,22 +9,15 @@ namespace Phema.Validation.Tests
 {
 	public class TestValidation : IValidation<TestModel>
 	{
-		private readonly TestValidationComponent component;
-
-		public TestValidation(TestValidationComponent component)
-		{
-			this.component = component;
-		}
-		
 		public void Validate(IValidationContext validationContext, TestModel model)
 		{
 			validationContext.Validate(nameof(model.Name), model.Name)
 				.Condition((value, added) => value == null)
-				.AddError(() => component.NameIsNull);
+				.AddError<TestValidationComponent>(c => c.NameIsNull);
 
 			validationContext.Validate(nameof(model.Age), model.Age)
 				.Condition((value, added) => value > 0 && value < 17)
-				.AddError(() => component.IsUnderage);
+				.AddError<TestValidationComponent>(c => c.IsUnderage);
 		}
 	}
 	
@@ -52,17 +45,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddsValidation()
 		{
-			services.AddValidation(validation => {});
-
-			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidationContext)));
-			Assert.Single(services.Where(s => s.ServiceType == typeof(IConfigureOptions<MvcOptions>)));
-		}
-		
-		[Fact]
-		public void AddsValidationOnce()
-		{
-			services.AddValidation(validation => {})
-				.AddValidation(validation => {});
+			services.AddPhemaValidation(validation => {});
 
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidationContext)));
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IConfigureOptions<MvcOptions>)));
@@ -71,7 +54,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddsValidationModel()
 		{
-			services.AddValidation(
+			services.AddPhemaValidation(
 				validation => 
 					validation.Add<TestModel, TestValidation, TestValidationComponent>());
 
@@ -90,7 +73,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Validation()
 		{
-			services.AddValidation(
+			services.AddPhemaValidation(
 				v => 
 					v.Add<TestModel, TestValidation, TestValidationComponent>());
 

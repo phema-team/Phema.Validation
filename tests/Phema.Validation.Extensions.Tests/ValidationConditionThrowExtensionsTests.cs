@@ -10,7 +10,7 @@ namespace Phema.Validation.Tests
 		public ValidationConditionThrowExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}

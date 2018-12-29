@@ -14,7 +14,7 @@ namespace Phema.Validation.Tests
 		public ExpressionValidationKeyTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -53,7 +53,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.Address.Street)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -70,7 +70,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.List[0])
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -87,7 +87,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.Array[0].Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -104,7 +104,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.List[0].Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -123,7 +123,7 @@ namespace Phema.Validation.Tests
 			var index = 1;
 
 			var error = validationContext.Validate(person, p => p.Array[index].Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -142,7 +142,7 @@ namespace Phema.Validation.Tests
 			var index = 1;
 
 			var error = validationContext.Validate(person, p => p.List[index].Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -159,7 +159,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.Array[0].Address.Street)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -176,7 +176,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var error = validationContext.Validate(person, p => p.List[0].Address.Street)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -195,7 +195,7 @@ namespace Phema.Validation.Tests
 			var index = 1;
 			
 			var error = validationContext.Validate(person, p => p.Array[index].Address.Street)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -214,7 +214,7 @@ namespace Phema.Validation.Tests
 			var index = 1;
 			
 			var error = validationContext.Validate(person, p => p.List[index].Address.Street)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -242,7 +242,7 @@ namespace Phema.Validation.Tests
 			};
 			
 			var error = validationContext.Validate(person, d => d.List[model.Index])
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -264,7 +264,7 @@ namespace Phema.Validation.Tests
 			};
 			
 			var error = validationContext.Validate(person, d => d.Array[model.Index])
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
@@ -285,7 +285,7 @@ namespace Phema.Validation.Tests
 			};
 			
 			var error = validationContext.Validate(dimensional, d => d.Array[1, 0])
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);

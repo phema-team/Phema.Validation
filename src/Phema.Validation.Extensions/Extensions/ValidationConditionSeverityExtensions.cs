@@ -9,42 +9,42 @@ namespace Phema.Validation
 			Func<ValidationMessage> selector,
 			ValidationSeverity severity)
 		{
-			return condition.Add(selector, null, severity);
+			return condition.Add(selector, Array.Empty<object>(), severity);
 		}
 		
 		public static IValidationError AddError(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
 		{
-			return condition.Add(selector, null, ValidationSeverity.Error);
+			return condition.Add(selector, Array.Empty<object>(), ValidationSeverity.Error);
 		}
 
 		public static IValidationError AddWarning(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
 		{
-			return condition.Add(selector, null, ValidationSeverity.Warning);
+			return condition.Add(selector, Array.Empty<object>(), ValidationSeverity.Warning);
 		}
 
 		public static IValidationError AddInformation(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
 		{
-			return condition.Add(selector, null, ValidationSeverity.Information);
+			return condition.Add(selector, Array.Empty<object>(), ValidationSeverity.Information);
 		}
 
 		public static IValidationError AddDebug(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
 		{
-			return condition.Add(selector, null, ValidationSeverity.Debug);
+			return condition.Add(selector, Array.Empty<object>(), ValidationSeverity.Debug);
 		}
 
 		public static IValidationError AddTrace(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector)
 		{
-			return condition.Add(selector, null, ValidationSeverity.Trace);
+			return condition.Add(selector, Array.Empty<object>(), ValidationSeverity.Trace);
 		}
 		
 		public static IValidationError AddError<TArgument>(

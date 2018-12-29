@@ -276,7 +276,7 @@ namespace Phema.Validation.Tests
 		private IValidationContext CreateValidationContext(ValidationSeverity severity)
 		{
 			return new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.Configure<ValidationOptions>(o => o.Severity = severity)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();

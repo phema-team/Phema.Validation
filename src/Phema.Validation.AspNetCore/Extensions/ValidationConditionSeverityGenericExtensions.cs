@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
-	public static class ValidationConditionSeverityExtensions
+	public static class ValidationConditionSeverityGenericExtensions
 	{
 		public static IValidationError AddError<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)
 			where TValidationComponent : IValidationComponent
@@ -14,7 +14,7 @@ namespace Phema.Validation
 
 			var message = selector(component);
 
-			return condition.Add(() => message, null, ValidationSeverity.Error);
+			return condition.Add(() => message, Array.Empty<object>(), ValidationSeverity.Error);
 		}
 		
 		public static IValidationError AddWarning<TValidationComponent>(this IValidationCondition condition, Func<TValidationComponent, ValidationMessage> selector)

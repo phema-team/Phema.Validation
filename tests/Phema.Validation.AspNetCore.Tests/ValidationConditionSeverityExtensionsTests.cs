@@ -12,7 +12,7 @@ namespace Phema.Validation.Tests
 		public SeverityAspNetCoreTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(validation =>
+				.AddPhemaValidation(validation =>
 					validation.Add<Model, ModelValidation, ModelValidationComponent>())
 				.AddScoped<IHttpContextAccessor>(
 					sp => new HttpContextAccessor { HttpContext = new DefaultHttpContext() })

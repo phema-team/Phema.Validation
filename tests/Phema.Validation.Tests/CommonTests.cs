@@ -11,7 +11,7 @@ namespace Phema.Validation.Tests
 		public CommonTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -19,9 +19,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddReturnsSameErrorAsContext()
 		{
-			var error1 = validationContext.Validate("key", 10)
-				.Is(() => true)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+			var error1 = validationContext.Validate((ValidationKey)"key", 10)
+				.Is(value => true)
+				.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			var error2 = Assert.Single(validationContext.Errors);
 
@@ -32,9 +32,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfIsConditionIsTrueAddsError()
 		{
-			var error = validationContext.Validate("key", 10)
+			var error = validationContext.Validate((ValidationKey)"key", 10)
 				.Is(value => true)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -43,8 +43,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfNoIsConditionAddsError()
 		{
-			var error =validationContext.Validate("key", 10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+			var error =validationContext.Validate((ValidationKey)"key", 10)
+				.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -53,10 +53,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfAnyIsConditionIsTrueAddsError()
 		{
-			var error =validationContext.Validate("key", 10)
+			var error =validationContext.Validate((ValidationKey)"key", 10)
 				.Is(value => false)
 				.Is(value => true)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -65,9 +65,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsConditionIsTrueNotAddsError()
 		{
-			validationContext.Validate("key", 10)
+			validationContext.Validate((ValidationKey)"key", 10)
 				.Is(value => false)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error);
 
 			Assert.Empty(validationContext.Errors);
 		}
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
-			var error = validationContext.Validate("key", 10)
+			var error = validationContext.Validate((ValidationKey)"key", 10)
 				.Is(value => true)
 				.Add(() => new ValidationMessage(args => $"template {args[0]}, {args[1]}"), new object[]{12, 13}, ValidationSeverity.Error);
 
@@ -87,18 +87,18 @@ namespace Phema.Validation.Tests
 		public void ThrowsSameExceptionInIsCondition()
 		{
 			Assert.Throws<Exception>(() =>
-				validationContext.Validate("key", 10)
+				validationContext.Validate((ValidationKey)"key", 10)
 					.Is(value => throw new Exception())
-					.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error));
+					.Add(() => new ValidationMessage(() => "template"), Array.Empty<object>(), ValidationSeverity.Error));
 		}
 
 		[Fact]
 		public void ThrowsSameExceptionInAdd()
 		{
 			Assert.Throws<Exception>(() =>
-				validationContext.Validate("key", 10)
+				validationContext.Validate((ValidationKey)"key", 10)
 					.Is(value => true)
-					.Add(() => throw new Exception(), ValidationSeverity.Error));
+					.Add(() => throw new Exception(), null, ValidationSeverity.Error));
 		}
 	}
 }

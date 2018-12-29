@@ -10,7 +10,7 @@ namespace Phema.Validation.Tests
 		public ValidationContextExpressionTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -83,16 +83,40 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void EnsureIsValidByKeyModelExpression_ByType()
+		{
+			var model = new TestModel();
+			
+			validationContext.Validate(model, s => s.Name)
+				.Is(value => false)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			validationContext.EnsureIsValid<TestModel>(s => s.Name);
+		}
+		
+		[Fact]
+		public void EnsureIsValidByKeyModelExpression_ByModel()
+		{
+			var model = new TestModel();
+			
+			validationContext.Validate(model, s => s.Name)
+				.Is(value => false)
+				.AddError(() => new ValidationMessage(() => "template"));
+			
+			validationContext.EnsureIsValid(model, s => s.Name);
+		}
+		
+		[Fact]
 		public void IsInvalidByKeyModelExpression()
 		{
 			var model = new TestModel();
 			
 			validationContext.Validate(model, s => s.Name)
-				.Is(() => false)
+				.Is(value => false)
 				.AddError(() => new ValidationMessage(() => "template1"));
 			
 			validationContext.Validate(model, s => s.Name)
-				.Is(() => true)
+				.Is(value => true)
 				.AddError(() => new ValidationMessage(() => "template2"));
 
 			Assert.False(validationContext.IsValid(model, s => s.Name));

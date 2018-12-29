@@ -1,25 +1,32 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class ExpressionValidationOutputFormatterTests
+	public class HierarchicalValidationOutputFormatterTests
 	{
+		private readonly IValidationContext validationContext;
+
+		public HierarchicalValidationOutputFormatterTests()
+		{
+			validationContext = new ServiceCollection()
+				.AddPhemaValidation()
+				.BuildServiceProvider()
+				.GetRequiredService<IValidationContext>();
+		}
+		
 		[Fact]
 		public void GlobalMessage()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("", "message1", ValidationSeverity.Error),
-				new ValidationError("", "message2", ValidationSeverity.Error),
-				new ValidationError("", "message3", ValidationSeverity.Error)
-			};
-
+			validationContext.AddError(() => new ValidationMessage(() => "message1"));
+			validationContext.AddError(() => new ValidationMessage(() => "message2"));
+			validationContext.AddError(() => new ValidationMessage(() => "message3"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var (key, value) = Assert.Single(result);
 			
@@ -38,16 +45,16 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SimpleNamedMessage()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("messages", "message1", ValidationSeverity.Error),
-				new ValidationError("messages", "message2", ValidationSeverity.Error),
-				new ValidationError("messages", "message3", ValidationSeverity.Error)
-			};
-
+			validationContext.Validate("messages")
+				.AddError(() => new ValidationMessage(() => "message1"));
+			validationContext.Validate("messages")
+				.AddError(() => new ValidationMessage(() => "message2"));
+			validationContext.Validate("messages")
+				.AddError(() => new ValidationMessage(() => "message3"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var (key, value) = Assert.Single(result);
 			
@@ -66,17 +73,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SimpleNamedMessagesInSameTier()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("message1", "message1", ValidationSeverity.Error),
-				new ValidationError("message2", "message2", ValidationSeverity.Error),
-				new ValidationError("message3", "message3", ValidationSeverity.Error),
-				new ValidationError("message3", "message4", ValidationSeverity.Error)
-			};
-
+			validationContext.Validate("message1")
+				.AddError(() => new ValidationMessage(() => "message1"));
+			validationContext.Validate("message2")
+				.AddError(() => new ValidationMessage(() => "message2"));
+			validationContext.Validate("message3")
+				.AddError(() => new ValidationMessage(() => "message3"));
+			validationContext.Validate("message3")
+				.AddError(() => new ValidationMessage(() => "message4"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			Assert.Equal(3, result.Count);
 			
@@ -114,17 +122,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MessageAndNestedMessage_GlobalPrefix()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid2", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error)
-			};
-
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var address = Assert.IsType<Dictionary<string, object>>(Assert.Single(result).Value);
 			
@@ -154,16 +163,16 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SingleMessageAndNestedMessage_GlobalPrefix()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error)
-			};
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
 
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var address = Assert.IsType<Dictionary<string, object>>(Assert.Single(result).Value);
 			
@@ -191,17 +200,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void SingleMessageAndNestedMessage_GlobalPrefix_Doubled()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error),
-				new ValidationError("address:road", "Road is invalid1", ValidationSeverity.Error)
-			};
-
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
+			validationContext.Validate("address:road")
+				.AddError(() => new ValidationMessage(() => "Road is invalid1"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var address = Assert.IsType<Dictionary<string, object>>(Assert.Single(result).Value);
 			
@@ -237,19 +247,22 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Multiple_MessageAndNestedMessage_GlobalPrefix_Doubled()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid2", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error),
-				new ValidationError("address:road", "Road is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:road", "Road is invalid2", ValidationSeverity.Error)
-			};
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
+			validationContext.Validate("address:road")
+				.AddError(() => new ValidationMessage(() => "Road is invalid1"));
+			validationContext.Validate("address:road")
+				.AddError(() => new ValidationMessage(() => "Road is invalid2"));
 
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var address = Assert.IsType<Dictionary<string, object>>(Assert.Single(result).Value);
 			
@@ -289,17 +302,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MessageAndNestedMessage_GlobalPrefix_Reversed()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid2", ValidationSeverity.Error),
-			};
-
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
+			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 
 			var address = Assert.IsType<Dictionary<string, object>>(Assert.Single(result).Value);
 			
@@ -329,20 +343,24 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void MultipleNested_Global_Simple()
 		{
-			var errors = new List<IValidationError>
-			{
-				new ValidationError("", "Global is invalid", ValidationSeverity.Error),
-				new ValidationError("nested", "Nested is invalid", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid1", ValidationSeverity.Error),
-				new ValidationError("address:street", "Street is invalid2", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid1", ValidationSeverity.Error),
-				new ValidationError("address", "Address is invalid2", ValidationSeverity.Error),
-				new ValidationError("address:city", "City is invalid", ValidationSeverity.Error),
-			};
+			validationContext.Validate()
+				.AddError(() => new ValidationMessage(() => "Global is invalid"));
+			validationContext.Validate("nested")
+				.AddError(() => new ValidationMessage(() => "Nested is invalid"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid1"));
+			validationContext.Validate("address:street")
+				.AddError(() => new ValidationMessage(() => "Street is invalid2"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid1"));
+			validationContext.Validate("address")
+				.AddError(() => new ValidationMessage(() => "Address is invalid2"));
+			validationContext.Validate("address:city")
+				.AddError(() => new ValidationMessage(() => "City is invalid"));
 			
 			var options = Options.Create(new ValidationOptions());
 			
-			var result = new ExpressionValidationOutputFormatter(options).FormatOutput(errors);
+			var result = new HierarchicalValidationOutputFormatter(options).FormatOutput(validationContext.Errors);
 			
 			Assert.Equal(3, result.Count);
 			

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -9,6 +10,9 @@ namespace Phema.Validation
 
 		public ValidationExceptionFilter(IValidationOutputFormatter formatter)
 		{
+			if (formatter == null)
+				throw new ArgumentNullException(nameof(formatter));
+			
 			this.formatter = formatter;
 		}
 		

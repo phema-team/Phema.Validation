@@ -11,7 +11,7 @@ namespace Phema.Validation.Tests
 		public ValidationConditionComparableExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -21,7 +21,8 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.IsGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -32,7 +33,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -43,11 +44,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("age", 11)
 				.WhenGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -60,7 +61,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 9)
 				.IsGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -70,7 +71,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 9)
 				.WhenGreater(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -80,7 +81,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.IsLess(12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -91,7 +92,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenLess(12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -102,11 +103,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenLess(12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("age", 11)
 				.WhenLess(12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -119,7 +120,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 11)
 				.IsLess(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -129,7 +130,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 11)
 				.WhenLess(10)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -139,7 +140,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.IsInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -150,7 +151,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
@@ -161,11 +162,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("age", 11)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("age", 11)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -178,7 +179,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 9)
 				.IsInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -188,7 +189,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 9)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -198,7 +199,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 13)
 				.IsInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -208,7 +209,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.Validate("age", 13)
 				.WhenInRange(10, 12)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.True(!validationContext.Errors.Any());
 		}

@@ -29,7 +29,7 @@ namespace Phema.Validation
 
 		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
 		{
-			return this.Validate().Add(selector, arguments, severity);
+			return Validate((ValidationKey)string.Empty, (object)null).Add(selector, arguments, severity);
 		}
 		
 		object IServiceProvider.GetService(Type serviceType)

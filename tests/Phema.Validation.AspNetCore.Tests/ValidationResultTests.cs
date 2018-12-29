@@ -1,19 +1,31 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Phema.Validation.Tests
 {
 	public class ValidationResultTests
 	{
+		private readonly IValidationContext validationContext;
+
+		public ValidationResultTests()
+		{
+			validationContext = new ServiceCollection()
+				.AddPhemaValidation()
+				.BuildServiceProvider()
+				.GetRequiredService<IValidationContext>();
+		}
+		
 		[Fact]
 		public void ValidationResultMultipleErrors()
 		{
-			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
-			{
-				new ValidationError("key1", "template1", ValidationSeverity.Debug),
-				new ValidationError("key2", "template2", ValidationSeverity.Debug),
-			});
+			validationContext.Validate("key1")
+				.AddError(() => new ValidationMessage(() => "template1"));
+			validationContext.Validate("key2")
+				.AddError(() => new ValidationMessage(() => "template2"));
+			
+			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
 			
 			var result = new ValidationResult(errors);
 
@@ -38,11 +50,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultMultipleErrorsSameKey()
 		{
-			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
-			{
-				new ValidationError("key", "template1", ValidationSeverity.Debug),
-				new ValidationError("key", "template2", ValidationSeverity.Debug),
-			});
+			validationContext.Validate("key")
+				.AddError(() => new ValidationMessage(() => "template1"));
+			validationContext.Validate("key")
+				.AddError(() => new ValidationMessage(() => "template2"));
+			
+			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
 			
 			var result = new ValidationResult(errors);
 
@@ -68,12 +81,14 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationResultCombinationOfMultipleErrorsSameKeyAndSingleError()
 		{
-			var errors = new KeyValidationOutputFormatter().FormatOutput(new List<IValidationError>
-			{
-				new ValidationError("key1", "template1", ValidationSeverity.Debug),
-				new ValidationError("key1", "template2", ValidationSeverity.Debug),
-				new ValidationError("key2", "template1", ValidationSeverity.Debug),
-			});
+			validationContext.Validate("key1")
+				.AddError(() => new ValidationMessage(() => "template1"));
+			validationContext.Validate("key1")
+				.AddError(() => new ValidationMessage(() => "template2"));
+			validationContext.Validate("key2")
+				.AddError(() => new ValidationMessage(() => "template1"));
+			
+			var errors = new SimpleValidationOutputFormatter().FormatOutput(validationContext.Errors);
 			
 			var result = new ValidationResult(errors);
 

@@ -2,32 +2,6 @@
 
 namespace Phema.Validation
 {
-	public sealed class ValidationMessage : IValidationMessage
-	{
-		public ValidationMessage(Func<object[], string> templateProvider)
-		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-			
-			TemplateProvider = templateProvider;
-		}
-		
-		public ValidationMessage(Func<string> templateProvider)
-		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-			
-			TemplateProvider = arguments => templateProvider();
-		}
-		
-		public Func<object[], string> TemplateProvider { get; }
-
-		public string GetMessage(object[] arguments)
-		{
-			return TemplateProvider(arguments);
-		}
-	}
-	
 	public sealed class ValidationMessage<TArgument> : IValidationMessage
 	{
 		public ValidationMessage(Func<TArgument, string> templateProvider)
@@ -42,10 +16,11 @@ namespace Phema.Validation
 
 		public string GetMessage(object[] arguments)
 		{
-			if (arguments?.Length != 1)
-			{
+			if (arguments == null)
+				throw new ArgumentNullException(nameof(arguments));
+			
+			if (arguments.Length != 1)
 				throw new ArgumentException(nameof(arguments));
-			}
 
 			var argument = (TArgument)arguments[0];
 
@@ -67,10 +42,11 @@ namespace Phema.Validation
 
 		public string GetMessage(object[] arguments)
 		{
-			if (arguments?.Length != 2)
-			{
+			if (arguments == null)
+				throw new ArgumentNullException(nameof(arguments));
+			
+			if (arguments.Length != 2)
 				throw new ArgumentException(nameof(arguments));
-			}
 
 			var argument1 = (TArgument1)arguments[0];
 			var argument2 = (TArgument2)arguments[1];
@@ -93,10 +69,11 @@ namespace Phema.Validation
 
 		public string GetMessage(object[] arguments)
 		{
-			if (arguments?.Length != 3)
-			{
+			if (arguments == null)
+				throw new ArgumentNullException(nameof(arguments));
+			
+			if (arguments.Length != 3)
 				throw new ArgumentException(nameof(arguments));
-			}
 
 			var argument1 = (TArgument1)arguments[0];
 			var argument2 = (TArgument2)arguments[1];

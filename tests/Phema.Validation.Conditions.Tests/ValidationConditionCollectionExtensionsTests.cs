@@ -12,7 +12,7 @@ namespace Phema.Validation.Tests
 		public ValidationConditionCollectionExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddValidation(c => {})
+				.AddPhemaValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -22,7 +22,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", Array.Empty<int>())
 				.IsEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
 			Assert.Equal("key", error.Key);
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", Array.Empty<int>())
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.NotNull(error);
 			Assert.Equal("key", error.Key);
@@ -46,11 +46,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", Array.Empty<int>())
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", Array.Empty<int>())
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -66,7 +66,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.IsEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -79,7 +79,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -90,7 +90,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.IsNotEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -101,11 +101,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.IsNotEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", new [] { 1 })
 				.WhenNotEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -120,7 +120,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.IsNotEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -133,7 +133,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenNotEmpty()
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -144,7 +144,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.HasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -155,7 +155,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenHasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -166,11 +166,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenHasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", new [] { 1 })
 				.WhenHasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -185,7 +185,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.HasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -198,11 +198,11 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenHasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenHasCount(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -215,7 +215,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.NotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -226,7 +226,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenNotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -237,11 +237,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenNotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", new [] { 1 })
 				.WhenNotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -256,7 +256,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.NotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -269,7 +269,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenNotHasCount(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -280,7 +280,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.IsContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -291,7 +291,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -302,11 +302,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", new [] { 1 })
 				.WhenContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -321,7 +321,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.IsContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -334,7 +334,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenContains(1)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -345,7 +345,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.IsNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -356,7 +356,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template", error.Message);
@@ -367,11 +367,11 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.Validate("key", new [] { 1 })
 				.WhenNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 			
 			var @null = validationContext.Validate("key", new [] { 1 })
 				.WhenNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Null(@null);
 			Assert.Single(validationContext.Errors);
@@ -386,7 +386,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.IsNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);
@@ -399,7 +399,7 @@ namespace Phema.Validation.Tests
 			
 			var error = validationContext.Validate(nameof(model.Statistics), model.Statistics)
 				.WhenNotContains(2)
-				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
+				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("Statistics", error.Key);
 			Assert.Equal("template", error.Message);

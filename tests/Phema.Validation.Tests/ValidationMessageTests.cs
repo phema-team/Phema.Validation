@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace Phema.Validation
@@ -22,13 +23,21 @@ namespace Phema.Validation
 		}
 
 		[Fact]
+		public void Throws_ValidationMessageWithNullArguments()
+		{
+			var message = new ValidationMessage(args => $"{args[0]}");
+
+			Assert.Throws<ArgumentNullException>(() => message.GetMessage(null));
+		}
+		
+		[Fact]
 		public void ValidationMessageWithParameter()
 		{
 			var message = new ValidationMessage(args => $"{args[0]}");
 
 			Assert.Equal("1", message.GetMessage(new object[] { 1 }));
 		}
-
+		
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
@@ -50,7 +59,7 @@ namespace Phema.Validation
 		{
 			var validationContext = new ValidationContext(null, Options.Create(new ValidationOptions()));
 
-			var error = validationContext.Validate("key", "value")
+			var error = validationContext.Validate((ValidationKey)"key", "value")
 				.Is(value => true)
 				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]{10}, ValidationSeverity.Error);
 

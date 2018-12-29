@@ -3,11 +3,11 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public class ExpressionValidationOutputFormatter : IValidationOutputFormatter
+	public class HierarchicalValidationOutputFormatter : IValidationOutputFormatter
 	{
 		private readonly ValidationOptions options;
 
-		public ExpressionValidationOutputFormatter(IOptions<ValidationOptions> options)
+		public HierarchicalValidationOutputFormatter(IOptions<ValidationOptions> options)
 		{
 			this.options = options.Value;
 		}
@@ -22,7 +22,6 @@ namespace Phema.Validation
 				
 				Fill(null, result, parts, 0, message);
 			}
-			
 
 			return result;
 		}
