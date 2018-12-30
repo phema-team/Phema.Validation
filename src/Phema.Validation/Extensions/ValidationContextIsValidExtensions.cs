@@ -6,7 +6,7 @@ namespace Phema.Validation
 		{
 			return validationContext.IsValid(null);
 		}
-		
+
 		public static bool IsValid(this IValidationContext validationContext, ValidationKey key)
 		{
 			return validationContext.IsValid((IValidationKey)key);

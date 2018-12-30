@@ -8,7 +8,8 @@ namespace Phema.Validation
 {
 	public static class ValidationExtensions
 	{
-		public static IServiceCollection AddPhemaValidation(this IServiceCollection services, Action<IValidationConfiguration> configuration)
+		public static IServiceCollection AddPhemaValidation(this IServiceCollection services,
+			Action<IValidationConfiguration> configuration)
 		{
 			services.AddPhemaValidation();
 

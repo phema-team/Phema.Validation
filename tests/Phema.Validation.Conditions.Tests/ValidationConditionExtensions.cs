@@ -15,7 +15,7 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
 		[Fact]
 		public void Is()
 		{
@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNot()
 		{
@@ -37,7 +37,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNot_Valid()
 		{
@@ -47,7 +47,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNot_Empty()
 		{
@@ -58,7 +58,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNot_Valid_Empty()
 		{
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNull()
 		{
@@ -79,7 +79,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNull_Valid()
 		{
@@ -100,7 +100,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotNull_Valid()
 		{
@@ -110,7 +110,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsEqual()
 		{
@@ -121,7 +121,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsEqual_Valid()
 		{
@@ -142,7 +142,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEqual()
 		{
@@ -153,7 +153,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEqual_Valid()
 		{
@@ -163,7 +163,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNotEqualNull()
 		{

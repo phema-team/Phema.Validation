@@ -11,7 +11,7 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => value.CompareTo(comparable) > 0);
 		}
-		
+
 		public static IValidationCondition<TValue> IsLess<TValue>(
 			this IValidationCondition<TValue> builder,
 			TValue comparable)
@@ -19,10 +19,10 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => value.CompareTo(comparable) < 0);
 		}
-		
+
 		public static IValidationCondition<TValue> IsInRange<TValue>(
 			this IValidationCondition<TValue> builder,
-			TValue min, 
+			TValue min,
 			TValue max)
 			where TValue : IComparable<TValue>
 		{

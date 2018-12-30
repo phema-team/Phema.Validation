@@ -11,7 +11,7 @@ namespace Phema.Validation
 		{
 			this.options = options.Value;
 		}
-		
+
 		public IDictionary<string, object> FormatOutput(IEnumerable<IValidationError> errors)
 		{
 			var result = new Dictionary<string, object>();
@@ -19,7 +19,7 @@ namespace Phema.Validation
 			foreach (var (key, message) in errors)
 			{
 				var parts = key.Split(options.Separator);
-				
+
 				Fill(null, result, parts, 0, message);
 			}
 
@@ -47,7 +47,7 @@ namespace Phema.Validation
 		{
 			var key = parts[index];
 			var isLast = index + 1 == parts.Length;
-			
+
 			if (node.TryGetValue(key, out var next))
 			{
 				if (isLast)
@@ -55,13 +55,16 @@ namespace Phema.Validation
 					switch (next)
 					{
 						case string @string:
-							node[key] = new List<string> { @string, message };
+							node[key] = new List<string>
+							{
+								@string, message
+							};
 							break;
-								
+
 						case List<string> messages:
 							messages.Add(message);
 							break;
-								
+
 						case Dictionary<string, object> dictionary:
 							FillGlobal(dictionary, message);
 							break;
@@ -92,7 +95,10 @@ namespace Phema.Validation
 				switch (value)
 				{
 					case string @string:
-						node[options.Global] = new List<string> { @string, message };
+						node[options.Global] = new List<string>
+						{
+							@string, message
+						};
 						break;
 
 					case List<string> messages:
@@ -109,12 +115,12 @@ namespace Phema.Validation
 		private void FillObject(object @object, Dictionary<string, object> root, string[] parts, int index, string message)
 		{
 			var prevKey = parts[index - 1];
-					
+
 			root[prevKey] = new Dictionary<string, object>
 			{
 				[options.Global] = @object
 			};
-					
+
 			Fill(root, root[prevKey], parts, index, message);
 		}
 	}

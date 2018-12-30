@@ -11,13 +11,13 @@ namespace Phema.Validation
 		{
 			if (expression == null)
 				throw new ArgumentNullException(nameof(expression));
-			
+
 			this.expression = expression;
 			Key = FormatKeyFromExpression(expression, separator);
 		}
-		
+
 		public string Key { get; }
-		
+
 		public TProperty GetValue(TModel model)
 		{
 			return ExpressionCache.GetFromExpression(expression)(model);

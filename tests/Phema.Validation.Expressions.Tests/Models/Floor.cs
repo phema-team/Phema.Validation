@@ -8,7 +8,7 @@ namespace Phema.Validation.Tests
 	{
 		[DataMember(Name = "list")]
 		public IList<Room> List { get; set; }
-			
+
 		[DataMember(Name = "array")]
 		public Room[] Array { get; set; }
 	}

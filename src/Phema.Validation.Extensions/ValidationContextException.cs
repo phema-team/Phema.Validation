@@ -10,11 +10,11 @@ namespace Phema.Validation
 		{
 			if (errors == null)
 				throw new ArgumentNullException(nameof(errors));
-			
+
 			Errors = errors;
 			Severity = severity;
 		}
-		
+
 		public IReadOnlyCollection<IValidationError> Errors { get; }
 
 		public ValidationSeverity Severity { get; }

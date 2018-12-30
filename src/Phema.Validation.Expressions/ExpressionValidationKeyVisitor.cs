@@ -17,14 +17,14 @@ namespace Phema.Validation
 		}
 
 		public string Result => string.Join(separator, keys.Reverse());
-		
+
 		protected override Expression VisitMember(MemberExpression node)
 		{
 			if (!(node.Expression is ConstantExpression) && !CheckIfNestedConstantExpression(node))
 			{
 				keys.Add(GetKey(node));
 			}
-			
+
 			return base.VisitMember(node);
 		}
 
@@ -41,10 +41,10 @@ namespace Phema.Validation
 			{
 				ProcessExpression(expression);
 			}
-			
+
 			return base.VisitMethodCall(node);
 		}
-		
+
 		private void ProcessExpression(Expression expression)
 		{
 			switch (expression)
@@ -53,7 +53,10 @@ namespace Phema.Validation
 					keys.Add(constantExpression.Value.ToString());
 					break;
 				case MemberExpression memberExpression:
-					ProcessMemberExpressionRecursive(memberExpression, new List<MemberInfo>{ memberExpression.Member });
+					ProcessMemberExpressionRecursive(memberExpression, new List<MemberInfo>
+					{
+						memberExpression.Member
+					});
 					break;
 			}
 		}
@@ -65,7 +68,7 @@ namespace Phema.Validation
 				case ConstantExpression constantExpression:
 					ProcessConstantExpression(constantExpression);
 					break;
-				
+
 				case MemberExpression memberExpression:
 					memberInfo.Add(memberExpression.Member);
 					ProcessMemberExpressionRecursive(memberExpression, memberInfo);
@@ -76,7 +79,7 @@ namespace Phema.Validation
 			{
 				var value = constantExpression.Value;
 				var type = value.GetType();
-					
+
 				foreach (var member in memberInfo.Reverse())
 				{
 					switch (member.MemberType)
@@ -91,11 +94,11 @@ namespace Phema.Validation
 
 					type = value.GetType();
 				}
-					
+
 				keys.Add(value.ToString());
 			}
 		}
-		
+
 		private static bool CheckIfNestedConstantExpression(MemberExpression expression)
 		{
 			switch (expression.Expression)

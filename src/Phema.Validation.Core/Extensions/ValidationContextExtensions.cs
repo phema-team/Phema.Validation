@@ -11,7 +11,7 @@ namespace Phema.Validation
 		{
 			return validationCondition.Is(value => condition());
 		}
-		
+
 		public static bool IsValid(this IValidationContext validationContext, IValidationKey validationKey)
 		{
 			return !validationContext

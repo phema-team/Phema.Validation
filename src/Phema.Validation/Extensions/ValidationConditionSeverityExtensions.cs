@@ -11,7 +11,7 @@ namespace Phema.Validation
 		{
 			return condition.Add(selector, Array.Empty<object>(), severity);
 		}
-		
+
 		public static IValidationError AddError(
 			this IValidationCondition condition,
 			Func<ValidationMessage> selector,
@@ -56,6 +56,5 @@ namespace Phema.Validation
 			arguments = arguments ?? Array.Empty<object>();
 			return condition.Add(selector, arguments, ValidationSeverity.Trace);
 		}
-
 	}
 }

@@ -13,7 +13,7 @@ namespace Phema.Validation
 
 			Assert.Equal("message", message.TemplateProvider(null));
 		}
-		
+
 		[Fact]
 		public void NullValidationMessage()
 		{
@@ -29,28 +29,34 @@ namespace Phema.Validation
 
 			Assert.Throws<ArgumentNullException>(() => message.GetMessage(null));
 		}
-		
+
 		[Fact]
 		public void Throws_ValidationMessageWithNullTemplateProvider()
 		{
 			Assert.Throws<ArgumentNullException>(() => new ValidationMessage((Func<string>)null));
 			Assert.Throws<ArgumentNullException>(() => new ValidationMessage((Func<object[], string>)null));
 		}
-		
+
 		[Fact]
 		public void ValidationMessageWithParameter()
 		{
 			var message = new ValidationMessage(args => $"{args[0]}");
 
-			Assert.Equal("1", message.GetMessage(new object[] { 1 }));
+			Assert.Equal("1", message.GetMessage(new object[]
+			{
+				1
+			}));
 		}
-		
+
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
 			var message = new ValidationMessage(args => $"{args[0]}{args[1]}");
 
-			Assert.Equal("12", message.GetMessage(new object[] { 1, 2 }));
+			Assert.Equal("12", message.GetMessage(new object[]
+			{
+				1, 2
+			}));
 		}
 
 		[Fact]
@@ -58,7 +64,10 @@ namespace Phema.Validation
 		{
 			var message = new ValidationMessage(args => $"{args[0]}");
 
-			Assert.Equal("1", message.GetMessage(new object[] { 1, 2 }));
+			Assert.Equal("1", message.GetMessage(new object[]
+			{
+				1, 2
+			}));
 		}
 
 		[Fact]
@@ -68,7 +77,10 @@ namespace Phema.Validation
 
 			var error = validationContext.When((ValidationKey)"key", "value")
 				.Is(value => true)
-				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]{10}, ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(args => $"{args[0]}"), new object[]
+				{
+					10
+				}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("10", error.Message);

@@ -25,7 +25,7 @@ namespace Phema.Validation
 
 		public static IValidationCondition<string> IsMatch(
 			this IValidationCondition<string> builder,
-			string regex, 
+			string regex,
 			RegexOptions options = RegexOptions.None)
 		{
 			return builder.Is(value => Regex.IsMatch(value, regex, options));
@@ -33,18 +33,18 @@ namespace Phema.Validation
 
 		public static IValidationCondition<string> IsNotMatch(
 			this IValidationCondition<string> builder,
-			string regex, 
+			string regex,
 			RegexOptions options = RegexOptions.None)
 		{
 			return builder.Is(value => !Regex.IsMatch(value, regex, options));
 		}
-		
+
 		public static IValidationCondition<string> IsNotEmail(
 			this IValidationCondition<string> builder)
 		{
 			return builder.Is(value => !new EmailAddressAttribute().IsValid(value));
 		}
-		
+
 		public static IValidationCondition<string> HasLength(
 			this IValidationCondition<string> builder,
 			int length)

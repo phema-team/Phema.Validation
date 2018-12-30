@@ -9,23 +9,23 @@ namespace Phema.Validation.Tests
 		public void EmptyValidationResolves()
 		{
 			var services = new ServiceCollection();
-			
+
 			services.AddPhemaValidation();
-			
+
 			var provider = services.BuildServiceProvider();
-			
+
 			var validationContext = provider.GetRequiredService<IValidationContext>();
-			
+
 			Assert.IsType<ValidationContext>(validationContext);
 			Assert.Equal(ValidationSeverity.Error, validationContext.Severity);
 			Assert.Equal(0, validationContext.Errors.Count);
 		}
-		
+
 		[Fact]
 		public void ConfigureValidationOptionsChangesSeverity()
 		{
 			var services = new ServiceCollection();
-			
+
 			services.AddPhemaValidation();
 
 			services.Configure<ValidationOptions>(options => options.Severity = ValidationSeverity.Debug);
@@ -33,7 +33,7 @@ namespace Phema.Validation.Tests
 			var provider = services.BuildServiceProvider();
 
 			var validationContext = provider.GetRequiredService<IValidationContext>();
-			
+
 			Assert.Equal(ValidationSeverity.Debug, validationContext.Severity);
 		}
 	}

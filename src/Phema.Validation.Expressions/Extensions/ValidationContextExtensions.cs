@@ -14,13 +14,13 @@ namespace Phema.Validation
 		{
 			var provider = (IServiceProvider)validationContext;
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-			
+
 			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
 			var value = key.GetValue(model);
-			
+
 			return validationContext.When(key, value);
 		}
-		
+
 		public static IValidationCondition<TProperty> When<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
@@ -29,10 +29,10 @@ namespace Phema.Validation
 		{
 			var provider = (IServiceProvider)validationContext;
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-			
+
 			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
 			var value = selector(model);
-			
+
 			return validationContext.When(key, value);
 		}
 
@@ -42,7 +42,7 @@ namespace Phema.Validation
 		{
 			return validationContext.IsValid(default, expression);
 		}
-		
+
 		public static bool IsValid<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
@@ -50,7 +50,7 @@ namespace Phema.Validation
 		{
 			var provider = (IServiceProvider)validationContext;
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-			
+
 			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
 
 			return validationContext.IsValid(key);
@@ -62,7 +62,7 @@ namespace Phema.Validation
 		{
 			validationContext.EnsureIsValid(default, expression);
 		}
-		
+
 		public static void EnsureIsValid<TModel, TProperty>(
 			this IValidationContext validationContext,
 			TModel model,
@@ -70,7 +70,7 @@ namespace Phema.Validation
 		{
 			var provider = (IServiceProvider)validationContext;
 			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-			
+
 			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
 
 			validationContext.EnsureIsValid(key);

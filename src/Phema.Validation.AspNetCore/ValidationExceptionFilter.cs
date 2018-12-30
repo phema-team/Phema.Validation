@@ -29,7 +29,10 @@ namespace Phema.Validation
 					break;
 
 				case ValidationConditionException exception:
-					context.Result = new ValidationResult(formatter, new[] {exception.Error});
+					context.Result = new ValidationResult(formatter, new[]
+					{
+						exception.Error
+					});
 					break;
 			}
 		}

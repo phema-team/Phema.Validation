@@ -15,29 +15,28 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
 		[Fact]
 		public void IsGreater()
 		{
 			var error = validationContext.When("age", 11)
 				.IsGreater(10)
-				
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsGreater_Valid()
 		{
 			validationContext.When("age", 9)
 				.IsGreater(10)
 				.AddError(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsLess()
 		{
@@ -48,17 +47,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsLess_Valid()
 		{
 			validationContext.When("age", 11)
 				.IsLess(10)
 				.AddError(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsInRange()
 		{
@@ -69,24 +68,24 @@ namespace Phema.Validation.Tests
 			Assert.Equal("age", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsInRange_Less_Valid()
 		{
 			validationContext.When("age", 9)
 				.IsInRange(10, 12)
 				.AddError(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsInRange_Greater_Valid()
 		{
 			validationContext.When("age", 13)
 				.IsInRange(10, 12)
 				.AddError(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(!validationContext.Errors.Any());
 		}
 	}

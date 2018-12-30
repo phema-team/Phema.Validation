@@ -9,7 +9,7 @@ namespace Phema.Validation
 		{
 			Validations = new Dictionary<Type, Action<IServiceProvider, object>>();
 		}
-		
+
 		public IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
 	}
 }

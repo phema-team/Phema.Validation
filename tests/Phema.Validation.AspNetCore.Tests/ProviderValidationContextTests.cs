@@ -35,7 +35,7 @@ namespace Phema.Validation.Tests
 			public ValidationComponent()
 			{
 				NameIsInvalid = new ValidationMessage(() => "message");
-				AgeIsInvalid =  new ValidationMessage<int>(age => $"age: {age}");
+				AgeIsInvalid = new ValidationMessage<int>(age => $"age: {age}");
 				PhoneIsInvalid = new ValidationMessage<long, int>((phone, age) => $"phone: {phone} age: {age}");
 			}
 
@@ -65,7 +65,10 @@ namespace Phema.Validation.Tests
 
 			var validation = provider.GetRequiredService<Validation>();
 
-			validation.Validate(validationContext, new TestModel { Name = "Invalid" });
+			validation.Validate(validationContext, new TestModel
+			{
+				Name = "Invalid"
+			});
 
 			var error = Assert.Single(validationContext.Errors);
 
@@ -134,8 +137,7 @@ namespace Phema.Validation.Tests
 
 			validation.Validate(validationContext, new TestModel
 			{
-				Age = 322,
-				Phone = 8_800_555_35_35
+				Age = 322, Phone = 8_800_555_35_35
 			});
 
 			filter.OnActionExecuted(context);

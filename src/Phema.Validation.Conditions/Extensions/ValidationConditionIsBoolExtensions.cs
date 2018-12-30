@@ -7,7 +7,7 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => value);
 		}
-		
+
 		public static IValidationCondition<bool> IsFalse(
 			this IValidationCondition<bool> builder)
 		{

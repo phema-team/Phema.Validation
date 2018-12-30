@@ -14,7 +14,7 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
 		[Fact]
 		public void Throw()
 		{
@@ -27,17 +27,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("template", exception.Error.Message);
 			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
 		}
-		
+
 		[Fact]
 		public void Throw_Valid()
 		{
 			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(validationContext.IsValid());
 		}
-		
+
 		[Fact]
 		public void Throw_OneParameter()
 		{
@@ -50,17 +50,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("template: 11", exception.Error.Message);
 			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
 		}
-		
+
 		[Fact]
 		public void Throw_OneParameter_Valid()
 		{
 			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage<int>(one => $"template: {one}"), 11);
-			
+
 			Assert.True(validationContext.IsValid());
 		}
-		
+
 		[Fact]
 		public void Throw_TwoParameters()
 		{
@@ -73,17 +73,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("template: 11,22", exception.Error.Message);
 			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
 		}
-		
+
 		[Fact]
 		public void Throw_TwoParameters_Valid()
 		{
 			validationContext.When("age", 10)
 				.Is(value => value == 9)
 				.Throw(() => new ValidationMessage<int, int>((one, two) => $"template: {one},{two}"), 11, 22);
-			
+
 			Assert.True(validationContext.IsValid());
 		}
-		
+
 		[Fact]
 		public void ThrowAddsSameErrorAsContext()
 		{
@@ -93,7 +93,7 @@ namespace Phema.Validation.Tests
 					.Throw(() => new ValidationMessage(() => "template")));
 
 			var error = Assert.Single(validationContext.Errors);
-			
+
 			Assert.Equal(error, exception.Error);
 			Assert.Same(error, exception.Error);
 		}

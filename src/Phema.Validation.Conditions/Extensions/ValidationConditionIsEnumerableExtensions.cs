@@ -11,14 +11,14 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => value?.Any() ?? false);
 		}
-		
+
 		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> builder,
 			Func<TElement, bool> predicate)
 		{
 			return builder.Is(value => value?.Any(predicate) ?? false);
 		}
-		
+
 		public static IValidationCondition<IEnumerable<TElement>> IsAll<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> builder,
 			Func<TElement, bool> predicate)

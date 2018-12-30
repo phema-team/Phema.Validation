@@ -9,7 +9,7 @@ namespace Phema.Validation
 		{
 			if (error == null)
 				throw new ArgumentNullException(nameof(error));
-			
+
 			Error = error;
 		}
 

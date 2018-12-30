@@ -16,7 +16,7 @@ namespace Phema.Validation
 		IValidationConfiguration AddValidation<TModel, TValidation>()
 			where TValidation : class, IValidation<TModel>;
 	}
-	
+
 	internal sealed class ValidationConfiguration : IValidationConfiguration
 	{
 		private readonly IServiceCollection services;
@@ -45,7 +45,7 @@ namespace Phema.Validation
 
 			return this;
 		}
-		
+
 		public IValidationConfiguration AddComponent<TModel, TComponent>()
 			where TComponent : class, IValidationComponent<TModel>
 		{

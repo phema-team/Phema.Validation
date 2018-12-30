@@ -16,7 +16,7 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
 		[Fact]
 		public void ValidationResultMultipleErrors()
 		{
@@ -24,7 +24,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template1"));
 			validationContext.When("key2")
 				.AddError(() => new ValidationMessage(() => "template2"));
-			
+
 			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
@@ -52,7 +52,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template1"));
 			validationContext.When("key")
 				.AddError(() => new ValidationMessage(() => "template2"));
-			
+
 			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
@@ -73,7 +73,7 @@ namespace Phema.Validation.Tests
 						message => Assert.Equal("template2", message));
 				});
 		}
-		
+
 		[Fact]
 		public void ValidationResultCombinationOfMultipleErrorsSameKeyAndSingleError()
 		{
@@ -83,7 +83,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template2"));
 			validationContext.When("key2")
 				.AddError(() => new ValidationMessage(() => "template1"));
-			
+
 			var result = new ValidationResult(new SimpleValidationOutputFormatter(), validationContext.Errors);
 
 			Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);

@@ -15,7 +15,10 @@ namespace Phema.Validation.Tests
 				.AddPhemaValidation(validation =>
 					validation.Add<Model, ModelValidation, ModelValidationComponent>())
 				.AddScoped<IHttpContextAccessor>(
-					sp => new HttpContextAccessor { HttpContext = new DefaultHttpContext() })
+					sp => new HttpContextAccessor
+					{
+						HttpContext = new DefaultHttpContext()
+					})
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}

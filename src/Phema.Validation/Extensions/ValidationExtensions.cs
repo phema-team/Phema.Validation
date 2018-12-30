@@ -9,7 +9,7 @@ namespace Phema.Validation
 		{
 			services.AddOptions<ValidationOptions>();
 			services.TryAddScoped<IValidationContext, ValidationContext>();
-			
+
 			return services;
 		}
 	}

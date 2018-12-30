@@ -28,7 +28,7 @@ namespace Phema.Validation.Tests
 			Assert.Same(error1, error2);
 			Assert.Equal(error1, error2);
 		}
-		
+
 		[Fact]
 		public void IfIsConditionIsTrueAddsError()
 		{
@@ -43,7 +43,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfNoIsConditionAddsError()
 		{
-			var error =validationContext.When((ValidationKey)"key", 10)
+			var error = validationContext.When((ValidationKey)"key", 10)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
@@ -53,7 +53,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfAllIsConditionIsTrueAddsError()
 		{
-			var error =validationContext.When((ValidationKey)"key", 10)
+			var error = validationContext.When((ValidationKey)"key", 10)
 				.Is(value => true)
 				.Is(value => true)
 				.Add(() => new ValidationMessage(() => "template"), ValidationSeverity.Error);
@@ -77,7 +77,10 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When((ValidationKey)"key", 10)
 				.Is(value => true)
-				.Add(() => new ValidationMessage(args => $"template {args[0]}, {args[1]}"), new object[]{12, 13}, ValidationSeverity.Error);
+				.Add(() => new ValidationMessage(args => $"template {args[0]}, {args[1]}"), new object[]
+				{
+					12, 13
+				}, ValidationSeverity.Error);
 
 			Assert.Equal("key", error.Key);
 			Assert.Equal("template 12, 13", error.Message);

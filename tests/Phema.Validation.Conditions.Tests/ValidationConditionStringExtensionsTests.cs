@@ -15,7 +15,7 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
 		[Fact]
 		public void IsEmpty()
 		{
@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsEmpty_Valid()
 		{
@@ -36,7 +36,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNotEmpty()
 		{
@@ -47,17 +47,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEmpty_Valid()
 		{
 			validationContext.When("name", string.Empty)
 				.IsNotEmpty()
 				.AddError(() => new ValidationMessage(() => "template"));
-			
+
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNullOrWhitespace()
 		{
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNullOrWhitespace_Valid()
 		{
@@ -78,7 +78,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsMatch()
 		{
@@ -89,7 +89,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsMatch_Valid()
 		{
@@ -99,7 +99,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNotMatch()
 		{
@@ -110,7 +110,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotMatch_Valid()
 		{
@@ -120,7 +120,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void IsNotEmail()
 		{
@@ -131,7 +131,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("email", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void IsNotEmail_Valid()
 		{
@@ -141,7 +141,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.Errors.Any());
 		}
-		
+
 		[Fact]
 		public void HasLength()
 		{
@@ -152,7 +152,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
-		
+
 		[Fact]
 		public void HasLength_Valid()
 		{

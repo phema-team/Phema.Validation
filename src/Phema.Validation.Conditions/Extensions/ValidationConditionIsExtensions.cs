@@ -10,14 +10,14 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => !condition(value));
 		}
-		
+
 		public static IValidationCondition<TValue> IsNot<TValue>(
 			this IValidationCondition<TValue> builder,
 			Func<bool> condition)
 		{
 			return builder.Is(value => !condition());
 		}
-		
+
 		public static IValidationCondition<TValue> IsNull<TValue>(
 			this IValidationCondition<TValue> builder)
 		{

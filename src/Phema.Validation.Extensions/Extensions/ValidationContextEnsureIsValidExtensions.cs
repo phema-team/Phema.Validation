@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Phema.Validation
@@ -10,7 +11,7 @@ namespace Phema.Validation
 			{
 				var errors = validationContext.Errors
 					.Where(error => error.Severity >= validationContext.Severity)
-					.ToList();
+					.ToArray();
 
 				throw new ValidationContextException(errors, validationContext.Severity);
 			}
@@ -20,7 +21,7 @@ namespace Phema.Validation
 		{
 			validationContext.EnsureIsValid(null);
 		}
-		
+
 		public static void EnsureIsValid(this IValidationContext validationContext, ValidationKey key)
 		{
 			validationContext.EnsureIsValid((IValidationKey)key);

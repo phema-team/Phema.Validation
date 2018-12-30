@@ -8,10 +8,10 @@ namespace Phema.Validation
 		{
 			if (key == null)
 				throw new ArgumentNullException(nameof(key));
-			
+
 			Key = key;
 		}
-		
+
 		public string Key { get; }
 
 		public override bool Equals(object obj)

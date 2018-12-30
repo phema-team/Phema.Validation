@@ -20,7 +20,7 @@ namespace Phema.Validation.Tests
 				.AddError<TestValidationComponent>(c => c.IsUnderage);
 		}
 	}
-	
+
 	public class TestValidationComponent : IValidationComponent<TestModel, TestValidation>
 	{
 		public TestValidationComponent()
@@ -32,7 +32,7 @@ namespace Phema.Validation.Tests
 		public ValidationMessage NameIsNull { get; }
 		public ValidationMessage IsUnderage { get; }
 	}
-	
+
 	public class ValidationAspNetCoreExtensionsTests
 	{
 		private readonly IServiceCollection services;
@@ -45,17 +45,19 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddsValidation()
 		{
-			services.AddPhemaValidation(validation => {});
+			services.AddPhemaValidation(validation =>
+			{
+			});
 
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidationContext)));
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IConfigureOptions<MvcOptions>)));
 		}
-		
+
 		[Fact]
 		public void AddsValidationModel()
 		{
 			services.AddPhemaValidation(
-				validation => 
+				validation =>
 					validation.Add<TestModel, TestValidation, TestValidationComponent>());
 
 			Assert.Single(services.Where(s => s.ServiceType == typeof(TestValidation)));
@@ -74,7 +76,7 @@ namespace Phema.Validation.Tests
 		public void Validation()
 		{
 			services.AddPhemaValidation(
-				v => 
+				v =>
 					v.Add<TestModel, TestValidation, TestValidationComponent>());
 
 			services.AddScoped<IHttpContextAccessor>(sp =>
@@ -82,21 +84,21 @@ namespace Phema.Validation.Tests
 				{
 					HttpContext = new DefaultHttpContext()
 				});
-			
+
 			var provider = services.BuildServiceProvider();
 
 			var model = new TestModel
 			{
 				Name = null, Age = 10
 			};
-			
+
 			var validation = provider.GetRequiredService<TestValidation>();
 			var validationContext = provider.GetRequiredService<IValidationContext>();
-			
+
 			validation.Validate(validationContext, model);
-			
+
 			Assert.Equal(2, validationContext.Errors.Count);
-			
+
 			Assert.Collection(validationContext.Errors,
 				e =>
 				{
