@@ -8,6 +8,67 @@ C# tiny, fast and customizable validation library
 - [x] Tests
 - [x] AspNetCore integration
 
+# Validation
+- Model
+```csharp
+public class Person
+{
+  public string Name { get; set; }
+  public int Age { get; set; }
+}
+```
+
+- Validation
+```csharp
+public class PersonValidation : IValidation<Person>
+{
+  public void Validate(IValidationContext validationContext, Person person)
+  {
+    validationContext.When(person, p => p.Name)
+      .IsNullOrWhitespace()
+      .AddError<PersonValidationComponent>(c => c.NameMustBeSet);
+      
+    validationContext.When(person, p => p.Name)
+      .IsLess(2)
+      .AddError<PersonValidationComponent>(c => c.NameIsShort);
+      
+    validationContext.When(person, p => p.Name)
+      .IsGreater(20)
+      .AddError<PersonValidationComponent>(c => c.NameIsLong);
+      
+    validationContext.When(person, p => p.Age)
+      .IsNotGreater(18)
+      .AddError<PersonValidationComponent>(c => c.Underage);
+  }
+}
+```
+
+- ValidationComponent
+```csharp
+public class PersonValidationComponent : IValidationComponent<Person, PersonValidation>
+{
+  public PersonValidationComponent()
+  {
+    NameMustBeSet = new ValidationMessage(() => "Name must be set");
+    NameIsShort = new ValidationMessage(() => "Name must be at least two characters");
+    NameIsLong = new ValidationMessage(() => "Name must be not longer twenty characters");
+    
+    Underage = new ValidationMessage(() => "Age must be greater 18");
+  }
+
+  public ValidationMessage NameMustBeSet { get; set; }
+  public ValidationMessage NameIsShort { get; set; }
+  public ValidationMessage NameIsLong { get; set; }
+  
+  public ValidationMessage Underage { get; set; }
+}
+```
+
+- Glue all together
+```csharp
+services.AddPhemaValidation(validation => validation.Add<Person, PersonValidation, PersonValidationComponent>());
+```
+
 # Using core
 ```csharp
 var validationContext = new ValidationContext();
