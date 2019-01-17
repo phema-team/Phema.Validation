@@ -10,16 +10,19 @@ namespace Phema.Validation
 		public void OnActionExecuting(ActionExecutingContext context)
 		{
 			var provider = context.HttpContext.RequestServices;
-			var options = provider.GetRequiredService<IOptions<ValidationComponentOptions>>().Value;
+			
 			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
-
 			var validationContext = provider.GetRequiredService<IValidationContext>();
+			var options = provider.GetRequiredService<IOptions<ValidationComponentOptions>>().Value;
 
 			foreach (var model in context.ActionArguments.Values)
 			{
-				if (options.Validations.TryGetValue(model.GetType(), out var validation))
+				if (options.ValidationDispatchers.TryGetValue(model.GetType(), out var dispatchers))
 				{
-					validation(provider, model);
+					foreach (var dispatcher in dispatchers)
+					{
+						dispatcher(provider, model);
+					}
 				}
 			}
 
@@ -37,8 +40,8 @@ namespace Phema.Validation
 		{
 			var provider = context.HttpContext.RequestServices;
 
-			var validationContext = provider.GetRequiredService<IValidationContext>();
 			var formatter = provider.GetRequiredService<IValidationOutputFormatter>();
+			var validationContext = provider.GetRequiredService<IValidationContext>();
 
 			var errors = validationContext.Errors
 				.Where(error => error.Severity >= validationContext.Severity)

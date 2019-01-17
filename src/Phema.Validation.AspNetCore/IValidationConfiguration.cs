@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -6,10 +7,6 @@ namespace Phema.Validation
 {
 	public interface IValidationConfiguration
 	{
-		IValidationConfiguration Add<TModel, TValidation, TComponent>()
-			where TValidation : class, IValidation<TModel>
-			where TComponent : class, IValidationComponent<TModel, TValidation>;
-
 		IValidationConfiguration AddComponent<TModel, TComponent>()
 			where TComponent : class, IValidationComponent<TModel>;
 
@@ -33,14 +30,17 @@ namespace Phema.Validation
 
 			services.Configure<ValidationComponentOptions>(options =>
 			{
-				options.Validations.TryAdd(
-					typeof(TModel),
-					(provider, model) =>
-					{
-						var validation = provider.GetRequiredService<TValidation>();
-						var validationContext = provider.GetRequiredService<IValidationContext>();
-						validation.Validate(validationContext, (TModel)model);
-					});
+				if (!options.ValidationDispatchers.TryGetValue(typeof(TModel), out var dispatchers))
+				{
+					options.ValidationDispatchers.Add(typeof(TModel), dispatchers = new List<Action<IServiceProvider, object>>());
+				}
+				
+				dispatchers.Add((provider, model) =>
+				{
+					var validation = provider.GetRequiredService<TValidation>();
+					var validationContext = provider.GetRequiredService<IValidationContext>();
+					validation.Validate(validationContext, (TModel)model);
+				});
 			});
 
 			return this;
@@ -51,14 +51,6 @@ namespace Phema.Validation
 		{
 			services.TryAddSingleton<TComponent>();
 			return this;
-		}
-
-		public IValidationConfiguration Add<TModel, TValidation, TComponent>()
-			where TValidation : class, IValidation<TModel>
-			where TComponent : class, IValidationComponent<TModel, TValidation>
-		{
-			return AddComponent<TModel, TComponent>()
-				.AddValidation<TModel, TValidation>();
 		}
 	}
 }

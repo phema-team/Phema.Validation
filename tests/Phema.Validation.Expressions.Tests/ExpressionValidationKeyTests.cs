@@ -40,7 +40,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("name", error.Key);
+			Assert.Equal("person:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -57,7 +57,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("address:street", error.Key);
+			Assert.Equal("person:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -77,7 +77,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:0", error.Key);
+			Assert.Equal("person:list:0", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("array:0:name", error.Key);
+			Assert.Equal("person:array:0:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -117,7 +117,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:0:name", error.Key);
+			Assert.Equal("person:list:0:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -139,7 +139,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("array:1:name", error.Key);
+			Assert.Equal("person:array:1:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -161,7 +161,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:1:name", error.Key);
+			Assert.Equal("person:list:1:name", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -184,7 +184,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("array:0:address:street", error.Key);
+			Assert.Equal("person:array:0:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -207,7 +207,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:0:address:street", error.Key);
+			Assert.Equal("person:list:0:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -232,7 +232,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("array:1:address:street", error.Key);
+			Assert.Equal("person:array:1:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -258,7 +258,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:1:address:street", error.Key);
+			Assert.Equal("person:list:1:address:street", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -289,7 +289,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("list:1", error.Key);
+			Assert.Equal("person:list:1", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -314,7 +314,7 @@ namespace Phema.Validation.Tests
 				.AddError(() => new ValidationMessage(() => "template"));
 
 			Assert.NotNull(error);
-			Assert.Equal("array:1", error.Key);
+			Assert.Equal("person:array:1", error.Key);
 			Assert.Equal("template", error.Message);
 		}
 
@@ -378,7 +378,7 @@ namespace Phema.Validation.Tests
 				.Is(value => value == "room")
 				.AddError(() => new ValidationMessage(() => "template"));
 
-			Assert.Equal("list:0:address:floor:list:1:name", error.Key);
+			Assert.Equal("person:list:0:address:floor:list:1:name", error.Key);
 		}
 
 		[Fact]
@@ -416,7 +416,7 @@ namespace Phema.Validation.Tests
 				.Is(value => value == "room")
 				.AddError(() => new ValidationMessage(() => "template"));
 
-			Assert.Equal("array:0:address:floor:array:1:name", error.Key);
+			Assert.Equal("person:array:0:address:floor:array:1:name", error.Key);
 		}
 
 		[Fact]

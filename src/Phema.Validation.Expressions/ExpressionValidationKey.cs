@@ -29,7 +29,7 @@ namespace Phema.Validation
 
 			visitor.Visit(expression);
 
-			return visitor.Result;
+			return visitor.GetResult<TModel>();
 		}
 	}
 }

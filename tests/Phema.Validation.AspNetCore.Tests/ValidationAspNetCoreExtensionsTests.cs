@@ -67,7 +67,7 @@ namespace Phema.Validation.Tests
 
 			var options = provider.GetRequiredService<IOptions<ValidationComponentOptions>>().Value;
 
-			var (type, _) = Assert.Single(options.Validations);
+			var (type, _) = Assert.Single(options.ValidationDispatchers);
 
 			Assert.Equal(typeof(TestModel), type);
 		}

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Phema.Validation.Tests
 {
-	[DataContract]
+	[DataContract(Name = "person")]
 	public class Person
 	{
 		[DataMember(Name = "name")]

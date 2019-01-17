@@ -16,7 +16,15 @@ namespace Phema.Validation
 			this.separator = separator;
 		}
 
-		public string Result => string.Join(separator, keys.Reverse());
+		public string GetResult<TModel>()
+		{
+			var prefix = typeof(TModel).GetCustomAttribute<DataContractAttribute>()?.Name;
+
+			if (prefix != null)
+				keys.Add(prefix);
+
+			return string.Join(separator, keys.Reverse());
+		}
 
 		protected override Expression VisitMember(MemberExpression node)
 		{

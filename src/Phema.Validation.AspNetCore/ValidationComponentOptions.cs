@@ -7,9 +7,9 @@ namespace Phema.Validation
 	{
 		public ValidationComponentOptions()
 		{
-			Validations = new Dictionary<Type, Action<IServiceProvider, object>>();
+			ValidationDispatchers = new Dictionary<Type, IList<Action<IServiceProvider, object>>>();
 		}
 
-		public IDictionary<Type, Action<IServiceProvider, object>> Validations { get; }
+		public IDictionary<Type, IList<Action<IServiceProvider, object>>> ValidationDispatchers { get; }
 	}
 }
