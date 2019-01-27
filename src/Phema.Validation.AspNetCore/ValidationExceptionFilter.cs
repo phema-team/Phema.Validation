@@ -10,10 +10,7 @@ namespace Phema.Validation
 
 		public ValidationExceptionFilter(IValidationOutputFormatter formatter)
 		{
-			if (formatter == null)
-				throw new ArgumentNullException(nameof(formatter));
-
-			this.formatter = formatter;
+			this.formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
 		}
 
 		public void OnException(ExceptionContext context)

@@ -8,10 +8,7 @@ namespace Phema.Validation
 	{
 		public ValidationContextException(IReadOnlyCollection<IValidationError> errors, ValidationSeverity severity)
 		{
-			if (errors == null)
-				throw new ArgumentNullException(nameof(errors));
-
-			Errors = errors;
+			Errors = errors ?? throw new ArgumentNullException(nameof(errors));
 			Severity = severity;
 		}
 

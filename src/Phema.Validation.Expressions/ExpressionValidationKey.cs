@@ -9,10 +9,7 @@ namespace Phema.Validation
 
 		internal ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression, string separator)
 		{
-			if (expression == null)
-				throw new ArgumentNullException(nameof(expression));
-
-			this.expression = expression;
+			this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
 			Key = FormatKeyFromExpression(expression, separator);
 		}
 

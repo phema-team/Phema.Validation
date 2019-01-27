@@ -6,18 +6,18 @@ namespace Phema.Validation
 {
 	internal static class ExpressionCache
 	{
-		private static readonly IDictionary<Expression, Func<object, object>> cache;
+		private static IDictionary<Expression, Func<object, object>> Cache { get; }
 
 		public static Func<TModel, TProperty> GetFromExpression<TModel, TProperty>(
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			if (!cache.TryGetValue(expression, out var factory))
+			if (!Cache.TryGetValue(expression, out var factory))
 			{
 				var selector = expression.Compile();
 
 				factory = m => selector((TModel)m);
 
-				cache.Add(expression, factory);
+				Cache.Add(expression, factory);
 			}
 
 			return m => (TProperty)factory(m);
@@ -25,7 +25,7 @@ namespace Phema.Validation
 
 		static ExpressionCache()
 		{
-			cache = new Dictionary<Expression, Func<object, object>>();
+			Cache = new Dictionary<Expression, Func<object, object>>();
 		}
 	}
 }

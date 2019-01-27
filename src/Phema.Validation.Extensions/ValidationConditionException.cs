@@ -7,10 +7,7 @@ namespace Phema.Validation
 	{
 		public ValidationConditionException(IValidationError error)
 		{
-			if (error == null)
-				throw new ArgumentNullException(nameof(error));
-
-			Error = error;
+			Error = error ?? throw new ArgumentNullException(nameof(error));
 		}
 
 		public IValidationError Error { get; }

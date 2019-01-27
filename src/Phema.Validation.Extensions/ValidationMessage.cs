@@ -6,10 +6,7 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument, string> templateProvider)
 		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-
-			TemplateProvider = templateProvider;
+			TemplateProvider = templateProvider ?? throw new ArgumentNullException(nameof(templateProvider));
 		}
 
 		public Func<TArgument, string> TemplateProvider { get; }
@@ -32,10 +29,7 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument1, TArgument2, string> templateProvider)
 		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-
-			TemplateProvider = templateProvider;
+			TemplateProvider = templateProvider ?? throw new ArgumentNullException(nameof(templateProvider));
 		}
 
 		public Func<TArgument1, TArgument2, string> TemplateProvider { get; }
@@ -59,10 +53,7 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<TArgument1, TArgument2, TArgument3, string> templateProvider)
 		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-
-			TemplateProvider = templateProvider;
+			TemplateProvider = templateProvider ?? throw new ArgumentNullException(nameof(templateProvider));
 		}
 
 		public Func<TArgument1, TArgument2, TArgument3, string> TemplateProvider { get; }

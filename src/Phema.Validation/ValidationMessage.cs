@@ -6,10 +6,7 @@ namespace Phema.Validation
 	{
 		public ValidationMessage(Func<object[], string> templateProvider)
 		{
-			if (templateProvider == null)
-				throw new ArgumentNullException(nameof(templateProvider));
-
-			TemplateProvider = templateProvider;
+			TemplateProvider = templateProvider ?? throw new ArgumentNullException(nameof(templateProvider));
 		}
 
 		public ValidationMessage(Func<string> templateProvider)

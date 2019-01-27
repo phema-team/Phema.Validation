@@ -9,7 +9,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument
 			}, ValidationSeverity.Error);
@@ -20,7 +20,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument
 			}, ValidationSeverity.Warning);
@@ -31,7 +31,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument
 			}, ValidationSeverity.Information);
@@ -42,7 +42,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument
 			}, ValidationSeverity.Debug);
@@ -53,7 +53,7 @@ namespace Phema.Validation
 			Func<ValidationMessage<TArgument>> selector,
 			TArgument argument)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument
 			}, ValidationSeverity.Trace);
@@ -65,7 +65,7 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2
 			}, ValidationSeverity.Error);
@@ -77,7 +77,7 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2
 			}, ValidationSeverity.Warning);
@@ -89,7 +89,7 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2
 			}, ValidationSeverity.Information);
@@ -101,7 +101,7 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2
 			}, ValidationSeverity.Debug);
@@ -113,7 +113,7 @@ namespace Phema.Validation
 			TArgument1 argument1,
 			TArgument2 argument2)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2
 			}, ValidationSeverity.Trace);
@@ -126,7 +126,7 @@ namespace Phema.Validation
 			TArgument2 argument2,
 			TArgument3 argument3)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2, argument3
 			}, ValidationSeverity.Error);
@@ -139,7 +139,7 @@ namespace Phema.Validation
 			TArgument2 argument2,
 			TArgument3 argument3)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2, argument3
 			}, ValidationSeverity.Warning);
@@ -152,7 +152,7 @@ namespace Phema.Validation
 			TArgument2 argument2,
 			TArgument3 argument3)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2, argument3
 			}, ValidationSeverity.Information);
@@ -165,7 +165,7 @@ namespace Phema.Validation
 			TArgument2 argument2,
 			TArgument3 argument3)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2, argument3
 			}, ValidationSeverity.Debug);
@@ -178,7 +178,7 @@ namespace Phema.Validation
 			TArgument2 argument2,
 			TArgument3 argument3)
 		{
-			return condition.Add(() => selector(), new object[]
+			return condition.Add(selector, new object[]
 			{
 				argument1, argument2, argument3
 			}, ValidationSeverity.Trace);
