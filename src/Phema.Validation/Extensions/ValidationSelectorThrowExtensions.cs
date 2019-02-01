@@ -1,56 +1,65 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
 	public static class ValidationSelectorThrowExtensions
 	{
-		public static void Throw(
-			this IValidationSelector builder,
-			Func<IValidationTemplate> selector,
-			object[] arguments = null)
+		private static void Throw<TValidationComponent, TValidationTemplate>(
+			this IValidationSelector condition,
+			Func<TValidationComponent, TValidationTemplate> selector,
+			object[] arguments)
+				where TValidationComponent : IValidationComponent
+				where TValidationTemplate : IValidationTemplate
 		{
-			arguments = arguments ?? Array.Empty<object>();
+			var component = condition.GetRequiredService<TValidationComponent>();
 
-			var error = builder.Add(selector, arguments, ValidationSeverity.Fatal);
+			var message = selector(component);
 
+			var error =  condition.Add(() => message, arguments, ValidationSeverity.Fatal);
+			
 			if (error != null)
 			{
 				throw new ValidationConditionException(error);
 			}
 		}
 
-		public static void Throw(
-			this IValidationSelector builder,
-			Func<ValidationTemplate> selector)
+		public static void Throw<TValidationComponent>(
+			this IValidationSelector condition,
+			Func<TValidationComponent, ValidationTemplate> selector)
+				where TValidationComponent : IValidationComponent
 		{
-			builder.Throw(selector, null);
+			condition.Throw(selector, Array.Empty<object>());
 		}
 
-		public static void Throw<TArgument>(
-			this IValidationSelector builder,
-			Func<ValidationTemplate<TArgument>> selector,
+		public static void Throw<TValidationComponent, TArgument>(
+			this IValidationSelector condition,
+			Func<TValidationComponent, ValidationTemplate<TArgument>> selector,
 			TArgument argument)
+				where TValidationComponent : IValidationComponent
 		{
-			builder.Throw(selector, new object[] { argument });
+			condition.Throw(selector, new object[] { argument });
 		}
-
-		public static void Throw<TArgument1, TArgument2>(
-			this IValidationSelector builder,
-			Func<ValidationTemplate<TArgument1, TArgument2>> selector,
+		
+		public static void Throw<TValidationComponent, TArgument1, TArgument2>(
+			this IValidationSelector condition,
+			Func<TValidationComponent, ValidationTemplate<TArgument1, TArgument2>> selector,
 			TArgument1 argument1,
 			TArgument2 argument2)
+				where TValidationComponent : IValidationComponent
 		{
-			builder.Throw(selector, new object[] { argument1, argument2 });
+			condition.Throw(selector, new object[] { argument1, argument2 });
 		}
 
-		public static void Throw<TArgument1, TArgument2, TArgument3>(
-			this IValidationSelector builder,
-			Func<ValidationTemplate<TArgument1, TArgument2, TArgument3>> selector,
+		public static void Throw<TValidationComponent, TArgument1, TArgument2, TArgument3>(
+			this IValidationSelector condition,
+			Func<TValidationComponent, ValidationTemplate<TArgument1, TArgument2>> selector,
 			TArgument1 argument1,
 			TArgument2 argument2,
 			TArgument3 argument3)
+			where TValidationComponent : IValidationComponent
 		{
-			builder.Throw(selector, new object[] { argument1, argument2, argument3 });
+			condition.Throw(selector, new object[] { argument1, argument2, argument3 });
 		}
 	}
 }

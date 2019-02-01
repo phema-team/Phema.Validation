@@ -483,5 +483,88 @@ namespace Phema.Validation.Tests
 			Assert.Equal("template: 11, 22, 33", error.Message);
 			Assert.Equal(ValidationSeverity.Trace, error.Severity);
 		}
+		
+		[Fact]
+		public void Throw()
+		{
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("age", 10)
+					.Is(value => value == 10)
+					.Throw<TestModelValidationComponent>(c => c.TestModelTemplate1));
+
+			Assert.Equal("age", exception.Error.Key);
+			Assert.Equal("template1", exception.Error.Message);
+			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
+		}
+
+		[Fact]
+		public void Throw_Valid()
+		{
+			validationContext.When("age", 10)
+				.Is(value => value == 9)
+				.Throw<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.True(validationContext.IsValid());
+		}
+
+		[Fact]
+		public void Throw_OneParameter()
+		{
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("age", 10)
+					.Is(value => value == 10)
+					.Throw<TestModelValidationComponent, int>(c => c.TestModelTemplate3, 11));
+
+			Assert.Equal("age", exception.Error.Key);
+			Assert.Equal("template: 11", exception.Error.Message);
+			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
+		}
+
+		[Fact]
+		public void Throw_OneParameter_Valid()
+		{
+			validationContext.When("age", 10)
+				.Is(value => value == 9)
+				.Throw<TestModelValidationComponent, int>(c => c.TestModelTemplate3, 11);
+
+			Assert.True(validationContext.IsValid());
+		}
+
+		[Fact]
+		public void Throw_TwoParameters()
+		{
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("age", 10)
+					.Is(value => value == 10)
+					.Throw<TestModelValidationComponent, int, int>(c => c.TestModelTemplate4, 11, 22));
+
+			Assert.Equal("age", exception.Error.Key);
+			Assert.Equal("template: 11, 22", exception.Error.Message);
+			Assert.Equal(ValidationSeverity.Fatal, exception.Error.Severity);
+		}
+
+		[Fact]
+		public void Throw_TwoParameters_Valid()
+		{
+			validationContext.When("age", 10)
+				.Is(value => value == 9)
+				.Throw<TestModelValidationComponent, int, int>(c => c.TestModelTemplate4, 11, 22);
+
+			Assert.True(validationContext.IsValid());
+		}
+
+		[Fact]
+		public void ThrowAddsSameErrorAsContext()
+		{
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("age", 10)
+					.Is(value => value == 10)
+					.Throw<TestModelValidationComponent>(c => c.TestModelTemplate1));
+
+			var error = Assert.Single(validationContext.Errors);
+
+			Assert.Equal(error, exception.Error);
+			Assert.Same(error, exception.Error);
+		}
 	}
 }
