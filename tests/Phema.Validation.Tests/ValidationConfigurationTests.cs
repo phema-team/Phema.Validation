@@ -5,40 +5,16 @@ using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class TestModel
+	public class ValidationConfigurationTests
 	{
-	}
-		
-	public class TestModelValidation : IValidation<TestModel>
-	{
-		public void Validate(IValidationContext validationContext, TestModel model)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-
-	public class TestModelValidationComponent : IValidationComponent<TestModel, TestModelValidation>
-	{
-		public TestModelValidationComponent()
-		{
-			TestModelTemplate = new ValidationTemplate(() => "template");
-		}
-
-		public ValidationTemplate TestModelTemplate { get; }
-	}
-	
-	public class ValidationCondigurationTests
-	{
-		
-
 		[Fact]
 		public void NoConfiguration_NoServices()
 		{
 			var services = new ServiceCollection()
 				.AddPhemaValidation();
 			
-			Assert.False(services.Any(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IValidation<>))));
-			Assert.False(services.Any(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IValidationComponent))));
+			Assert.Empty(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IValidation<>))));
+			Assert.Empty(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IValidationComponent))));
 			Assert.Single(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IConfigureOptions<ValidationOptions>))));
 		}
 

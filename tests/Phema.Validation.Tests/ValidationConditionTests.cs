@@ -21,12 +21,12 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", "value")
 				.Is(value => value == "value")
-				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate);
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			var (key, message) = Assert.Single(validationContext.Errors);
 			
 			Assert.Equal("key", key);
-			Assert.Equal("template", message);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -34,12 +34,12 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", "value")
 				.Is(() => true)
-				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate);
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 			
 			var (key, message) = Assert.Single(validationContext.Errors);
 			
 			Assert.Equal("key", key);
-			Assert.Equal("template", message);
+			Assert.Equal("template1", message);
 		}
 		
 		[Fact]
@@ -48,12 +48,12 @@ namespace Phema.Validation.Tests
 			validationContext.When("key", "value")
 				.Is(() => true)
 				.Is(value => value == "value")
-				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate);
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 			
 			var (key, message) = Assert.Single(validationContext.Errors);
 			
 			Assert.Equal("key", key);
-			Assert.Equal("template", message);
+			Assert.Equal("template1", message);
 		}
 		
 		[Fact]
@@ -62,7 +62,7 @@ namespace Phema.Validation.Tests
 			validationContext.When("key", "value")
 				.Is(() => true)
 				.Is(value => false)
-				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate);
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 			
 			Assert.Empty(validationContext.Errors);
 		}
@@ -93,7 +93,7 @@ namespace Phema.Validation.Tests
 					Assert.False(true);
 					return false;
 				})
-				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate);
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 			
 			Assert.Equal(3, raises);
 		}

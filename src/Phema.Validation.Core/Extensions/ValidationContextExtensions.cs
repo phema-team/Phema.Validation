@@ -12,7 +12,7 @@ namespace Phema.Validation
 		/// <returns></returns>
 		public static bool IsValid(this IValidationContext validationContext, IValidationKey validationKey = null)
 		{
-			return validationContext.Errors
+			return !validationContext.Errors
 				.Where(error => error.Severity >= validationContext.Severity)
 				.Any(error => validationKey == null || error.Key == validationKey.Key);
 		}

@@ -13,4 +13,9 @@
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Phema.Validation.Expressions\Phema.Validation.Expressions.csproj" />
+	  <ProjectReference Include="..\Phema.Validation.Tests\Phema.Validation.Tests.csproj" />
+	</ItemGroup>
+
 </Project>
