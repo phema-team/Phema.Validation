@@ -15,11 +15,15 @@ namespace Phema.Validation
 		}
 
 		/// <inheritdoc cref="IValidationKey.Key"/>
-		public string Key => key ?? (key = ExpressionHelper.FormatKeyFromExpression(expression));
-
-		public TProperty GetValue(TModel model)
+		public string Key => key ?? (key = FormatKeyFromExpression(expression));
+		
+		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression)
 		{
-			return ExpressionHelper.GetFromExpression(expression)(model);
+			var visitor = new ExpressionValidationKeyVisitor();
+
+			visitor.Visit(expression);
+
+			return visitor.GetResult<TModel>();
 		}
 	}
 }

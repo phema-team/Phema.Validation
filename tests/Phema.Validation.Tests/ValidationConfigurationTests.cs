@@ -78,17 +78,5 @@ namespace Phema.Validation.Tests
 			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidation<TestModel>)));
 			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
 		}
-
-		[Fact]
-		public void ConfigureValidationOptions()
-		{
-			var provider = new ServiceCollection()
-				.AddPhemaValidation(options: o => o.Severity = ValidationSeverity.Trace)
-				.BuildServiceProvider();
-
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-			
-			Assert.Equal(ValidationSeverity.Trace, options.Severity);
-		}
 	}
 }

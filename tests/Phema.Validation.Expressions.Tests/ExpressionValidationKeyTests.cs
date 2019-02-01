@@ -24,12 +24,12 @@ namespace Phema.Validation.Tests
 		public void ExpressionEquality()
 		{
 			Expression<Func<TestModel, string>> e = p => p.String;
-			Expression<Func<TestModel, string>> e2 = p => p.Nested.String;
+			Expression<Func<TestModel, string>> e2 = p => p.String;
 
 			Assert.False(e.Equals(e2));
 			Assert.NotEqual(e.GetHashCode(), e2.GetHashCode());
 		}
-
+		
 		[Fact]
 		public void NamedExpression()
 		{

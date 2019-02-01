@@ -11,7 +11,7 @@ namespace Phema.Validation
 			Expression<Func<TModel, TProperty>> expression)
 		{
 			var key = new ExpressionValidationKey<TModel, TProperty>(expression);
-			var value = key.GetValue(model);
+			var value = expression.Compile()(model);
 
 			return validationContext.When(key, value);
 		}
