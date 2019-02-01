@@ -1,7 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
@@ -12,10 +10,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var provider = (IServiceProvider)validationContext;
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
+			var key = new ExpressionValidationKey<TModel, TProperty>(expression);
 			var value = key.GetValue(model);
 
 			return validationContext.When(key, value);
@@ -27,13 +22,9 @@ namespace Phema.Validation
 			Expression<Func<TModel, TProperty>> expression,
 			Func<TModel, TProperty> selector)
 		{
-			var provider = (IServiceProvider)validationContext;
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
 			var value = selector(model);
 
-			return validationContext.When(key, value);
+			return validationContext.When(new ExpressionValidationKey<TModel, TProperty>(expression), value);
 		}
 
 		public static bool IsValid<TModel>(
@@ -48,12 +39,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var provider = (IServiceProvider)validationContext;
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
-
-			return validationContext.IsValid(key);
+			return validationContext.IsValid(new ExpressionValidationKey<TModel, TProperty>(expression));
 		}
 
 		public static void EnsureIsValid<TModel>(
@@ -68,10 +54,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var provider = (IServiceProvider)validationContext;
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
-
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression, options.Separator);
+			var key = new ExpressionValidationKey<TModel, TProperty>(expression);
 
 			validationContext.EnsureIsValid(key);
 		}

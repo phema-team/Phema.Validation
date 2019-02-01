@@ -2,15 +2,18 @@
 
 namespace Phema.Validation
 {
-	public sealed class ValidationKey : IValidationKey
+	/// <inheritdoc cref="IValidationKey"/>
+	internal sealed class ValidationKey : IValidationKey
 	{
-		private ValidationKey(string key)
+		public ValidationKey(string key)
 		{
 			Key = key ?? throw new ArgumentNullException(nameof(key));
 		}
 
+		/// <inheritdoc cref="IValidationKey.Key"/>
 		public string Key { get; }
 
+		#region Equality
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj))
@@ -25,10 +28,6 @@ namespace Phema.Validation
 		{
 			return Key != null ? Key.GetHashCode() : 0;
 		}
-
-		public static implicit operator ValidationKey(string key)
-		{
-			return new ValidationKey(key);
-		}
+		#endregion
 	}
 }

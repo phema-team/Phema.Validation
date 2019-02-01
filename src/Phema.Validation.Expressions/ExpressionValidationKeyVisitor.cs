@@ -6,15 +6,13 @@ using System.Runtime.Serialization;
 
 namespace Phema.Validation
 {
+	/// <summary>
+	/// Обходит дерево выражений и строит его строковое представление
+	/// </summary>
 	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
-		private readonly string separator;
+		private const string Separator = ":";
 		private readonly IList<string> keys = new List<string>();
-
-		public ExpressionValidationKeyVisitor(string separator)
-		{
-			this.separator = separator;
-		}
 
 		public string GetResult<TModel>()
 		{
@@ -23,7 +21,7 @@ namespace Phema.Validation
 			if (prefix != null)
 				keys.Add(prefix);
 
-			return string.Join(separator, keys.Reverse());
+			return string.Join(Separator, keys.Reverse());
 		}
 
 		protected override Expression VisitMember(MemberExpression node)
