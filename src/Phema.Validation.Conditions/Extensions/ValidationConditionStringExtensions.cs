@@ -20,7 +20,7 @@ namespace Phema.Validation
 		public static IValidationCondition<string> IsNullOrWhitespace(
 			this IValidationCondition<string> builder)
 		{
-			return builder.Is(value => string.IsNullOrWhiteSpace(value));
+			return builder.Is(string.IsNullOrWhiteSpace);
 		}
 
 		public static IValidationCondition<string> IsMatch(
@@ -50,6 +50,20 @@ namespace Phema.Validation
 			int length)
 		{
 			return builder.Is(value => value != null && value.Length == length);
+		}
+		
+		public static IValidationCondition<string> HasLengthLess(
+			this IValidationCondition<string> builder,
+			int length)
+		{
+			return builder.Is(value => value != null && value.Length < length);
+		}
+		
+		public static IValidationCondition<string> HasLengthGreater(
+			this IValidationCondition<string> builder,
+			int length)
+		{
+			return builder.Is(value => value != null && value.Length > length);
 		}
 	}
 }

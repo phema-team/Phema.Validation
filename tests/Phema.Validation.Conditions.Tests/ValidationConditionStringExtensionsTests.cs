@@ -163,5 +163,47 @@ namespace Phema.Validation.Tests
 
 			Assert.Empty(validationContext.Errors);
 		}
+		
+		[Fact]
+		public void HasLengthLess()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.HasLengthLess(5)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void HasLengthLess_Valid()
+		{
+			validationContext.When("name", "john")
+				.HasLengthLess(3)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Empty(validationContext.Errors);
+		}
+		
+		[Fact]
+		public void HasLengthGreater()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.HasLengthGreater(3)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void HasLengthGreater_Valid()
+		{
+			validationContext.When("name", "john")
+				.HasLengthGreater(5)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Empty(validationContext.Errors);
+		}
 	}
 }
