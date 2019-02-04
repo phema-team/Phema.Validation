@@ -3,26 +3,27 @@ using System.Linq.Expressions;
 
 namespace Phema.Validation
 {
+	/// <inheritdoc cref="IValidationKey"/>
 	internal sealed class ExpressionValidationKey<TModel, TProperty> : IValidationKey
 	{
+		private string key;
+		private readonly ExpressionPhemaValidationOptions options;
 		private readonly Expression<Func<TModel, TProperty>> expression;
 
-		internal ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression, string separator)
+		public ExpressionValidationKey(ExpressionPhemaValidationOptions options, Expression<Func<TModel, TProperty>> expression)
 		{
+			this.options = options;
 			this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-			Key = FormatKeyFromExpression(expression, separator);
 		}
 
-		public string Key { get; }
-
-		public TProperty GetValue(TModel model)
+		/// <inheritdoc cref="IValidationKey.Key"/>
+		public string Key => key ?? (key = FormatKeyFromExpression(options, expression));
+		
+		private static string FormatKeyFromExpression(
+			ExpressionPhemaValidationOptions options,
+			Expression<Func<TModel, TProperty>> expression)
 		{
-			return ExpressionCache.GetFromExpression(expression)(model);
-		}
-
-		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression, string separator)
-		{
-			var visitor = new ExpressionValidationKeyVisitor(separator);
+			var visitor = new ExpressionValidationKeyVisitor(options);
 
 			visitor.Visit(expression);
 

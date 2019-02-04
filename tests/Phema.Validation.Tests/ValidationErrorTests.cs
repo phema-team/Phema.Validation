@@ -40,9 +40,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Deconstruct()
 		{
-			var error = new ValidationError("key", "template", ValidationSeverity.Error);
-
-			var (key, message) = error;
+			var (key, message) = new ValidationError("key", "template", ValidationSeverity.Error);
 
 			Assert.Equal("key", key);
 			Assert.Equal("template", message);
@@ -51,9 +49,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void DeconstructSeverity()
 		{
-			var error = new ValidationError("key", "template", ValidationSeverity.Error);
-
-			var (key, message, severity) = error;
+			var (key, message, severity) = new ValidationError("key", "template", ValidationSeverity.Error);
 
 			Assert.Equal("key", key);
 			Assert.Equal("template", message);

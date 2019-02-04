@@ -2,13 +2,17 @@
 
 namespace Phema.Validation
 {
-	public interface IValidationCondition
+	/// <summary>
+	/// Используется для настройки условий валидации <see cref="TValue"/>
+	/// </summary>
+	/// <typeparam name="TValue"></typeparam>
+	public interface IValidationCondition<out TValue> : IValidationSelector
 	{
-		IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity);
-	}
-
-	public interface IValidationCondition<out TValue> : IValidationCondition
-	{
-		IValidationCondition<TValue> Is(Func<TValue, bool> condition);
+		/// <summary>
+		/// Метод, в которой передается <see cref="selector"/> для валидации значения <see cref="TValue"/>
+		/// </summary>
+		/// <param name="selector"></param>
+		/// <returns></returns>
+		IValidationCondition<TValue> Is(Func<TValue, bool> selector);
 	}
 }

@@ -14,7 +14,9 @@ namespace Phema.Validation.Tests
 		public ExpressionValidationKeyTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation()
+				.AddPhemaValidation(configuration =>
+					configuration.AddComponent<TestModel, TestModelValidationComponent>())
+				.ConfigurePhemaValidationExpressions(o => o.UseDataContractPrefix = true)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -22,260 +24,250 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionEquality()
 		{
-			Expression<Func<Person, string>> e = p => p.Name;
-
-			Expression<Func<Person, string>> e2 = p => p.Address.Street;
+			Expression<Func<TestModel, string>> e = p => p.String;
+			Expression<Func<TestModel, string>> e2 = p => p.String;
 
 			Assert.False(e.Equals(e2));
 			Assert.NotEqual(e.GetHashCode(), e2.GetHashCode());
 		}
-
+		
 		[Fact]
 		public void NamedExpression()
 		{
-			var person = new Person();
+			var model = new TestModel();
 
-			var error = validationContext.When(person, p => p.Name)
+			var error = validationContext.When(model, m => m.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedJoinedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
-				Address = new Address()
+				Nested = new TestModel()
 			};
 
-			var error = validationContext.When(person, p => p.Address.Street)
+			var error = validationContext.When(model, m => m.Nested.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:address:street", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:nested:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedListExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
-				List = new List<Children>
-				{
-					new Children()
-				}
+				List = new List<TestModel> { new TestModel() }
 			};
 
-			var error = validationContext.When(person, p => p.List[0])
+			var error = validationContext.When(model, m => m.List[0])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:0", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:list:0", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedArrayWithJoinedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
 				Array = new[]
 				{
-					new Children()
+					new TestModel()
 				}
 			};
 
-			var error = validationContext.When(person, p => p.Array[0].Name)
+			var error = validationContext.When(model, m => m.Array[0].String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:array:0:name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:array:0:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedListWithJoinedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
-				List = new List<Children>
+				List = new List<TestModel>
 				{
-					new Children()
+					new TestModel()
 				}
 			};
 
-			var error = validationContext.When(person, p => p.List[0].Name)
+			var error = validationContext.When(model, m => m.List[0].String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:0:name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:list:0:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberArrayWithJoinedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
 				Array = new[]
 				{
-					new Children(), new Children()
+					new TestModel(), new TestModel()
 				}
 			};
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.Array[index].Name)
+			var error = validationContext.When(model, m => m.Array[index].String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:array:1:name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:array:1:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberListWithJoinedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
-				List = new List<Children>
+				List = new List<TestModel>
 				{
-					new Children(), new Children()
+					new TestModel(), new TestModel()
 				}
 			};
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.List[index].Name)
+			var error = validationContext.When(model, p => p.List[index].String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:1:name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:list:1:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberArrayWithJoinedAndIndexedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
 				Array = new[]
 				{
-					new Children
+					new TestModel
 					{
-						Address = new Address()
+						Nested = new TestModel()
 					}
 				}
 			};
 
-			var error = validationContext.When(person, p => p.Array[0].Address.Street)
+			var error = validationContext.When(model, p => p.Array[0].Nested.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:array:0:address:street", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:array:0:nested:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberListWithJoinedAndIndexedExpression()
 		{
-			var person = new Person
+			var model = new TestModel
 			{
-				List = new List<Children>
+				List = new List<TestModel>
 				{
-					new Children
+					new TestModel
 					{
-						Address = new Address()
+						Nested = new TestModel()
 					}
 				}
 			};
 
-			var error = validationContext.When(person, p => p.List[0].Address.Street)
+			var error = validationContext.When(model, p => p.List[0].Nested.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:0:address:street", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:list:0:nested:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberArrayWithJoinedAndIndexedMemberExpression()
 		{
-			var person = new Person
+			var person = new TestModel
 			{
 				Array = new[]
 				{
-					new Children(), new Children
+					new TestModel(), new TestModel
 					{
-						Address = new Address()
+						Nested = new TestModel()
 					}
 				}
 			};
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.Array[index].Address.Street)
+			var error = validationContext.When(person, p => p.Array[index].Nested.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:array:1:address:street", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:array:1:nested:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void NamedIndexedMemberListWithJoinedAndIndexedMemberExpression()
 		{
-			var person = new Person
+			var person = new TestModel
 			{
-				List = new List<Children>
+				List = new List<TestModel>
 				{
-					new Children(),
-					new Children
+					new TestModel(),
+					new TestModel
 					{
-						Address = new Address()
+						Nested = new TestModel()
 					}
 				}
 			};
 
 			var index = 1;
 
-			var error = validationContext.When(person, p => p.List[index].Address.Street)
+			var error = validationContext.When(person, p => p.List[index].Nested.String)
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:1:address:street", error.Key);
-			Assert.Equal("template", error.Message);
-		}
-
-		public class Dimensional
-		{
-			[DataMember(Name = "array")]
-			public int[,] Array { get; set; }
+			Assert.Equal("test:list:1:nested:string", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void IndexedListByNestedProperties()
 		{
-			var person = new Person
+			var person = new TestModel 
 			{
-				List = new[]
+				List = new List<TestModel>
 				{
-					new Children(), new Children()
+					new TestModel(), new TestModel()
 				}
 			};
 
@@ -286,21 +278,21 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When(person, d => d.List[model.Index])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:list:1", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:list:1", error.Key);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void IndexedArrayByNestedProperties()
 		{
-			var person = new Person
+			var person = new TestModel
 			{
 				Array = new[]
 				{
-					new Children(), new Children()
+					new TestModel(), new TestModel()
 				}
 			};
 
@@ -311,11 +303,18 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When(person, d => d.Array[model.Index])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
-			Assert.Equal("person:array:1", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("test:array:1", error.Key);
+			Assert.Equal("template1", error.Message);
+		}
+		
+		
+		public class Dimensional
+		{
+			[DataMember(Name = "array")]
+			public int[,] Array { get; set; }
 		}
 
 		[Fact]
@@ -336,31 +335,32 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When(dimensional, d => d.Array[1, 0])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
 			Assert.Equal("array:1:0", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void LongIndexExpressionWithDoubleConstants()
 		{
-			var person = new Person
+			var person = new TestModel
 			{
-				List = new List<Children>
+				List = new List<TestModel>
 				{
-					new Children
+					new TestModel
 					{
-						Address = new Address
+						Nested = new TestModel
 						{
-							Floor = new Floor
+							Nested = new TestModel
 							{
-								List = new[]
+								List = new List<TestModel>
 								{
-									new Room(), new Room
+									new TestModel(), 
+									new TestModel
 									{
-										Name = "room"
+										String = "room"
 									}
 								}
 							}
@@ -374,31 +374,32 @@ namespace Phema.Validation.Tests
 				Index1 = 0, Index2 = 1
 			};
 
-			var error = validationContext.When(person, p => p.List[model.Index1].Address.Floor.List[model.Index2].Name)
+			var error = validationContext.When(person, p => p.List[model.Index1].Nested.Nested.List[model.Index2].String)
 				.Is(value => value == "room")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("person:list:0:address:floor:list:1:name", error.Key);
+			Assert.Equal("test:list:0:nested:nested:list:1:string", error.Key);
 		}
 
 		[Fact]
 		public void LongIndexExpressionWithDoubleConstantsWithArray()
 		{
-			var person = new Person
+			var person = new TestModel
 			{
 				Array = new[]
 				{
-					new Children
+					new TestModel
 					{
-						Address = new Address
+						Nested = new TestModel
 						{
-							Floor = new Floor
+							Nested = new TestModel
 							{
 								Array = new[]
 								{
-									new Room(), new Room
+									new TestModel(),
+									new TestModel
 									{
-										Name = "room"
+										String = "room"
 									}
 								}
 							}
@@ -412,11 +413,11 @@ namespace Phema.Validation.Tests
 				Index1 = 0, Index2 = 1
 			};
 
-			var error = validationContext.When(person, p => p.Array[model.Index1].Address.Floor.Array[model.Index2].Name)
+			var error = validationContext.When(person, p => p.Array[model.Index1].Nested.Nested.Array[model.Index2].String)
 				.Is(value => value == "room")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("person:array:0:address:floor:array:1:name", error.Key);
+			Assert.Equal("test:array:0:nested:nested:array:1:string", error.Key);
 		}
 
 		[Fact]
@@ -424,7 +425,7 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("e", p => p[0])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.Equal("0", error.Key);
 		}
@@ -439,7 +440,7 @@ namespace Phema.Validation.Tests
 
 			var error = validationContext.When(model, m => m.Name[0])
 				.Is(value => true)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.Equal("Name:0", error.Key);
 		}
@@ -447,7 +448,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey()
 		{
-			var key = new ExpressionValidationKey<string, int>(s => s.Length, ":");
+			var key = new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), s => s.Length);
 
 			Assert.Equal("Length", key.Key);
 		}
@@ -456,7 +457,7 @@ namespace Phema.Validation.Tests
 		public void NullExpressionValidationKey()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(
-				() => new ExpressionValidationKey<string, int>(null, ":"));
+				() => new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), null));
 
 			Assert.Equal("expression", exception.ParamName);
 		}
@@ -464,7 +465,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey_NotMemberExpression()
 		{
-			var key = new ExpressionValidationKey<string, int>(s => s.GetHashCode(), ":");
+			var key = new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), s => s.GetHashCode());
 
 			Assert.Equal("", key.Key);
 		}

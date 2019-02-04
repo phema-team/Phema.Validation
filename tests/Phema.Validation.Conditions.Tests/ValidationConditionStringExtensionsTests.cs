@@ -11,7 +11,8 @@ namespace Phema.Validation.Tests
 		public ValidationConditionStringExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation()
+				.AddPhemaValidation(configuration =>
+					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -19,12 +20,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsEmpty()
 		{
-			var error = validationContext.When("name", string.Empty)
+			var (key, message) = validationContext.When("name", string.Empty)
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -32,20 +33,20 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.Empty(validationContext.Errors);
 		}
 
 		[Fact]
 		public void IsNotEmpty()
 		{
-			var error = validationContext.When("name", "john")
+			var (key, message) = validationContext.When("name", "john")
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -53,20 +54,20 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", string.Empty)
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.Empty(validationContext.Errors);
 		}
 
 		[Fact]
 		public void IsNullOrWhitespace()
 		{
-			var error = validationContext.When("name", " ")
+			var (key, message) = validationContext.When("name", " ")
 				.IsNullOrWhitespace()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -74,20 +75,20 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsNullOrWhitespace()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.Empty(validationContext.Errors);
 		}
 
 		[Fact]
 		public void IsMatch()
 		{
-			var error = validationContext.When("name", "abc")
+			var (key, message) = validationContext.When("name", "abc")
 				.IsMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -95,20 +96,20 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "def")
 				.IsMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.Empty(validationContext.Errors);
 		}
 
 		[Fact]
 		public void IsNotMatch()
 		{
-			var error = validationContext.When("name", "def")
+			var (key, message) = validationContext.When("name", "def")
 				.IsNotMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -116,7 +117,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "abc")
 				.IsNotMatch("[a-c]+")
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -124,20 +125,20 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotEmail()
 		{
-			var error = validationContext.When((ValidationKey)"email", "email")
+			var (key, message) = validationContext.When("email", "email")
 				.IsNotEmail()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("email", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("email", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsNotEmail_Valid()
 		{
-			validationContext.When((ValidationKey)"email", "email@email.com")
+			validationContext.When("email", "email@email.com")
 				.IsNotEmail()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.True(!validationContext.Errors.Any());
 		}
@@ -145,12 +146,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasLength()
 		{
-			var error = validationContext.When("name", "john")
+			var (key, message) = validationContext.When("name", "john")
 				.HasLength(4)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -158,9 +159,51 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLength(5)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.Empty(validationContext.Errors);
+		}
+		
+		[Fact]
+		public void HasLengthLess()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.HasLengthLess(5)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void HasLengthLess_Valid()
+		{
+			validationContext.When("name", "john")
+				.HasLengthLess(3)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Empty(validationContext.Errors);
+		}
+		
+		[Fact]
+		public void HasLengthGreater()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.HasLengthGreater(3)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void HasLengthGreater_Valid()
+		{
+			validationContext.When("name", "john")
+				.HasLengthGreater(5)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+
+			Assert.Empty(validationContext.Errors);
 		}
 	}
 }

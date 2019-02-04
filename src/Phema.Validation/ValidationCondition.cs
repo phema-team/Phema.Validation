@@ -4,67 +4,64 @@ using System.Linq;
 
 namespace Phema.Validation
 {
-	internal sealed class ValidationCondition<TValue> : IValidationCondition<TValue>, IServiceProvider
+	/// <inheritdoc cref="IValidationCondition{TValue}"/>
+	internal sealed class ValidationCondition<TValue> : IValidationCondition<TValue>
 	{
 		private readonly IValidationKey key;
 		private readonly TValue value;
-		private readonly List<IValidationError> errors;
-		private readonly IServiceProvider provider;
-		private readonly IList<Func<TValue, bool>> conditions;
+		private readonly IList<IValidationError> errors;
+		private readonly IServiceProvider serviceProvider;
+		private readonly IList<Func<TValue, bool>> selectors;
 
 		public ValidationCondition(
+			IServiceProvider serviceProvider,
 			IValidationKey key,
 			TValue value,
-			List<IValidationError> errors,
-			IServiceProvider provider)
+			IList<IValidationError> errors)
 		{
 			this.key = key;
 			this.value = value;
 			this.errors = errors;
-			this.provider = provider;
-			conditions = new List<Func<TValue, bool>>();
+			this.serviceProvider = serviceProvider;
+			selectors = new List<Func<TValue, bool>>();
 		}
-
-		public IValidationCondition<TValue> Is(Func<TValue, bool> condition)
+		
+		/// <inheritdoc cref="IValidationCondition{TValue}.Is"/>
+		public IValidationCondition<TValue> Is(Func<TValue, bool> selector)
 		{
-			if (condition == null)
-				throw new ArgumentNullException(nameof(condition));
+			if (selector == null)
+				throw new ArgumentNullException(nameof(selector));
 
-			conditions.Add(condition);
+			selectors.Add(selector);
 			return this;
 		}
 
-		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
+		/// <inheritdoc cref="IValidationSelector.Add"/>
+		public IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
 		{
 			if (selector == null)
 				throw new ArgumentNullException(nameof(selector));
 
-			return conditions.All(condition => condition(value))
-				? AddError(selector, arguments, severity)
+			return selectors.All(condition => condition(value))
+				? Add()
 				: null;
-		}
+			
+			IValidationError Add()
+			{
+				if (selector == null)
+					throw new ArgumentNullException(nameof(selector));
 
-		private IValidationError AddError(Func<IValidationMessage> selector, object[] arguments,
-			ValidationSeverity severity)
-		{
-			if (selector == null)
-				throw new ArgumentNullException(nameof(selector));
+				var validationMessage = selector(serviceProvider);
 
-			var validationMessage = selector();
+				if (validationMessage == null)
+					throw new ArgumentNullException(nameof(validationMessage));
 
-			if (validationMessage == null)
-				throw new ArgumentNullException(nameof(validationMessage));
+				var message = validationMessage.GetMessage(arguments);
 
-			var message = validationMessage.GetMessage(arguments);
-
-			var error = new ValidationError(key.Key, message, severity);
-			errors.Add(error);
-			return error;
-		}
-
-		object IServiceProvider.GetService(Type serviceType)
-		{
-			return provider.GetService(serviceType);
+				var error = new ValidationError(key.Key, message, severity);
+				errors.Add(error);
+				return error;
+			}
 		}
 	}
 }

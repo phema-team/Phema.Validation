@@ -12,7 +12,8 @@ namespace Phema.Validation.Tests
 		public ValidationConditionCollectionExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation()
+				.AddPhemaValidation(configuration =>
+					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -22,192 +23,133 @@ namespace Phema.Validation.Tests
 		{
 			var error = validationContext.When("key", Array.Empty<int>())
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.NotNull(error);
 			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("template1", error.Message);
 		}
 
 		[Fact]
 		public void PropertyIsEmpty()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>()
-			};
-
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
+			var (key, message) = validationContext.When("list", new List<int>())
 				.IsEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsNotEmpty()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("list", new[] { 1 })
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void PropertyIsNotEmpty()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>
-				{
-					1
-				}
-			};
-
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.IsNotEmpty()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void HasCount()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("list", new[] { 1 })
 				.HasCount(1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void PropertyHasCount()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>
-				{
-					1
-				}
-			};
-
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.HasCount(1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void NotHasCount()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("list", new[] { 1 })
 				.NotHasCount(2)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void PropertyNotHasCount()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>
-				{
-					1
-				}
-			};
-
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.NotHasCount(2)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
+			
 
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsContains()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("list", new[] { 1 })
 				.IsContains(1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void PropertyIsContains()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>
-				{
-					1
-				}
-			};
-
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.IsContains(1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsNotContains()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
-				.IsNotContains(2)
-				.AddError(() => new ValidationMessage(() => "template"));
+			var (key, message) = validationContext.When("list", new[] { "item1" })
+				.IsNotContains("item2")
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void PropertyIsNotContains()
 		{
-			var model = new TestModel
-			{
-				Statistics = new List<int>
-				{
-					1
-				}
-			};
+			var (key, message) = validationContext.When("list", new List<int>())
+				.IsNotContains(1)
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			var error = validationContext.When(nameof(model.Statistics), model.Statistics)
-				.IsNotContains(2)
-				.AddError(() => new ValidationMessage(() => "template"));
-
-			Assert.Equal("Statistics", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 	}
 }

@@ -6,24 +6,30 @@ using System.Runtime.Serialization;
 
 namespace Phema.Validation
 {
+	/// <summary>
+	/// Обходит дерево выражений и строит его строковое представление
+	/// </summary>
 	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
-		private readonly string separator;
+		private readonly ExpressionPhemaValidationOptions options;
 		private readonly IList<string> keys = new List<string>();
 
-		public ExpressionValidationKeyVisitor(string separator)
+		public ExpressionValidationKeyVisitor(ExpressionPhemaValidationOptions options)
 		{
-			this.separator = separator;
+			this.options = options;
 		}
 
 		public string GetResult<TModel>()
 		{
-			var prefix = typeof(TModel).GetCustomAttribute<DataContractAttribute>()?.Name;
+			if (options.UseDataContractPrefix)
+			{
+				var prefix = typeof(TModel).GetCustomAttribute<DataContractAttribute>()?.Name;
+				
+				if (prefix != null)
+					keys.Add(prefix);
+			}
 
-			if (prefix != null)
-				keys.Add(prefix);
-
-			return string.Join(separator, keys.Reverse());
+			return string.Join(options.Separator, keys.Reverse());
 		}
 
 		protected override Expression VisitMember(MemberExpression node)

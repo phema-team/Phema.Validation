@@ -4,37 +4,40 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	internal sealed class ValidationContext : IValidationContext, IServiceProvider
+	/// <inheritdoc cref="IValidationContext"/>
+	internal sealed class ValidationContext : IValidationContext
 	{
-		private readonly IServiceProvider provider;
-		private readonly List<IValidationError> errors;
+		private readonly IServiceProvider serviceProvider;
 
-		public ValidationContext(IServiceProvider provider, IOptions<ValidationOptions> options)
+		public ValidationContext(IServiceProvider serviceProvider, IOptions<PhemaValidationOptions> options)
 		{
-			this.provider = provider;
 			Severity = options.Value.Severity;
-			errors = new List<IValidationError>();
+			Errors = new List<IValidationError>();
+			
+			this.serviceProvider = serviceProvider;
 		}
-
+		
+		/// <inheritdoc cref="IValidationContext.Severity"/>
 		public ValidationSeverity Severity { get; }
-		public IReadOnlyCollection<IValidationError> Errors => errors;
-
+		
+		/// <inheritdoc cref="IValidationContext.Errors"/>
+		public IReadOnlyCollection<IValidationError> Errors { get; }
+		
+		/// <inheritdoc cref="IValidationContext.When{TValue}"/>
 		public IValidationCondition<TValue> When<TValue>(IValidationKey key, TValue value)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof(key));
-
-			return new ValidationCondition<TValue>(key, value, errors, provider);
+			return new ValidationCondition<TValue>(serviceProvider, key, value, (List<IValidationError>)Errors);
+		}
+		
+		/// <inheritdoc cref="IValidationSelector.Add"/>
+		public IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
+		{
+			return this.When().Add(selector, arguments, severity);
 		}
 
-		public IValidationError Add(Func<IValidationMessage> selector, object[] arguments, ValidationSeverity severity)
+		public object GetService(Type serviceType)
 		{
-			return this.When(string.Empty).Add(selector, arguments, severity);
-		}
-
-		object IServiceProvider.GetService(Type serviceType)
-		{
-			return provider.GetService(serviceType);
+			return serviceProvider.GetService(serviceType);
 		}
 	}
 }

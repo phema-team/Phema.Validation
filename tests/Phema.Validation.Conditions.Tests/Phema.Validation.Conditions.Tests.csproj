@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<IsPackable>false</IsPackable>
 		<RootNamespace>Phema.Validation.Tests</RootNamespace>
 		<LangVersion>7.3</LangVersion>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,8 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Phema.Validation\Phema.Validation.csproj" />
 	  <ProjectReference Include="..\..\src\Phema.Validation.Conditions\Phema.Validation.Conditions.csproj" />
-	  <ProjectReference Include="..\..\src\Phema.Validation.Extensions\Phema.Validation.Extensions.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -12,7 +12,8 @@ namespace Phema.Validation.Tests
 		public ValidationConditionEnumerableExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation()
+				.AddPhemaValidation(configuration =>
+					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -20,15 +21,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsAny()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("key", new[] { 1 })
 				.IsAny()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -36,63 +34,51 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", Array.Empty<int>())
 				.IsAny()
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.False(validationContext.Errors.Any());
 		}
 
 		[Fact]
 		public void IsAnyWithParameter()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("key", new[] { 1 })
 				.IsAny(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsAnyWithParameter_Valid()
 		{
-			validationContext.When("key", new[]
-				{
-					1
-				})
+			validationContext.When("key", new[] { 1 })
 				.IsAny(x => x == 2)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.True(!validationContext.Errors.Any());
+			Assert.False(validationContext.Errors.Any());
 		}
 
 		[Fact]
 		public void IsAll()
 		{
-			var error = validationContext.When("key", new[]
-				{
-					1
-				})
+			var (key, message) = validationContext.When("key", new[] { 1 })
 				.IsAll(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
 		public void IsAll_Valid()
 		{
-			validationContext.When("key", new[]
-				{
-					1, 2
-				})
+			validationContext.When("key", new[] { 1, 2 })
 				.IsAll(x => x == 1)
-				.AddError(() => new ValidationMessage(() => "template"));
+				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.True(!validationContext.Errors.Any());
-		}
+		}	
 	}
 }
