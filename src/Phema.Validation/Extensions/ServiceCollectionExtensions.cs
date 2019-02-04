@@ -15,7 +15,7 @@ namespace Phema.Validation
 		public static IServiceCollection AddPhemaValidation(
 			this IServiceCollection services,
 			Action<IValidationConfiguration> configuration = null,
-			Action<ValidationOptions> options = null)
+			Action<PhemaValidationOptions> options = null)
 		{
 			configuration?.Invoke(new ValidationConfiguration(services));
 

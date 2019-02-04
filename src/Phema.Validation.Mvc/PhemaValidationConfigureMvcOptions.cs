@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public class PhemaValidationConfigureMvcOptions : IConfigureOptions<MvcOptions>
+	public sealed class PhemaValidationConfigureMvcOptions : IConfigureOptions<MvcOptions>
 	{
 		private readonly IServiceProvider serviceProvider;
 

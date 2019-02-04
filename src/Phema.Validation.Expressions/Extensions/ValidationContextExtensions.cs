@@ -12,7 +12,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			var options = validationContext.GetRequiredService<IOptions<ExpressionPhemaValidationOptions>>().Value;
 
 			var key = new ExpressionValidationKey<TModel, TProperty>(options, expression);
 			var value = expression.Compile()(model);
@@ -26,7 +26,7 @@ namespace Phema.Validation
 			Expression<Func<TModel, TProperty>> expression,
 			Func<TModel, TProperty> selector)
 		{
-			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			var options = validationContext.GetRequiredService<IOptions<ExpressionPhemaValidationOptions>>().Value;
 			
 			var value = selector(model);
 
@@ -45,7 +45,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			var options = validationContext.GetRequiredService<IOptions<ExpressionPhemaValidationOptions>>().Value;
 
 			return validationContext.IsValid(new ExpressionValidationKey<TModel, TProperty>(options, expression));
 		}
@@ -62,7 +62,7 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			var options = validationContext.GetRequiredService<IOptions<ExpressionPhemaValidationOptions>>().Value;
 			
 			var key = new ExpressionValidationKey<TModel, TProperty>(options, expression);
 

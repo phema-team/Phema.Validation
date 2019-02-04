@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 				.AddPhemaValidation(options: o => o.Severity = severity)
 				.BuildServiceProvider();
 
-			var options = provider.GetRequiredService<IOptions<ValidationOptions>>().Value;
+			var options = provider.GetRequiredService<IOptions<PhemaValidationOptions>>().Value;
 			
 			Assert.Equal(severity, options.Severity);
 		}

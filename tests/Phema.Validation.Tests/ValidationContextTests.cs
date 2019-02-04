@@ -193,7 +193,7 @@ namespace Phema.Validation.Tests
 
 			services.AddPhemaValidation();
 
-			services.Configure<ValidationOptions>(options => options.Severity = ValidationSeverity.Debug);
+			services.Configure<PhemaValidationOptions>(options => options.Severity = ValidationSeverity.Debug);
 
 			var provider = services.BuildServiceProvider();
 

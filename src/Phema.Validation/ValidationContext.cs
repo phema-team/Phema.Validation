@@ -9,7 +9,7 @@ namespace Phema.Validation
 	{
 		private readonly IServiceProvider serviceProvider;
 
-		public ValidationContext(IServiceProvider serviceProvider, IOptions<ValidationOptions> options)
+		public ValidationContext(IServiceProvider serviceProvider, IOptions<PhemaValidationOptions> options)
 		{
 			Severity = options.Value.Severity;
 			Errors = new List<IValidationError>();

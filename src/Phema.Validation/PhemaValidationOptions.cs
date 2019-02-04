@@ -3,9 +3,9 @@ namespace Phema.Validation
 	/// <summary>
 	/// Описывает настройки валидации
 	/// </summary>
-	public sealed class ValidationOptions
+	public sealed class PhemaValidationOptions
 	{
-		public ValidationOptions()
+		public PhemaValidationOptions()
 		{
 			Severity = ValidationSeverity.Error;
 		}

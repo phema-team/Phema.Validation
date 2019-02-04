@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	internal class MvcValidationOptions
+	internal sealed class MvcPhemaValidationOptions
 	{
-		public MvcValidationOptions()
+		public MvcPhemaValidationOptions()
 		{
 			Dispatchers = new Dictionary<Type, Action<IValidationContext, object>>();
 		}

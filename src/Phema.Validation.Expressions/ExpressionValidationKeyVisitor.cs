@@ -11,10 +11,10 @@ namespace Phema.Validation
 	/// </summary>
 	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
-		private readonly ExpressionValidationOptions options;
+		private readonly ExpressionPhemaValidationOptions options;
 		private readonly IList<string> keys = new List<string>();
 
-		public ExpressionValidationKeyVisitor(ExpressionValidationOptions options)
+		public ExpressionValidationKeyVisitor(ExpressionPhemaValidationOptions options)
 		{
 			this.options = options;
 		}

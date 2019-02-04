@@ -1,8 +1,8 @@
 namespace Phema.Validation
 {
-	public class ExpressionValidationOptions
+	public sealed class ExpressionPhemaValidationOptions
 	{
-		public ExpressionValidationOptions()
+		public ExpressionPhemaValidationOptions()
 		{
 			Separator = ":";
 			UseDataContractPrefix = false;

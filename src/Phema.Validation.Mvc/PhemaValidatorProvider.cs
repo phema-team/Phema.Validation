@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
-	public class PhemaValidatorProvider : IModelValidatorProvider
+	public sealed class PhemaValidatorProvider : IModelValidatorProvider
 	{
 		private readonly IServiceProvider serviceProvider;
 

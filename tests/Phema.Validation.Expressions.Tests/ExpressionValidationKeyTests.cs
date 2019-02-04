@@ -448,7 +448,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey()
 		{
-			var key = new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), s => s.Length);
+			var key = new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), s => s.Length);
 
 			Assert.Equal("Length", key.Key);
 		}
@@ -457,7 +457,7 @@ namespace Phema.Validation.Tests
 		public void NullExpressionValidationKey()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(
-				() => new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), null));
+				() => new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), null));
 
 			Assert.Equal("expression", exception.ParamName);
 		}
@@ -465,7 +465,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey_NotMemberExpression()
 		{
-			var key = new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), s => s.GetHashCode());
+			var key = new ExpressionValidationKey<string, int>(new ExpressionPhemaValidationOptions(), s => s.GetHashCode());
 
 			Assert.Equal("", key.Key);
 		}

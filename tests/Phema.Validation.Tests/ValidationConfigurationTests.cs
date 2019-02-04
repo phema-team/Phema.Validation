@@ -14,7 +14,7 @@ namespace Phema.Validation.Tests
 				.AddPhemaValidation();
 			
 			Assert.Empty(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IValidationComponent))));
-			Assert.Single(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IConfigureOptions<ValidationOptions>))));
+			Assert.Single(services.Where(s => (s.ImplementationType ?? s.ServiceType).IsAssignableFrom(typeof(IConfigureOptions<PhemaValidationOptions>))));
 		}
 
 		[Fact]

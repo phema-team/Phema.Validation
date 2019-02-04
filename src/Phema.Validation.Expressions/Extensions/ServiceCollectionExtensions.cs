@@ -8,7 +8,7 @@ namespace Phema.Validation
 	{
 		public static IServiceCollection ConfigurePhemaValidationExpressions(
 			this IServiceCollection services,
-			Action<ExpressionValidationOptions> options = null)
+			Action<ExpressionPhemaValidationOptions> options = null)
 		{
 			return services.Configure(options ?? (o => {}));
 		}

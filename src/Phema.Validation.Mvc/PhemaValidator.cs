@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public class PhemaValidator : IModelValidator
+	public sealed class PhemaValidator : IModelValidator
 	{
 		private readonly IServiceProvider serviceProvider;
 
@@ -19,7 +19,7 @@ namespace Phema.Validation
 		public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
 		{
 			var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
-			var options = serviceProvider.GetRequiredService<IOptions<MvcValidationOptions>>().Value;
+			var options = serviceProvider.GetRequiredService<IOptions<MvcPhemaValidationOptions>>().Value;
 
 			var dispatcher = options.Dispatchers[context.Model.GetType()];
 
