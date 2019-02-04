@@ -115,12 +115,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IfIsConditionIsTrueAddsError()
 		{
-			var error = validationContext.When("key", 10)
+			var (key, message) = validationContext.When("key", 10)
 				.Is(value => true)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -158,12 +158,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationMessageWithParameters()
 		{
-			var error = validationContext.When("key", 10)
+			var (key, message) = validationContext.When("key", 10)
 				.Is(value => true)
 				.AddError<TestModelValidationComponent, int, int>(c => c.TestModelTemplate4, 12, 13);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template: 12, 13", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template: 12, 13", message);
 		}
 
 		[Fact]

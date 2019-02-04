@@ -20,12 +20,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsGreater()
 		{
-			var error = validationContext.When("age", 11)
+			var (key, message) = validationContext.When("age", 11)
 				.IsGreater(10)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("age", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("age", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -41,12 +41,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsLess()
 		{
-			var error = validationContext.When("age", 11)
+			var (key, message) = validationContext.When("age", 11)
 				.IsLess(12)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("age", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("age", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -62,12 +62,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsInRange()
 		{
-			var error = validationContext.When("age", 11)
+			var (key, message) = validationContext.When("age", 11)
 				.IsInRange(10, 12)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("age", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("age", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]

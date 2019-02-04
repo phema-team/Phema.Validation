@@ -10,8 +10,8 @@ namespace Phema.Validation
 		/// <typeparam name="TValidationComponent"></typeparam>
 		/// <returns></returns>
 		public static IValidationConfiguration AddComponent<TValidationComponent>(
-		this IValidationConfiguration configuration)
-			where TValidationComponent : class, IValidationComponent
+			this IValidationConfiguration configuration)
+				where TValidationComponent : class, IValidationComponent
 		{
 			configuration.Services.TryAddSingleton<TValidationComponent>();
 			return configuration;

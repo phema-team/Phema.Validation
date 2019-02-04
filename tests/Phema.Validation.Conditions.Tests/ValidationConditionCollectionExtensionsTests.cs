@@ -88,12 +88,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NotHasCount()
 		{
-			var error = validationContext.When("list", new[] { 1 })
+			var (key, message) = validationContext.When("list", new[] { 1 })
 				.NotHasCount(2)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("list", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]

@@ -20,11 +20,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EmptyWhen()
 		{
-			var error = validationContext.When()
+			var (key, message) = validationContext.When()
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -87,10 +87,10 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid());
 
-			var error = Assert.Single(exception.Errors);
+			var (key, message) = Assert.Single(exception.Errors);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -134,10 +134,10 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid());
 
-			var error = Assert.Single(exception.Errors.Where(err => err.Severity >= exception.Severity));
+			var (key, message) = Assert.Single(exception.Errors.Where(err => err.Severity >= exception.Severity));
 
-			Assert.Equal("age2", error.Key);
-			Assert.Equal("template2", error.Message);
+			Assert.Equal("age2", key);
+			Assert.Equal("template2", message);
 		}
 
 		[Fact]

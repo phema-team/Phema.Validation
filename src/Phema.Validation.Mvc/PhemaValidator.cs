@@ -17,14 +17,14 @@ namespace Phema.Validation
 
 		public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
 		{
-			var validationType = typeof(IValidation<>).MakeGenericType(context.Model.GetType());
+			var validationType = typeof(IValidator<>).MakeGenericType(context.Model.GetType());
 
 			var validations = validationContext.GetServices(validationType);
 
 			foreach (var validation in validations)
 			{
 				validation.GetType()
-					.GetMethod(nameof(IValidation<object>.Validate), BindingFlags.Public | BindingFlags.Instance)
+					.GetMethod(nameof(IValidator<object>.Validate), BindingFlags.Public | BindingFlags.Instance)
 					.Invoke(validation, new [] { validationContext, context.Model });
 			}
 

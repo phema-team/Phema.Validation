@@ -12,8 +12,8 @@ namespace Phema.Validation
 		/// <typeparam name="TValidationComponent"></typeparam>
 		/// <returns></returns>
 		public static IValidationConfiguration AddComponent<TModel, TValidationComponent>(
-		this IValidationConfiguration configuration)
-			where TValidationComponent : class, IValidationComponent<TModel>
+			this IValidationConfiguration configuration)
+				where TValidationComponent : class, IValidationComponent<TModel>
 		{
 			return configuration.AddComponent<TValidationComponent>();
 		}

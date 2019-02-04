@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 				.Is(value => true)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			var (key, message, _) = Assert.Single(validationContext.Errors);
+			var (key, message) = Assert.Single(validationContext.Errors);
 
 			Assert.Equal("test:string", key);
 			Assert.Equal("template1", message);

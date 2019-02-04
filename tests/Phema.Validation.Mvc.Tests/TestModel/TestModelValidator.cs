@@ -2,7 +2,7 @@ using Phema.Validation.Tests;
 
 namespace Phema.Validation.Tests
 {
-	public class TestModelValidation : IValidation<TestModel>
+	public class TestModelValidator : IValidator<TestModel>
 	{
 		public void Validate(IValidationContext validationContext, TestModel model)
 		{

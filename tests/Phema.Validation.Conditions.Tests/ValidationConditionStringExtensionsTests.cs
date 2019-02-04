@@ -62,12 +62,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNullOrWhitespace()
 		{
-			var error = validationContext.When("name", " ")
+			var (key, message) = validationContext.When("name", " ")
 				.IsNullOrWhitespace()
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
-			Assert.Equal("name", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]

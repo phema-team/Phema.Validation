@@ -1,6 +1,6 @@
 namespace Phema.Validation.Tests
 {
-	public class TestModelValidationComponent : IValidationComponent<TestModel, TestModelValidation>
+	public class TestModelValidationComponent : IValidationComponent<TestModel, TestModelValidator>
 	{
 	}
 }

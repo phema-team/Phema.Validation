@@ -10,9 +10,9 @@ namespace Phema.Validation.Tests
 		public void Validation_SingleRegistration()
 		{
 			var services = new ServiceCollection()
-				.AddPhemaValidation(configuration => configuration.AddValidation<TestModel, TestModelValidation>());
+				.AddPhemaValidation(configuration => configuration.AddValidation<TestModel, TestModelValidator>());
 			
-			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidation<TestModel>)));
+			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
 		}
 		
 		[Fact]
@@ -20,10 +20,10 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddPhemaValidation(configuration => configuration
-					.AddValidation<TestModel, TestModelValidation>()
-					.AddValidation<TestModel, TestModelValidation>());
+					.AddValidation<TestModel, TestModelValidator>()
+					.AddValidation<TestModel, TestModelValidator>());
 			
-			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidation<TestModel>)));
+			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidator<TestModel>)));
 		}
 
 		[Fact]
@@ -31,9 +31,9 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddPhemaValidation(configuration => configuration
-					.AddValidationComponent<TestModel, TestModelValidation, TestModelValidationComponent>());
+					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>());
 			
-			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidation<TestModel>)));
+			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
 			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
 		}
 		
@@ -42,10 +42,10 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddPhemaValidation(configuration => configuration
-					.AddValidationComponent<TestModel, TestModelValidation, TestModelValidationComponent>()
-					.AddValidationComponent<TestModel, TestModelValidation, TestModelValidationComponent>());
+					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>()
+					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>());
 			
-			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidation<TestModel>)));
+			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidator<TestModel>)));
 			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
 		}
 	}

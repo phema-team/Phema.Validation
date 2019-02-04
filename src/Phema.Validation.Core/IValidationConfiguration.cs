@@ -7,6 +7,7 @@ namespace Phema.Validation
 	/// </summary>
 	public interface IValidationConfiguration
 	{
+		/// <inheritdoc cref="IServiceCollection"/>
 		IServiceCollection Services { get; }
 	}
 }
