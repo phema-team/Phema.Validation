@@ -30,7 +30,7 @@ namespace Phema.Validation
 		}
 		
 		/// <inheritdoc cref="IValidationSelector.Add"/>
-		public IValidationError Add(Func<IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
+		public IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
 		{
 			return this.When().Add(selector, arguments, severity);
 		}

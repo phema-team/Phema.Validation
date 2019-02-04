@@ -5,7 +5,7 @@ namespace Phema.Validation
 	/// <summary>
 	/// Используется для выбора сообщения, аргументов и уровня критичности
 	/// </summary>
-	public interface IValidationSelector : IServiceProvider
+	public interface IValidationSelector
 	{
 		/// <summary>
 		/// Метод, в котором выбираются параметры валидации
@@ -14,6 +14,6 @@ namespace Phema.Validation
 		/// <param name="arguments"></param>
 		/// <param name="severity"></param>
 		/// <returns></returns>
-		IValidationError Add(Func<IValidationTemplate> selector, object[] arguments, ValidationSeverity severity);
+		IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity);
 	}
 }

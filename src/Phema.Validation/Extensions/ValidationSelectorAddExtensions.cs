@@ -13,11 +13,7 @@ namespace Phema.Validation
 				where TValidationComponent : IValidationComponent
 				where TValidationTemplate : IValidationTemplate
 		{
-			var component = condition.GetRequiredService<TValidationComponent>();
-
-			var message = selector(component);
-
-			return condition.Add(() => message, arguments, severity);
+			return condition.Add(sp => selector(sp.GetRequiredService<TValidationComponent>()), arguments, severity);
 		}
 		
 		/// <inheritdoc cref="IValidationSelector.Add"/>

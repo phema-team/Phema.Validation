@@ -17,10 +17,7 @@ namespace Phema.Validation
 		{
 			context.Results.Add(new ValidatorItem
 			{
-				Validator = new PhemaValidator(
-					serviceProvider.CreateScope()
-						.ServiceProvider
-						.GetRequiredService<IValidationContext>())
+				Validator = new PhemaValidator(serviceProvider.CreateScope().ServiceProvider)
 			});
 		}
 	}

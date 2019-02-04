@@ -1,32 +1,29 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
 	public class PhemaValidator : IModelValidator
 	{
-		private readonly IValidationContext validationContext;
+		private readonly IServiceProvider serviceProvider;
 
-		public PhemaValidator(IValidationContext validationContext)
+		public PhemaValidator(IServiceProvider serviceProvider)
 		{
-			this.validationContext = validationContext;
+			this.serviceProvider = serviceProvider;
 		}
 
 		public IEnumerable<ModelValidationResult> Validate(ModelValidationContext context)
 		{
-			var validationType = typeof(IValidator<>).MakeGenericType(context.Model.GetType());
+			var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
+			var options = serviceProvider.GetRequiredService<IOptions<MvcValidationOptions>>().Value;
 
-			var validations = validationContext.GetServices(validationType);
+			var dispatcher = options.Dispatchers[context.Model.GetType()];
 
-			foreach (var validation in validations)
-			{
-				validation.GetType()
-					.GetMethod(nameof(IValidator<object>.Validate), BindingFlags.Public | BindingFlags.Instance)
-					.Invoke(validation, new [] { validationContext, context.Model });
-			}
+			dispatcher(validationContext, context.Model);
 
 			return validationContext.Errors
 				.Select(error => new ModelValidationResult(error.Key, error.Message));

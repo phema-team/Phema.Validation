@@ -14,7 +14,22 @@ namespace Phema.Validation
 			this IValidationConfiguration configuration)
 				where TValidation : class, IValidator<TModel>
 		{
-			configuration.Services.AddScoped<IValidator<TModel>, TValidation>();
+			var services = configuration.Services;
+			
+			services.AddScoped<IValidator<TModel>, TValidation>()
+				.Configure<MvcValidationOptions>(options =>
+					options.Dispatchers.Add(typeof(TModel), (validationContext, model) =>
+					{
+						var validators = validationContext.GetServices<IValidator<TModel>>();
+
+						var typedModel = (TModel) model;
+						
+						foreach (var validator in validators)
+						{
+							validator.Validate(validationContext, typedModel);
+						}
+					}));
+			
 			return configuration;
 		}
 		

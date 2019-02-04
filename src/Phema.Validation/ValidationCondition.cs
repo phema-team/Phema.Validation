@@ -37,7 +37,7 @@ namespace Phema.Validation
 		}
 
 		/// <inheritdoc cref="IValidationSelector.Add"/>
-		public IValidationError Add(Func<IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
+		public IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
 		{
 			if (selector == null)
 				throw new ArgumentNullException(nameof(selector));
@@ -51,7 +51,7 @@ namespace Phema.Validation
 				if (selector == null)
 					throw new ArgumentNullException(nameof(selector));
 
-				var validationMessage = selector();
+				var validationMessage = selector(serviceProvider);
 
 				if (validationMessage == null)
 					throw new ArgumentNullException(nameof(validationMessage));
@@ -62,11 +62,6 @@ namespace Phema.Validation
 				errors.Add(error);
 				return error;
 			}
-		}
-		
-		public object GetService(Type serviceType)
-		{
-			return serviceProvider.GetService(serviceType);
 		}
 	}
 }
