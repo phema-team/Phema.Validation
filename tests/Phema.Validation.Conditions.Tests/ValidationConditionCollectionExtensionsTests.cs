@@ -13,7 +13,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ServiceCollection()
 				.AddPhemaValidation(configuration =>
-					configuration.AddValidationComponent<TestModel, TestModelValidation, TestModelValidationComponent>())
+					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -33,12 +33,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsEmpty()
 		{
-			var model = new TestModel
-			{
-				List = new List<TestModel>()
-			};
-
-			var (key, message) = validationContext.When("list", model.List)
+			var (key, message) = validationContext.When("list", new List<int>())
 				.IsEmpty()
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
@@ -60,12 +55,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsNotEmpty()
 		{
-			var model = new TestModel
-			{
-				List = new List<TestModel> { new TestModel() }
-			};
-
-			var (key, message) = validationContext.When("list", model.List)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.IsNotEmpty()
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
@@ -87,12 +77,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyHasCount()
 		{
-			var model = new TestModel
-			{
-				List = new List<TestModel> { new TestModel() }
-			};
-
-			var (key, message) = validationContext.When("list", model.List)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.HasCount(1)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
@@ -114,18 +99,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyNotHasCount()
 		{
-			var model = new TestModel
-			{
-				List = new List<TestModel> { new TestModel() }
-			};
-
-			var error = validationContext.When("list", model.List)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
 				.NotHasCount(2)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 			
 
-			Assert.Equal("list", error.Key);
-			Assert.Equal("template1", error.Message);
+			Assert.Equal("list", key);
+			Assert.Equal("template1", message);
 		}
 
 		[Fact]
@@ -142,15 +122,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsContains()
 		{
-			var item = new TestModel();
-			
-			var model = new TestModel
-			{
-				List = new List<TestModel> { item }
-			};
-
-			var (key, message) = validationContext.When("list", model.List)
-				.IsContains(item)
+			var (key, message) = validationContext.When("list", new List<int> { 1 })
+				.IsContains(1)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.Equal("list", key);
@@ -171,13 +144,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsNotContains()
 		{
-			var model = new TestModel
-			{
-				List = new List<TestModel> { new TestModel() }
-			};
-
-			var (key, message) = validationContext.When("list", model.List)
-				.IsNotContains(new TestModel())
+			var (key, message) = validationContext.When("list", new List<int>())
+				.IsNotContains(1)
 				.AddError<TestModelValidationComponent>(c => c.TestModelTemplate1);
 
 			Assert.Equal("list", key);

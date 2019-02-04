@@ -1,3 +1,5 @@
+using Phema.Validation.Tests;
+
 namespace Phema.Validation.Tests
 {
 	public class TestModelValidation : IValidation<TestModel>

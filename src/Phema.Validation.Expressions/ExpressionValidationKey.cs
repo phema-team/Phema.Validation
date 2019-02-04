@@ -7,19 +7,23 @@ namespace Phema.Validation
 	internal sealed class ExpressionValidationKey<TModel, TProperty> : IValidationKey
 	{
 		private string key;
+		private readonly ExpressionValidationOptions options;
 		private readonly Expression<Func<TModel, TProperty>> expression;
 
-		public ExpressionValidationKey(Expression<Func<TModel, TProperty>> expression)
+		public ExpressionValidationKey(ExpressionValidationOptions options, Expression<Func<TModel, TProperty>> expression)
 		{
+			this.options = options;
 			this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
 		}
 
 		/// <inheritdoc cref="IValidationKey.Key"/>
-		public string Key => key ?? (key = FormatKeyFromExpression(expression));
+		public string Key => key ?? (key = FormatKeyFromExpression(options, expression));
 		
-		private static string FormatKeyFromExpression(Expression<Func<TModel, TProperty>> expression)
+		private static string FormatKeyFromExpression(
+			ExpressionValidationOptions options,
+			Expression<Func<TModel, TProperty>> expression)
 		{
-			var visitor = new ExpressionValidationKeyVisitor();
+			var visitor = new ExpressionValidationKeyVisitor(options);
 
 			visitor.Visit(expression);
 

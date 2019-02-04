@@ -11,17 +11,25 @@ namespace Phema.Validation
 	/// </summary>
 	internal sealed class ExpressionValidationKeyVisitor : ExpressionVisitor
 	{
-		private const string Separator = ":";
+		private readonly ExpressionValidationOptions options;
 		private readonly IList<string> keys = new List<string>();
+
+		public ExpressionValidationKeyVisitor(ExpressionValidationOptions options)
+		{
+			this.options = options;
+		}
 
 		public string GetResult<TModel>()
 		{
-			var prefix = typeof(TModel).GetCustomAttribute<DataContractAttribute>()?.Name;
+			if (options.UseDataContractPrefix)
+			{
+				var prefix = typeof(TModel).GetCustomAttribute<DataContractAttribute>()?.Name;
+				
+				if (prefix != null)
+					keys.Add(prefix);
+			}
 
-			if (prefix != null)
-				keys.Add(prefix);
-
-			return string.Join(Separator, keys.Reverse());
+			return string.Join(options.Separator, keys.Reverse());
 		}
 
 		protected override Expression VisitMember(MemberExpression node)

@@ -1,5 +1,7 @@
 using System;
 using System.Linq.Expressions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
@@ -10,7 +12,9 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression);
+			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+
+			var key = new ExpressionValidationKey<TModel, TProperty>(options, expression);
 			var value = expression.Compile()(model);
 
 			return validationContext.When(key, value);
@@ -22,9 +26,11 @@ namespace Phema.Validation
 			Expression<Func<TModel, TProperty>> expression,
 			Func<TModel, TProperty> selector)
 		{
+			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			
 			var value = selector(model);
 
-			return validationContext.When(new ExpressionValidationKey<TModel, TProperty>(expression), value);
+			return validationContext.When(new ExpressionValidationKey<TModel, TProperty>(options, expression), value);
 		}
 
 		public static bool IsValid<TModel>(
@@ -39,7 +45,9 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			return validationContext.IsValid(new ExpressionValidationKey<TModel, TProperty>(expression));
+			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+
+			return validationContext.IsValid(new ExpressionValidationKey<TModel, TProperty>(options, expression));
 		}
 
 		public static void EnsureIsValid<TModel>(
@@ -54,7 +62,9 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TProperty>> expression)
 		{
-			var key = new ExpressionValidationKey<TModel, TProperty>(expression);
+			var options = validationContext.GetRequiredService<IOptions<ExpressionValidationOptions>>().Value;
+			
+			var key = new ExpressionValidationKey<TModel, TProperty>(options, expression);
 
 			validationContext.EnsureIsValid(key);
 		}

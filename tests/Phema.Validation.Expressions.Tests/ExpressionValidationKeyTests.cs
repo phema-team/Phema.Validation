@@ -15,7 +15,8 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ServiceCollection()
 				.AddPhemaValidation(configuration =>
-					configuration.AddValidationComponent<TestModel, TestModelValidation, TestModelValidationComponent>())
+					configuration.AddComponent<TestModel, TestModelValidationComponent>())
+				.ConfigurePhemaValidationExpressions(o => o.UseDataContractPrefix = true)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -447,7 +448,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey()
 		{
-			var key = new ExpressionValidationKey<string, int>(s => s.Length);
+			var key = new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), s => s.Length);
 
 			Assert.Equal("Length", key.Key);
 		}
@@ -456,7 +457,7 @@ namespace Phema.Validation.Tests
 		public void NullExpressionValidationKey()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(
-				() => new ExpressionValidationKey<string, int>(null));
+				() => new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), null));
 
 			Assert.Equal("expression", exception.ParamName);
 		}
@@ -464,7 +465,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ExpressionValidationKey_NotMemberExpression()
 		{
-			var key = new ExpressionValidationKey<string, int>(s => s.GetHashCode());
+			var key = new ExpressionValidationKey<string, int>(new ExpressionValidationOptions(), s => s.GetHashCode());
 
 			Assert.Equal("", key.Key);
 		}
