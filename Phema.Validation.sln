@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Conditions
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Expressions.Tests", "tests\Phema.Validation.Expressions.Tests\Phema.Validation.Expressions.Tests.csproj", "{906C2572-DBBA-4184-9A0D-A3E3044F8B3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.AspNetCore.Sandbox", "Phema.Validation.AspNetCore.Sandbox\Phema.Validation.AspNetCore.Sandbox.csproj", "{4B9B412B-223D-46B1-BC6E-22CCF4198633}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Mvc", "src\Phema.Validation.Mvc\Phema.Validation.Mvc.csproj", "{F157F4A1-6B73-4CBE-966B-9E93432FB814}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Mvc.Tests", "tests\Phema.Validation.Mvc.Tests\Phema.Validation.Mvc.Tests.csproj", "{9EC4FC39-8F93-484B-A4C9-D18ADD378A55}"
@@ -135,18 +133,6 @@ Global
 		{906C2572-DBBA-4184-9A0D-A3E3044F8B3C}.Release|x64.Build.0 = Release|Any CPU
 		{906C2572-DBBA-4184-9A0D-A3E3044F8B3C}.Release|x86.ActiveCfg = Release|Any CPU
 		{906C2572-DBBA-4184-9A0D-A3E3044F8B3C}.Release|x86.Build.0 = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|x64.Build.0 = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Debug|x86.Build.0 = Debug|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|x64.ActiveCfg = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|x64.Build.0 = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|x86.ActiveCfg = Release|Any CPU
-		{4B9B412B-223D-46B1-BC6E-22CCF4198633}.Release|x86.Build.0 = Release|Any CPU
 		{F157F4A1-6B73-4CBE-966B-9E93432FB814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F157F4A1-6B73-4CBE-966B-9E93432FB814}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F157F4A1-6B73-4CBE-966B-9E93432FB814}.Debug|x64.ActiveCfg = Debug|Any CPU
