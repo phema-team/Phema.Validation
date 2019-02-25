@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
 namespace Phema.Validation
 {
-	public sealed class PhemaValidationMetadataProvider : IValidationMetadataProvider
+	internal sealed class PhemaValidationMetadataProvider : IValidationMetadataProvider
 	{
 		public void CreateValidationMetadata(ValidationMetadataProviderContext context)
 		{

@@ -1,4 +1,7 @@
 using System.Linq;
+
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -46,6 +49,28 @@ namespace Phema.Validation.Tests
 					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>());
 			
 			Assert.Equal(2, services.Count(s => s.ServiceType == typeof(IValidator<TestModel>)));
+			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
+		}
+
+		[Fact]
+		public void UsingMvcCoreBuilder()
+		{
+			var services = new MvcCoreBuilder(new ServiceCollection(), new ApplicationPartManager())
+				.AddPhemaValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
+				.Services;
+			
+			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
+			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
+		}
+		
+		[Fact]
+		public void UsingMvcBuilder()
+		{
+			var services = new MvcBuilder(new ServiceCollection(), new ApplicationPartManager())
+				.AddPhemaValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
+				.Services;
+			
+			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
 			Assert.Single(services.Where(s => s.ImplementationType == typeof(TestModelValidationComponent)));
 		}
 	}

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public sealed class PhemaValidator : IModelValidator
+	internal sealed class PhemaValidator : IModelValidator
 	{
 		private readonly IServiceProvider serviceProvider;
 

@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Phema.Validation
 {
@@ -13,15 +14,30 @@ namespace Phema.Validation
 		/// <param name="options"></param>
 		/// <returns></returns>
 		public static IServiceCollection AddPhemaValidation(
-			this IServiceCollection services,
-			Action<IValidationConfiguration> configuration = null,
-			Action<PhemaValidationOptions> options = null)
+			this IServiceCollection services)
 		{
-			configuration?.Invoke(new ValidationConfiguration(services));
+			services.TryAddScoped<IValidationContext, ValidationContext>();
+			return services;
+		}
+		
+		/// <inheritdoc cref="AddPhemaValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/>
+		public static IServiceCollection AddPhemaValidation(
+			this IServiceCollection services,
+			Action<IValidationConfiguration> configuration)
+		{
+			configuration.Invoke(new ValidationConfiguration(services));
 
-			return services
-				.Configure(options ?? (o => {}))
-				.AddScoped<IValidationContext, ValidationContext>();
+			return services.AddPhemaValidation();
+		}
+
+		/// <inheritdoc cref="AddPhemaValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/>
+		public static IServiceCollection AddPhemaValidation(
+			this IServiceCollection services,
+			Action<IValidationConfiguration> configuration,
+			Action<PhemaValidationOptions> options)
+		{
+			return services.AddPhemaValidation(configuration)
+				.Configure(options ?? (o => {}));
 		}
 	}
 }

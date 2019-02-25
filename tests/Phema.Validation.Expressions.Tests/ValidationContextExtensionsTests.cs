@@ -11,8 +11,8 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ServiceCollection()
 				.AddPhemaValidation(configuration =>
-					configuration.AddComponent<TestModel, TestModelValidationComponent>())
-				.ConfigurePhemaValidationExpressions(o => o.UseDataContractPrefix = true)
+					configuration.AddComponent<TestModel, TestModelValidationComponent>(),
+					expressions: o => o.UseDataContractPrefix = true)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}

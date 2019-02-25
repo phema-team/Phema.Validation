@@ -1,16 +1,18 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection ConfigurePhemaValidationExpressions(
+		public static IServiceCollection AddPhemaValidation(
 			this IServiceCollection services,
-			Action<ExpressionPhemaValidationOptions> options = null)
+			Action<IValidationConfiguration> configuration,
+			Action<PhemaValidationOptions> options = null,
+			Action<ExpressionPhemaValidationOptions> expressions = null)
 		{
-			return services.Configure(options ?? (o => {}));
+			return services.AddPhemaValidation(configuration, options)
+				.Configure(expressions ?? (o => {}));
 		}
 	}
 }

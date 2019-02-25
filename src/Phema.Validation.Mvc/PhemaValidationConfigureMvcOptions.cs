@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public sealed class PhemaValidationConfigureMvcOptions : IConfigureOptions<MvcOptions>
+	internal sealed class PhemaValidationConfigureMvcOptions : IConfigureOptions<MvcOptions>
 	{
 		private readonly IServiceProvider serviceProvider;
 
@@ -15,8 +15,8 @@ namespace Phema.Validation
 		
 		public void Configure(MvcOptions options)
 		{
-			options.ModelValidatorProviders.Add(new PhemaValidatorProvider(serviceProvider));
-			options.ModelMetadataDetailsProviders.Add(new PhemaValidationMetadataProvider());
+			options.ModelValidatorProviders.Insert(0, new PhemaValidatorProvider(serviceProvider));
+			options.ModelMetadataDetailsProviders.Insert(0, new PhemaValidationMetadataProvider());
 		}
 	}
 }
