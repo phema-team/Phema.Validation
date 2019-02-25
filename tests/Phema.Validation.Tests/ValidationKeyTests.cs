@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace Phema.Validation.Tests
 {
@@ -7,7 +7,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationKey()
 		{
-			var key = (ValidationKey)"key";
+			var key = new ValidationKey("key");
 
 			Assert.Equal("key", key.Key);
 		}
@@ -15,8 +15,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationKeyEquality()
 		{
-			var key1 = (ValidationKey)"key";
-			var key2 = (ValidationKey)"key";
+			var key1 = new ValidationKey("key");
+			var key2 = new ValidationKey("key");
 
 			Assert.Equal(key1.Key, key2.Key);
 			Assert.Equal(key1, key2);
@@ -28,7 +28,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationKeyNotNull()
 		{
-			var key = (ValidationKey)"key";
+			var key = new ValidationKey("key");
 
 			Assert.False(key.Equals(null));
 		}

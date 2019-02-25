@@ -2,6 +2,7 @@
 
 namespace Phema.Validation
 {
+	/// <inheritdoc cref="IValidationError"/>
 	internal sealed class ValidationError : IValidationError
 	{
 		public ValidationError(string key, string message, ValidationSeverity severity)
@@ -17,10 +18,16 @@ namespace Phema.Validation
 			Severity = severity;
 		}
 
+		/// <inheritdoc cref="IValidationError.Key"/>
 		public string Key { get; }
+		
+		/// <inheritdoc cref="IValidationError.Message"/>
 		public string Message { get; }
+		
+		/// <inheritdoc cref="IValidationError.Severity"/>
 		public ValidationSeverity Severity { get; }
 
+		#region Equality
 		private bool Equals(ValidationError other)
 		{
 			return string.Equals(Key, other.Key) && Severity == other.Severity;
@@ -48,5 +55,6 @@ namespace Phema.Validation
 				return ((Key != null ? Key.GetHashCode() : 0) * 397) ^ (int)Severity;
 			}
 		}
+		#endregion
 	}
 }

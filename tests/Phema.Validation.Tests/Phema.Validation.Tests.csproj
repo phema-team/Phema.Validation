@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.2</TargetFramework>
-		<IsPackable>false</IsPackable>
 		<RootNamespace>Phema.Validation.Tests</RootNamespace>
 		<LangVersion>7.3</LangVersion>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
