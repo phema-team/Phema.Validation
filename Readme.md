@@ -1,5 +1,8 @@
 # Phema.Validation
 
+[![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
+[![Nuget](https://img.shields.io/nuget/vpre/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
+
 C# strongly typed validation library for `.NET Core` and `ASP.NET Core`
 
 ## Packages
