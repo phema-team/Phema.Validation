@@ -22,17 +22,17 @@ namespace Phema.Validation
 		{
 			return validationContext.When(new ValidationKey(key), value);
 		}
-		
+
 		public static bool IsValid(this IValidationContext validationContext, string key)
 		{
 			return validationContext.IsValid(new ValidationKey(key));
 		}
-		
+
 		public static void EnsureIsValid(this IValidationContext validationContext, string key)
 		{
 			validationContext.EnsureIsValid(new ValidationKey(key));
 		}
-		
+
 		public static bool IsValid(this IValidationContext validationContext, IValidationKey validationKey = null)
 		{
 			return !validationContext.Errors

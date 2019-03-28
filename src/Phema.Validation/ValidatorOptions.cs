@@ -9,7 +9,7 @@ namespace Phema.Validation.Internal
 		{
 			Dispatchers = new Dictionary<Type, Action<IServiceProvider, IValidationContext, object>>();
 		}
-		
+
 		public IDictionary<Type, Action<IServiceProvider, IValidationContext, object>> Dispatchers { get; }
 	}
 }

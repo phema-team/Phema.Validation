@@ -6,7 +6,7 @@ namespace Phema.Validation.Tests
 		{
 			TestModelTemplate1 = new ValidationTemplate(() => "template1");
 		}
-		
+
 		public ValidationTemplate TestModelTemplate1 { get; }
 	}
 }

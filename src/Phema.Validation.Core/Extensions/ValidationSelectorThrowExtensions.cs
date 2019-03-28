@@ -9,11 +9,12 @@ namespace Phema.Validation
 			this IValidationSelector condition,
 			Func<TValidationComponent, TValidationTemplate> selector,
 			object[] arguments)
-				where TValidationComponent : IValidationComponent
-				where TValidationTemplate : IValidationTemplate
+			where TValidationComponent : IValidationComponent
+			where TValidationTemplate : IValidationTemplate
 		{
-			var error =  condition.Add(sp => selector(sp.GetRequiredService<TValidationComponent>()), arguments, ValidationSeverity.Fatal);
-			
+			var error = condition.Add(sp => 
+				selector(sp.GetRequiredService<TValidationComponent>()), arguments, ValidationSeverity.Fatal);
+
 			if (error != null)
 			{
 				throw new ValidationConditionException(error);
@@ -23,7 +24,7 @@ namespace Phema.Validation
 		public static void Throw<TValidationComponent>(
 			this IValidationSelector condition,
 			Func<TValidationComponent, ValidationTemplate> selector)
-				where TValidationComponent : IValidationComponent
+			where TValidationComponent : IValidationComponent
 		{
 			condition.Throw(selector, Array.Empty<object>());
 		}
@@ -32,19 +33,19 @@ namespace Phema.Validation
 			this IValidationSelector condition,
 			Func<TValidationComponent, ValidationTemplate<TArgument>> selector,
 			TArgument argument)
-				where TValidationComponent : IValidationComponent
+			where TValidationComponent : IValidationComponent
 		{
-			condition.Throw(selector, new object[] { argument });
+			condition.Throw(selector, new object[] {argument});
 		}
-		
+
 		public static void Throw<TValidationComponent, TArgument1, TArgument2>(
 			this IValidationSelector condition,
 			Func<TValidationComponent, ValidationTemplate<TArgument1, TArgument2>> selector,
 			TArgument1 argument1,
 			TArgument2 argument2)
-				where TValidationComponent : IValidationComponent
+			where TValidationComponent : IValidationComponent
 		{
-			condition.Throw(selector, new object[] { argument1, argument2 });
+			condition.Throw(selector, new object[] {argument1, argument2});
 		}
 
 		public static void Throw<TValidationComponent, TArgument1, TArgument2, TArgument3>(
@@ -55,7 +56,7 @@ namespace Phema.Validation
 			TArgument3 argument3)
 			where TValidationComponent : IValidationComponent
 		{
-			condition.Throw(selector, new object[] { argument1, argument2, argument3 });
+			condition.Throw(selector, new object[] {argument1, argument2, argument3});
 		}
 	}
 }

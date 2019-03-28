@@ -51,14 +51,14 @@ namespace Phema.Validation
 		{
 			return builder.Is(value => value != null && value.Length == length);
 		}
-		
+
 		public static IValidationCondition<string> HasLengthLess(
 			this IValidationCondition<string> builder,
 			int length)
 		{
 			return builder.Is(value => value != null && value.Length < length);
 		}
-		
+
 		public static IValidationCondition<string> HasLengthGreater(
 			this IValidationCondition<string> builder,
 			int length)

@@ -14,7 +14,7 @@ namespace Phema.Validation.Internal
 		}
 
 		public string Key => key ??= FormatKeyFromExpression(expression);
-		
+
 		private static string FormatKeyFromExpression(
 			Expression<Func<TModel, TProperty>> expression)
 		{

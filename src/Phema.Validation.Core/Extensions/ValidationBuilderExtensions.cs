@@ -4,19 +4,17 @@ namespace Phema.Validation
 {
 	public static class ValidationBuilderExtensions
 	{
-		public static IValidationBuilder AddComponent<TValidationComponent>(
-			this IValidationBuilder builder)
-				where TValidationComponent : class, IValidationComponent
+		public static IValidationBuilder AddComponent<TValidationComponent>(this IValidationBuilder builder)
+			where TValidationComponent : class, IValidationComponent
 		{
 			builder.Services.TryAddSingleton<TValidationComponent>();
 			return builder;
 		}
 
-		public static IValidationBuilder AddComponent<TModel, TValidationComponent>(
-			this IValidationBuilder configuration)
+		public static IValidationBuilder AddComponent<TModel, TValidationComponent>(this IValidationBuilder builder)
 			where TValidationComponent : class, IValidationComponent<TModel>
 		{
-			return configuration.AddComponent<TValidationComponent>();
+			return builder.AddComponent<TValidationComponent>();
 		}
 	}
 }

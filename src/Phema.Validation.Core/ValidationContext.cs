@@ -8,7 +8,7 @@ namespace Phema.Validation
 	{
 		ValidationSeverity Severity { get; }
 		IReadOnlyCollection<IValidationError> Errors { get; }
-		
+
 		IValidationCondition<TValue> When<TValue>(IValidationKey key, TValue value);
 	}
 }
@@ -17,8 +17,8 @@ namespace Phema.Validation.Internal
 {
 	internal sealed class ValidationContext : IValidationContext
 	{
-		private readonly IServiceProvider provider;
 		private readonly List<IValidationError> errors;
+		private readonly IServiceProvider provider;
 
 		public ValidationContext(IServiceProvider provider, IOptions<ValidationOptions> options)
 		{
@@ -29,7 +29,7 @@ namespace Phema.Validation.Internal
 
 		public ValidationSeverity Severity { get; }
 		public IReadOnlyCollection<IValidationError> Errors => errors;
-		
+
 		public IValidationCondition<TValue> When<TValue>(IValidationKey key, TValue value)
 		{
 			return new ValidationCondition<TValue>(
@@ -38,8 +38,11 @@ namespace Phema.Validation.Internal
 				value,
 				error => errors.Add(error));
 		}
-		
-		public IValidationError Add(Func<IServiceProvider, IValidationTemplate> selector, object[] arguments, ValidationSeverity severity)
+
+		public IValidationError Add(
+			Func<IServiceProvider, IValidationTemplate> selector,
+			object[] arguments,
+			ValidationSeverity severity)
 		{
 			return this.When().Add(selector, arguments, severity);
 		}
