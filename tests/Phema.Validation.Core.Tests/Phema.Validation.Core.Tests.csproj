@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Phema.Validation.Conditions\Phema.Validation.Conditions.csproj" />
+	  <ProjectReference Include="..\..\src\Phema.Validation.Core\Phema.Validation.Core.csproj" />
 	</ItemGroup>
 
 </Project>

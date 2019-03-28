@@ -1,46 +1,57 @@
-## Phema.Validation
+# Phema.Validation
+
+C# strongly typed validation library for `.NET Core` and `ASP.NET Core`
+
+## Packages
+
+- `Phema.Validation.Core` - Core library on top of `Microsoft.Extensions.DepencencyInjection`
+- `Phema.Validation.Conditions` - Predefined useful conditions like `IsNot`, `IsNull`, `IsEmpty` etc.
+- `Phema.Validation` - Mvc integration for `Phema.Validation.Core`
+
+## Usage
+
+### Phema.Validation.Core
+
 ```csharp
 // Add
-services.AddPhemaValidation(configuration => configuration.AddComponent<Model, ModelValidationComponent>());
+services.AddPhemaValidation(builder => builder.AddComponent<Model, ModelValidationComponent>());
 
 // Get
 var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
 
 // Use
-validationContext.When("key", "invalid value")
-	.Is(value => value == "invalid value")
-	.AddError<ModelComponent>(component => component.ValueIsInvalid);
-```
-- You can add to `Is` callback any condition you want or even multiple of them (they will join using AND)
-- You should store validation templates in your custom `IValidationComponent`'s
-- You should use `ValidationTemplate`, `ValidationTemplate<TArg1>`, `ValidationTemplate<TArg2>`etc. or write your custom with `IValidationTemplate`
-- You can check if context is valid by calling `IsValid`/`EnsureIsValid` on `IValidationContext`
+validationContext.When("key", "invalid")
+  .Is(value => value == "invalid")
+  .AddError<ModelComponent>(component => component.ValueIsInvalid);
 
-## Phema.Validation.Conditions
-```csharp
-validationContext.When("key", "invalid value")
-	.IsEqual("invalid value")
-	.AddError<ModelComponent>(component => component.ValueIsInvalid);
-```
-- You can use predefined conditions like IsNot, IsNull, IsEmpty, IsEqual etc.
-
-## Phema.Validation.Expressions
-```csharp
 validationContext.When(model, m => m.Value)
-	.IsEqual("invalid value")
-	.AddError<ModelComponent>(component => component.ValueIsInvalid);
+  .IsEqual("invalid")
+  .AddError<ModelComponent>(component => component.ValueIsInvalid);
 ```
 
-- You can validate model value using expression manner
-- You can override key by using `[DataMember(Name = "key")]` attribute
-- You can check if context is valid by calling `IsValid(model, m => m.Value)`/`EnsureIsValid(...)` on `IValidationContext`
+- To check if value is valid use `Is` on `IValidationCondition`
+- Store your `IValidationTemplate`'s in `IValidationComponent`'s
+- To create validation messages use `ValidationTemplate`, `ValidationTemplate<TArg1>`, `ValidationTemplate<TArg1, TArg2>`, etc. or write your custom
+- Validate model value using expression manner `model, m => m.Value`
+- To override key use `[DataMember(Name = "key")]` attribute
+- Check that context is valid by calling `IsValid(model, m => m.Value)`/`EnsureIsValid(...)` on `IValidationContext`
 
-## Phema.Validation.Mvc
+### Phema.Validation.Conditions
+
 ```csharp
-services.AddPhemaValidation(c => c.AddValidationComponent<Model, ModelValidation, ModelValidationComponent>())
-	.AddMvcCore()
-		.AddPhemaValidationIntegration();
+validationContext.When("key", "invalid value")
+  .IsEqual("invalid value")
+  .AddError<ModelComponent>(component => component.ValueIsInvalid);
 ```
 
-- You can use `IValidator<TModel>` to validate mvc input
-- You should use `AddPhemaValidationIntegration` to setup mvc
+- Predefined conditions like `IsNot`, `IsNull`, `IsEmpty`, `IsEqual` etc.
+
+### Phema.Validation
+
+```csharp
+services.AddMvcCore()
+  .AddPhemaValidation(builder =>
+    builder.AddValidationComponent<Model, ModelValidation, ModelValidationComponent>())
+```
+
+- To validate mvc input implement `IValidator<TModel>` interface

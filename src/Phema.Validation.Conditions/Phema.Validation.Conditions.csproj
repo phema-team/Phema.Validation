@@ -1,10 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<TargetFramework>netcoreapp3.0</TargetFramework>
 		<RootNamespace>Phema.Validation</RootNamespace>
-		<LangVersion>7.3</LangVersion>
-		<Version>2.0.1</Version>
+		<LangVersion>8</LangVersion>
+		<Version>3.0.0-preview3.0.0</Version>
+		<Authors>sergeyshaykhullin</Authors>
+		<Description>C# strongly typed validation library for .NET Core and ASP.NET Core</Description>
+		<PackageTags>.NETCore;ASP.NETCore;Validation</PackageTags>
+		<PackageProjectUrl>https://github.com/sergeyshaykhullin/Phema.Validation</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/sergeyshaykhullin/Phema.Validation</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,8 +1,5 @@
 ﻿namespace Phema.Validation
 {
-	/// <summary>
-	/// Уровень критичности валидационной ошибки
-	/// </summary>
 	public enum ValidationSeverity
 	{
 		Trace,
