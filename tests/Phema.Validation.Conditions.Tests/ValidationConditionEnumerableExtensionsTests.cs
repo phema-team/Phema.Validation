@@ -12,7 +12,7 @@ namespace Phema.Validation.Tests
 		public ValidationConditionEnumerableExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();

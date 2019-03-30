@@ -13,7 +13,7 @@ namespace Phema.Validation.Core.Tests
 		public ValidationContextTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModel, TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
@@ -177,7 +177,7 @@ namespace Phema.Validation.Core.Tests
 		{
 			var services = new ServiceCollection();
 
-			services.AddPhemaValidation();
+			services.AddValidation();
 
 			var provider = services.BuildServiceProvider();
 
@@ -193,7 +193,7 @@ namespace Phema.Validation.Core.Tests
 		{
 			var services = new ServiceCollection();
 
-			services.AddPhemaValidation();
+			services.AddValidation();
 
 			services.Configure<ValidationOptions>(options => options.Severity = ValidationSeverity.Debug);
 

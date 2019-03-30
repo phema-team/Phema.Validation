@@ -1,9 +1,8 @@
 # Phema.Validation
 
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
-[![Nuget](https://img.shields.io/nuget/vpre/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 
-C# strongly typed validation library for `.NET Core` and `ASP.NET Core`
+C# strongly typed validation library for `ASP.NET Core`
 
 ## Packages
 
@@ -17,7 +16,7 @@ C# strongly typed validation library for `.NET Core` and `ASP.NET Core`
 
 ```csharp
 // Add
-services.AddPhemaValidation(builder => builder.AddComponent<Model, ModelValidationComponent>());
+services.AddValidation(builder => builder.AddComponent<Model, ModelValidationComponent>());
 
 // Get
 var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
@@ -53,7 +52,7 @@ validationContext.When("key", "invalid value")
 
 ```csharp
 services.AddMvcCore()
-  .AddPhemaValidation(builder =>
+  .AddValidation(builder =>
     builder.AddValidationComponent<Model, ModelValidation, ModelValidationComponent>())
 ```
 

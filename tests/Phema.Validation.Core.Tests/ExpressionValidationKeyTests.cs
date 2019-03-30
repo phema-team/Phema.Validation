@@ -15,7 +15,7 @@ namespace Phema.Validation.Core.Tests
 		public ExpressionValidationKeyTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModel, TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();

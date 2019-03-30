@@ -14,7 +14,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddMvcCore()
-				.AddPhemaValidation(configuration => configuration.AddValidation<TestModel, TestModelValidator>())
+				.AddValidation(configuration => configuration.AddValidation<TestModel, TestModelValidator>())
 				.Services;
 			
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
@@ -25,7 +25,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddMvcCore()
-				.AddPhemaValidation(configuration => configuration
+				.AddValidation(configuration => configuration
 					.AddValidation<TestModel, TestModelValidator>()
 					.AddValidation<TestModel, TestModelValidator>())
 				.Services;
@@ -38,7 +38,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddMvcCore()
-				.AddPhemaValidation(configuration => configuration
+				.AddValidation(configuration => configuration
 					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
 				.Services;
 			
@@ -51,7 +51,7 @@ namespace Phema.Validation.Tests
 		{
 			var services = new ServiceCollection()
 				.AddMvcCore()
-				.AddPhemaValidation(configuration => configuration
+				.AddValidation(configuration => configuration
 					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>()
 					.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
 				.Services;
@@ -64,7 +64,7 @@ namespace Phema.Validation.Tests
 		public void UsingMvcCoreBuilder()
 		{
 			var services = new MvcCoreBuilder(new ServiceCollection(), new ApplicationPartManager())
-				.AddPhemaValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
+				.AddValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
 				.Services;
 			
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		public void UsingMvcBuilder()
 		{
 			var services = new MvcBuilder(new ServiceCollection(), new ApplicationPartManager())
-				.AddPhemaValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
+				.AddValidation(c => c.AddValidationComponent<TestModel, TestModelValidator, TestModelValidationComponent>())
 				.Services;
 			
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));

@@ -6,23 +6,23 @@ namespace Phema.Validation
 {
 	public static class ValidationExtensions
 	{
-		public static IMvcBuilder AddPhemaValidation(
+		public static IMvcBuilder AddValidation(
 			this IMvcBuilder builder,
 			Action<IValidationBuilder> validation = null,
 			Action<ValidationOptions> options = null)
 		{
-			builder.Services.AddPhemaValidation(validation, options)
+			builder.Services.AddValidation(validation, options)
 				.ConfigureOptions<ValidatorConfigureOptions>();
 
 			return builder;
 		}
 
-		public static IMvcCoreBuilder AddPhemaValidation(
+		public static IMvcCoreBuilder AddValidation(
 			this IMvcCoreBuilder builder,
 			Action<IValidationBuilder> validation = null,
 			Action<ValidationOptions> options = null)
 		{
-			builder.Services.AddPhemaValidation(validation, options)
+			builder.Services.AddValidation(validation, options)
 				.ConfigureOptions<ValidatorConfigureOptions>();
 
 			return builder;

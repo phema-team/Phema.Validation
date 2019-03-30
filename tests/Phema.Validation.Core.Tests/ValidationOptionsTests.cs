@@ -16,7 +16,7 @@ namespace Phema.Validation.Core.Tests
 		public void ConfigureValidationOptions(ValidationSeverity severity)
 		{
 			var provider = new ServiceCollection()
-				.AddPhemaValidation(
+				.AddValidation(
 					b => {},
 					o => o.Severity = severity)
 				.BuildServiceProvider();

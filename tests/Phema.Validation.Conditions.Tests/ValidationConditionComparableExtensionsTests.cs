@@ -11,7 +11,7 @@ namespace Phema.Validation.Tests
 		public ValidationConditionComparableExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();

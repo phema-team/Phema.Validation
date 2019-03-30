@@ -7,7 +7,7 @@ namespace Phema.Validation
 {
 	public static class ValidationExtensions
 	{
-		public static IServiceCollection AddPhemaValidation(
+		public static IServiceCollection AddValidation(
 			this IServiceCollection services,
 			Action<IValidationBuilder> validation = null,
 			Action<ValidationOptions> options = null)

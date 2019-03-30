@@ -9,7 +9,7 @@ namespace Phema.Validation.Core.Tests
 		public void CustomSeparator()
 		{
 			var validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModel, TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
@@ -34,7 +34,7 @@ namespace Phema.Validation.Core.Tests
 		public void DataContractPrefix()
 		{
 			var validationContext = new ServiceCollection()
-				.AddPhemaValidation(configuration =>
+				.AddValidation(configuration =>
 					configuration.AddComponent<TestModel, TestModelValidationComponent>())
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
