@@ -1,14 +1,14 @@
 # Phema.Validation
 
-[![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
+[![Build Status](https://cloud.drone.io/api/badges/phema-team/Phema.Validation/status.svg)](https://cloud.drone.io/phema-team/Phema.Validation) 
 
 C# strongly typed validation library for `ASP.NET Core`
 
 ## Packages
 
-- `Phema.Validation.Core` - Core library on top of `Microsoft.Extensions.DepencencyInjection`
-- `Phema.Validation.Conditions` - Predefined useful conditions like `IsNot`, `IsNull`, `IsEmpty` etc.
-- `Phema.Validation` - Mvc integration for `Phema.Validation.Core`
+- [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.Core.svg)](https://www.nuget.org/packages/Phema.Validation.Core) `Phema.Validation.Core` - Core library on top of `Microsoft.Extensions.DepencencyInjection`
+- [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.Conditions.svg)](https://www.nuget.org/packages/Phema.Validation.Conditions) `Phema.Validation.Conditions` - Predefined useful conditions like `IsNot`, `IsNull`, `IsEmpty` etc.
+- [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation) `Phema.Validation` - Mvc integration for `Phema.Validation.Core`
 
 ## Usage
 
