@@ -7,26 +7,20 @@ namespace Phema.Validation
 	{
 		ICollection<IValidationMessage> ValidationMessages { get; }
 		ValidationSeverity ValidationSeverity { get; set; }
-		
-		// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-		// string Prefix { get; }
+		string ValidationPath { get; }
 	}
 
 	public class ValidationContext : IValidationContext
 	{
 		public ValidationContext(IOptions<ValidationOptions> options)
 		{
-			ValidationMessages = new List<IValidationMessage>();
+			ValidationMessages = options.Value.DefaultValidationMessageFactory();
 			ValidationSeverity = options.Value.DefaultValidationSeverity;
-
-			// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-			//Prefix = options.Value.DefaultPrefix;
+			ValidationPath = options.Value.DefaultValidationPath;
 		}
 		
 		public ICollection<IValidationMessage> ValidationMessages { get; }
 		public ValidationSeverity ValidationSeverity { get; set; }
-		
-		// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-		// public string Prefix { get; }
+		public string ValidationPath { get; }
 	}
 }

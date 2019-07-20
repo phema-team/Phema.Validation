@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
@@ -12,14 +13,13 @@ namespace Phema.Validation
 			string validationKey,
 			TValue value)
 		{
-			// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-			// var fullValidationKey = validationContext.Prefix is null
-			// ? validationKey
-			// : $"{validationContext.Prefix}{ValidationDefaults.DefaultPrefixSeparator}{validationKey}";
+			if (validationContext.ValidationPath != null)
+			{
+				validationKey = $"{validationContext.ValidationPath}{ValidationDefaults.PathSeparator}{validationKey}";
+			}
 
 			return new ValidationCondition<TValue>(
 				validationContext,
-				// TODO: Prefix? Options? CreateSubPrefixValidationContext?
 				validationKey,
 				value);
 		}
@@ -53,6 +53,23 @@ namespace Phema.Validation
 			{
 				throw new ValidationContextException(validationContext);
 			}
+		}
+
+		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPath)
+		{
+			if (validationContext.ValidationPath != null)
+			{
+				validationPath = $"{validationContext.ValidationPath}{ValidationDefaults.PathSeparator}{validationPath}";
+			}
+
+			return new ValidationContext(
+				new OptionsWrapper<ValidationOptions>(
+					new ValidationOptions
+					{
+						DefaultValidationPath = validationPath,
+						DefaultValidationSeverity = validationContext.ValidationSeverity,
+						DefaultValidationMessageFactory = () => validationContext.ValidationMessages
+					}));
 		}
 	}
 }

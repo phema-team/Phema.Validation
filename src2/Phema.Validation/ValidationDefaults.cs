@@ -1,11 +1,14 @@
+using System;
+using System.Collections.Generic;
+
 namespace Phema.Validation
 {
 	public static class ValidationDefaults
 	{
-		// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-		// public const string DefaultPrefix = null;
-		// public const string DefaultPrefixSeparator = ".";
-		
+		public const string PathSeparator = ".";
+
+		public const string DefaultValidationPath = null;
 		public const ValidationSeverity DefaultValidationSeverity = ValidationSeverity.Error;
+		public static Func<ICollection<IValidationMessage>> DefaultValidationMessagesFactory => () => new List<IValidationMessage>();
 	}
 }

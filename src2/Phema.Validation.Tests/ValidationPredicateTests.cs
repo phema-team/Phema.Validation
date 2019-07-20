@@ -16,7 +16,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddMessage_ReturnsMessage()
+		public void AddMessage_ReturnsMessage()
 		{
 			var (key, message, severity) = validationContext.When("key", "value")
 				.Is(value => true)
@@ -28,7 +28,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_EmptyIs_HasMessage()
+		public void EmptyIs_HasMessage()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -40,7 +40,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddTrace()
+		public void AddTrace()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -50,7 +50,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddDebug()
+		public void AddDebug()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -60,7 +60,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddInformation()
+		public void AddInformation()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -70,7 +70,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddWarning()
+		public void AddWarning()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -80,7 +80,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddError()
+		public void AddError()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -90,7 +90,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_AddFatal()
+		public void AddFatal()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
@@ -100,7 +100,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowMessage()
+		public void ThrowMessage()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -113,7 +113,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowTrace()
+		public void ThrowTrace()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -124,7 +124,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowDebug()
+		public void ThrowDebug()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -135,7 +135,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowInformation()
+		public void ThrowInformation()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -146,7 +146,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowWarning()
+		public void ThrowWarning()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -157,7 +157,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowError()
+		public void ThrowError()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -168,7 +168,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_ThrowFatal()
+		public void ThrowFatal()
 		{
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
@@ -179,7 +179,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPredicate_MessageDeconstruction()
+		public void MessageDeconstruction()
 		{
 			var (key, message, severity) = validationContext.When("key", "value")
 				.Is(value => true)

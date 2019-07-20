@@ -17,15 +17,20 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			// TODO: Expression parser
 			var validationKey = GetValidationKeyFor(expression.Body);
 			var value = expression.Compile().Invoke(model);
 
-			return new ValidationCondition<TValue>(
-				validationContext,
-				// TODO: Prefix? Options? CreateSubPrefixValidationContext?
-				validationKey,
-				value);
+			return validationContext.When(validationKey, value);
+		}
+		
+		public static IValidationContext CreateFor<TModel, TValue>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TValue>> expression)
+		{
+			var validationPath = GetValidationKeyFor(expression.Body);
+
+			return validationContext.CreateFor(validationPath);
 		}
 
 		private static string GetValidationKeyFor(Expression expression)

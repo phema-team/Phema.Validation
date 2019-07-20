@@ -18,7 +18,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationContext_DataContract_Property()
+		public void DataContract_Property()
 		{
 			var model = new TestModel();
 
@@ -30,7 +30,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationContext_DataContract_Array()
+		public void DataContract_Array()
 		{
 			var model = new TestModel
 			{
@@ -45,7 +45,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationContext_DataContract_List()
+		public void DataContract_List()
 		{
 			var model = new TestModel
 			{
@@ -57,6 +57,44 @@ namespace Phema.Validation.Tests
 				.AddError("Error");
 
 			Assert.Equal("list[0]", validationMessage.ValidationKey);
+		}
+		
+		[Fact]
+		public void Expression()
+		{
+			var model = new TestModel
+			{
+				List = new List<int> {12}
+			};
+			
+			var withPrefix = validationContext.CreateFor(model, m => m.List);
+
+			var (key, _) = withPrefix.When(model.List, list => list.Count)
+				.Is(() => true)
+				.AddError("Error");
+
+			var validationMessage = Assert.Single(validationContext.ValidationMessages);
+
+			Assert.Equal("list.Count", key);
+			Assert.Equal("list.Count", validationMessage.ValidationKey);
+		}
+
+		[Fact]
+		public void Expression_DoubleInnerCreate()
+		{
+			var model = new TestModel
+			{
+				List = new List<int> {12}
+			};
+			
+			var withPrefix = validationContext.CreateFor(model, m => m.List);
+			withPrefix = withPrefix.CreateFor(model, m => m.List);
+
+			var (key, _) = withPrefix.When(model.List, c => c.Count)
+				.Is(() => true)
+				.AddError("Error");
+
+			Assert.Equal("list.list.Count", key);
 		}
 
 		[DataContract]

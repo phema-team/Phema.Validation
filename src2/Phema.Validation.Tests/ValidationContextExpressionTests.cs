@@ -17,7 +17,7 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void ValidationContext_ExpressionKey_Property()
+		public void ExpressionKey_Property()
 		{
 			var model = new TestModel
 			{
@@ -37,7 +37,7 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void ValidationContext_ExpressionKey_ArrayProperty_ConstantIndex()
+		public void ExpressionKey_ArrayProperty_ConstantIndex()
 		{
 			var model = new TestModel
 			{
@@ -57,7 +57,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationContext_ExpressionKey_ArrayProperty_LocalIndex()
+		public void ExpressionKey_ArrayProperty_LocalIndex()
 		{
 			var model = new TestModel
 			{
@@ -79,7 +79,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationContext_ExpressionKey_ListProperty_ConstantIndex()
+		public void ExpressionKey_ListProperty_ConstantIndex()
 		{
 			var model = new TestModel
 			{
@@ -99,7 +99,7 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void ValidationContext_ExpressionKey_ListProperty_LocalIndex()
+		public void ExpressionKey_ListProperty_LocalIndex()
 		{
 			var model = new TestModel
 			{
@@ -121,7 +121,7 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void ValidationContext_ExpressionKey_DoubleProperty_ConstantIndex()
+		public void ExpressionKey_DoubleProperty_ConstantIndex()
 		{
 			var model = new TestModel
 			{
@@ -141,7 +141,7 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
-		public void ValidationContext_ExpressionKey_DoubleProperty_LocalIndex()
+		public void ExpressionKey_DoubleProperty_LocalIndex()
 		{
 			var model = new TestModel
 			{
@@ -160,6 +160,44 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("DoubleArray[0, 0]", key);
 			Assert.Equal("Error", message);
+		}
+
+		[Fact]
+		public void List_Expression_InnerPath()
+		{
+			var model = new TestModel
+			{
+				List = new List<int> {12}
+			};
+			
+			var withPrefix = validationContext.CreateFor(model, m => m.List);
+
+			var (key, _) = withPrefix.When(model.List, list => list.Count)
+				.Is(() => true)
+				.AddError("Error");
+
+			var validationMessage = Assert.Single(validationContext.ValidationMessages);
+
+			Assert.Equal("List.Count", key);
+			Assert.Equal("List.Count", validationMessage.ValidationKey);
+		}
+
+		[Fact]
+		public void Expression_DoubleInnerCreate()
+		{
+			var model = new TestModel
+			{
+				List = new List<int> {12}
+			};
+			
+			var withPrefix = validationContext.CreateFor(model, m => m.List);
+			withPrefix = withPrefix.CreateFor(model, m => m.List);
+
+			var (key, _) = withPrefix.When(model.List, c => c.Count)
+				.Is(() => true)
+				.AddError("Error");
+
+			Assert.Equal("List.List.Count", key);
 		}
 
 		private class TestModel
