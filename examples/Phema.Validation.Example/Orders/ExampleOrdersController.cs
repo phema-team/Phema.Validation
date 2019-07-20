@@ -15,10 +15,11 @@ namespace Phema.Validation.Example
 		[HttpPost]
 		public IActionResult CreateOrder([FromBody] ExampleOrderModel model)
 		{
-			model.Save(validationContext);
+			model.Save(/*databaseContext, */validationContext);
 
 			if (validationContext.IsValid())
 			{
+				// databaseContext.SaveChanges();
 				return Ok(new { Payload = model });
 			}
 
