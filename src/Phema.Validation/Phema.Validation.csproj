@@ -5,6 +5,7 @@
 		<LangVersion>8</LangVersion>
 		<RootNamespace>Phema.Validation</RootNamespace>
 		<Version>3.0.0</Version>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
 		<Authors>sergeyshaykhullin</Authors>
 		<Description>C# strongly typed validation library for .NET</Description>
 		<PackageTags>.NETCore;ASP.NETCore;Validation</PackageTags>

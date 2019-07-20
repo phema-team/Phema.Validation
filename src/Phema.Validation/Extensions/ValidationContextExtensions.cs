@@ -61,7 +61,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Creates new validation context for specified validation path
+		/// Creates new validation context with specified validation path
 		/// </summary>
 		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPath)
 		{

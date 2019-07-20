@@ -4,45 +4,57 @@ namespace Phema.Validation
 	{
 		public static void ThrowMessage<TValue>(
 			this IValidationCondition<TValue> condition,
-			string message,
+			string validationMessage,
 			ValidationSeverity severity)
 		{
-			var validationMessage = condition.AddDetail(message, severity);
+			var validationDetail = condition.AddDetail(validationMessage, severity);
 
-			if (validationMessage != null)
+			if (validationDetail != null)
 			{
-				throw new ValidationConditionException(validationMessage);
+				throw new ValidationConditionException(validationDetail);
 			}
 		}
 
-		public static void ThrowTrace<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowTrace<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Trace);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Trace);
 		}
 
-		public static void ThrowDebug<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowDebug<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Debug);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Debug);
 		}
 
-		public static void ThrowInformation<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowInformation<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Information);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Information);
 		}
 
-		public static void ThrowWarning<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowWarning<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Warning);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Warning);
 		}
 
-		public static void ThrowError<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowError<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Error);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Error);
 		}
 
-		public static void ThrowFatal<TValue>(this IValidationCondition<TValue> condition, string message)
+		public static void ThrowFatal<TValue>(
+			this IValidationCondition<TValue> condition,
+			string validationMessage)
 		{
-			condition.ThrowMessage(message, ValidationSeverity.Fatal);
+			condition.ThrowMessage(validationMessage, ValidationSeverity.Fatal);
 		}
 	}
 }

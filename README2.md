@@ -66,5 +66,4 @@ ValidateChildren(validationContext.CreateFor(person, p => p.Children)) // It wil
 ValidateLocation(validationContext
   .CreateFor(person, p => p.Address)
   .CreateFor(person.Address, a => a.Location)) // It will be `Address.Location.*ValidationKey*` path
-
 ```

@@ -10,7 +10,7 @@ namespace Phema.Validation
 		bool? IsValid { get; set; }
 	}
 
-	public class ValidationCondition<TValue> : IValidationCondition<TValue>
+	internal sealed class ValidationCondition<TValue> : IValidationCondition<TValue>
 	{
 		public ValidationCondition(
 			IValidationContext validationContext,

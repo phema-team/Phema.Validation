@@ -7,10 +7,10 @@ namespace Phema.Validation
 	{
 		ICollection<IValidationDetail> ValidationDetails { get; }
 		ValidationSeverity ValidationSeverity { get; set; }
-		string ValidationPath { get; }
+		string? ValidationPath { get; }
 	}
 
-	public class ValidationContext : IValidationContext
+	internal sealed class ValidationContext : IValidationContext
 	{
 		public ValidationContext(IOptions<ValidationOptions> options)
 		{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	public class ValidationOptions
+	public sealed class ValidationOptions
 	{
 		public ValidationOptions()
 		{
@@ -14,6 +14,6 @@ namespace Phema.Validation
 
 		public ValidationSeverity DefaultValidationSeverity { get; set; }
 		public Func<ICollection<IValidationDetail>> DefaultValidationDetailsFactory { get; set; }
-		public string DefaultValidationPath { get; set; }
+		public string? DefaultValidationPath { get; set; }
 	}
 }

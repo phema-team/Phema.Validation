@@ -7,7 +7,7 @@ namespace Phema.Validation
 		ValidationSeverity ValidationSeverity { get; }
 	}
 
-	public class ValidationDetail : IValidationDetail
+	internal sealed class ValidationDetail : IValidationDetail
 	{
 		public ValidationDetail(string validationKey, string validationMessage, ValidationSeverity validationSeverity)
 		{
