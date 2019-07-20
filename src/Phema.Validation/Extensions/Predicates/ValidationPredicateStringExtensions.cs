@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -50,6 +51,13 @@ namespace Phema.Validation.Conditions
 			int length)
 		{
 			return condition.Is(value => value != null && value.Length == length);
+		}
+		
+		public static IValidationCondition<string> HasLength(
+			this IValidationCondition<string> condition,
+			Func<string, bool> predicate)
+		{
+			return condition.Is(value => value != null && predicate(value));
 		}
 
 		public static IValidationCondition<string> HasLengthLess(

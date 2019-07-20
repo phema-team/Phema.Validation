@@ -44,5 +44,14 @@ namespace Phema.Validation.Conditions
 		{
 			return condition.Is(value => value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
 		}
+		
+		public static IValidationCondition<TValue> IsNotInRange<TValue>(
+			this IValidationCondition<TValue> condition,
+			TValue min,
+			TValue max)
+			where TValue : IComparable<TValue>
+		{
+			return condition.Is(value => value.CompareTo(min) <= 0 || value.CompareTo(max) >= 0);
+		}
 	}
 }

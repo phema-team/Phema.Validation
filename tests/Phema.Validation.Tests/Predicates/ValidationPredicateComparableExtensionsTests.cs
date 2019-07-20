@@ -131,5 +131,35 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
+		
+		[Fact]
+		public void IsNotInRange_Valid()
+		{
+			validationContext.When("age", 11)
+				.IsNotInRange(10, 12)
+				.AddError("template1");
+
+			validationContext.EnsureIsValid();
+		}
+
+		[Fact]
+		public void IsNotInRange_Less_Invalid()
+		{
+			validationContext.When("age", 9)
+				.IsNotInRange(10, 12)
+				.AddError("template1");
+
+			Assert.Single(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsNotInRange_Greater_Invalid()
+		{
+			validationContext.When("age", 13)
+				.IsNotInRange(10, 12)
+				.AddError("template1");
+
+			Assert.Single(validationContext.ValidationDetails);
+		}
 	}
 }

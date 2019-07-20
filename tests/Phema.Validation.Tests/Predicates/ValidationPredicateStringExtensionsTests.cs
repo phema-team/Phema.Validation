@@ -165,6 +165,27 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void HasLengthCallback()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.HasLength(length => true)
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void HasLengthCallback_Valid()
+		{
+			validationContext.When("name", "john")
+				.HasLength(length => false)
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+		
+		[Fact]
 		public void HasLengthLess()
 		{
 			var (key, message) = validationContext.When("name", "john")

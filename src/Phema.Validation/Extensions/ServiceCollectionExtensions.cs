@@ -12,8 +12,8 @@ namespace Phema.Validation
 			this IServiceCollection services,
 			Action<ValidationOptions> options = null)
 		{
-			options = options ?? (o => { });
-			
+			options ??= o => { };
+
 			return services.AddScoped<IValidationContext, ValidationContext>()
 				.Configure(options);
 		}
