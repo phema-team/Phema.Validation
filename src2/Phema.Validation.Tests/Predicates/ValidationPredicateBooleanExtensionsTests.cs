@@ -19,15 +19,15 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsTrue()
 		{
-			var error = validationContext.When("key", true)
+			var message = validationContext.When("key", true)
 				.IsTrue()
 				.AddError("template1");
 
-			Assert.NotNull(error);
+			Assert.NotNull(message);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template1", error.Message);
-			Assert.Equal(ValidationSeverity.Error, error.Severity);
+			Assert.Equal("key", message.ValidationKey);
+			Assert.Equal("template1", message.Message);
+			Assert.Equal(ValidationSeverity.Error, message.Severity);
 		}
 
 		[Fact]
@@ -43,25 +43,25 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsFalse()
 		{
-			var error = validationContext.When("key", false)
+			var message = validationContext.When("key", false)
 				.IsFalse()
 				.AddError("template1");
 
-			Assert.NotNull(error);
+			Assert.NotNull(message);
 
-			Assert.Equal("key", error.Key);
-			Assert.Equal("template1", error.Message);
-			Assert.Equal(ValidationSeverity.Error, error.Severity);
+			Assert.Equal("key", message.ValidationKey);
+			Assert.Equal("template1", message.Message);
+			Assert.Equal(ValidationSeverity.Error, message.Severity);
 		}
 
 		[Fact]
 		public void IsFalse_Valid()
 		{
-			var error = validationContext.When("key", true)
+			var message = validationContext.When("key", true)
 				.IsFalse()
 				.AddError("template1");
 
-			Assert.Null(error);
+			Assert.Null(message);
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace Phema.Validation
 			out string key,
 			out string message)
 		{
-			key = validationMessage.Key;
+			key = validationMessage.ValidationKey;
 			message = validationMessage.Message;
 		}
 

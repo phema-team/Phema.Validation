@@ -40,7 +40,7 @@ namespace Phema.Validation
 		public static bool IsValid(this IValidationContext validationContext, string validationKey = null)
 		{
 			return !validationContext.ValidationMessages
-				.Any(m => (validationKey is null || m.Key == validationKey) 
+				.Any(m => (validationKey is null || m.ValidationKey == validationKey)
 					&& m.Severity >= validationContext.ValidationSeverity);
 		}
 

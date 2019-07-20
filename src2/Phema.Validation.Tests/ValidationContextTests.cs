@@ -24,7 +24,7 @@ namespace Phema.Validation.Tests
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
-			Assert.Equal("key", validationMessage.Key);
+			Assert.Equal("key", validationMessage.ValidationKey);
 			Assert.Equal("Error", validationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
@@ -47,7 +47,7 @@ namespace Phema.Validation.Tests
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
-			Assert.Equal("key", validationMessage.Key);
+			Assert.Equal("key", validationMessage.ValidationKey);
 			Assert.Equal("Error", validationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
@@ -61,7 +61,7 @@ namespace Phema.Validation.Tests
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
-			Assert.Equal("key", validationMessage.Key);
+			Assert.Equal("key", validationMessage.ValidationKey);
 			Assert.Equal("Error", validationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}

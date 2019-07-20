@@ -26,7 +26,7 @@ namespace Phema.Validation.Tests
 				.Is(value => true)
 				.AddError("Error");
 
-			Assert.Equal("property", validationMessage.Key);
+			Assert.Equal("property", validationMessage.ValidationKey);
 		}
 
 		[Fact]
@@ -41,7 +41,7 @@ namespace Phema.Validation.Tests
 				.Is(value => true)
 				.AddError("Error");
 
-			Assert.Equal("array[0]", validationMessage.Key);
+			Assert.Equal("array[0]", validationMessage.ValidationKey);
 		}
 
 		[Fact]
@@ -56,7 +56,7 @@ namespace Phema.Validation.Tests
 				.Is(value => true)
 				.AddError("Error");
 
-			Assert.Equal("list[0]", validationMessage.Key);
+			Assert.Equal("list[0]", validationMessage.ValidationKey);
 		}
 
 		[DataContract]
