@@ -4,63 +4,64 @@ namespace Phema.Validation
 {
 	public static class ValidationPredicateExtensions
 	{
-		public static IValidationPredicate<TValue> Is<TValue>(
-			this IValidationPredicate<TValue> predicate,
-			Func<TValue, bool> condition)
+		public static IValidationCondition<TValue> Is<TValue>(
+			this IValidationCondition<TValue> condition,
+			Func<TValue, bool> predicate)
 		{
-			if (predicate.IsValid != false)
+			// Null or true
+			if (condition.IsValid != false)
 			{
-				predicate.IsValid = !condition(predicate.Value);
+				condition.IsValid = !predicate(condition.Value);
 			}
 
-			return predicate;
+			return condition;
 		}
 
-		public static IValidationPredicate<TValue> Is<TValue>(
-			this IValidationPredicate<TValue> predicate,
-			Func<bool> condition)
+		public static IValidationCondition<TValue> Is<TValue>(
+			this IValidationCondition<TValue> condition,
+			Func<bool> predicate)
 		{
-			return predicate.Is(value => condition());
+			return condition.Is(value => predicate());
 		}
 
-		public static IValidationPredicate<TValue> IsNot<TValue>(
-			this IValidationPredicate<TValue> predicate,
-			Func<TValue, bool> condition)
+		public static IValidationCondition<TValue> IsNot<TValue>(
+			this IValidationCondition<TValue> condition,
+			Func<TValue, bool> predicate)
 		{
-			return predicate.Is(value => !condition(value));
+			return condition.Is(value => !predicate(value));
 		}
 
-		public static IValidationPredicate<TValue> IsNot<TValue>(
-			this IValidationPredicate<TValue> predicate,
-			Func<bool> condition)
+		public static IValidationCondition<TValue> IsNot<TValue>(
+			this IValidationCondition<TValue> condition,
+			Func<bool> predicate)
 		{
-			return predicate.Is(value => !condition());
+			return condition.Is(value => !predicate());
 		}
 
-		public static IValidationPredicate<TValue> IsNull<TValue>(
-			this IValidationPredicate<TValue> predicate)
+		public static IValidationCondition<TValue> IsNull<TValue>(
+			this IValidationCondition<TValue> condition)
 		{
-			return predicate.Is(value => value == null);
+			return condition.Is(value => value == null);
 		}
 
-		public static IValidationPredicate<TValue> IsNotNull<TValue>(
-			this IValidationPredicate<TValue> predicate)
+		public static IValidationCondition<TValue> IsNotNull<TValue>(
+			this IValidationCondition<TValue> condition)
 		{
-			return predicate.Is(value => value != null);
+			return condition.Is(value => value != null);
 		}
 
-		public static IValidationPredicate<TValue> IsEqual<TValue>(
-			this IValidationPredicate<TValue> predicate,
+		public static IValidationCondition<TValue> IsEqual<TValue>(
+			this IValidationCondition<TValue> condition,
 			TValue expect)
 		{
-			return predicate.Is(value => value?.Equals(expect) ?? expect?.Equals(null) ?? true);
+			return condition.Is(value => value?.Equals(expect) ?? expect?.Equals(null) ?? true);
 		}
 
-		public static IValidationPredicate<TValue> IsNotEqual<TValue>(
-			this IValidationPredicate<TValue> predicate,
+		public static IValidationCondition<TValue> IsNotEqual<TValue>(
+			this IValidationCondition<TValue> condition,
 			TValue expect)
 		{
-			return predicate.Is(value => !(value?.Equals(expect) ?? expect?.Equals(null) ?? true));
+			return condition.Is(value => !(value?.Equals(expect) ?? expect?.Equals(null) ?? true));
 		}
 	}
 }

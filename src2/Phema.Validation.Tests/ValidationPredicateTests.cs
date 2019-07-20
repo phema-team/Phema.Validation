@@ -18,13 +18,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationPredicate_AddMessage_ReturnsMessage()
 		{
-			var validationMessage = validationContext.When("key", "value")
+			var (key, message, severity) = validationContext.When("key", "value")
 				.Is(value => true)
-				.AddMessage("Key is not valid", ValidationSeverity.Error);
+				.AddMessage("Error", ValidationSeverity.Error);
 
-			Assert.Equal("key", validationMessage.Key);
-			Assert.Equal("Key is not valid", validationMessage.Message);
-			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
+			Assert.Equal("key", key);
+			Assert.Equal("Error", message);
+			Assert.Equal(ValidationSeverity.Error, severity);
 		}
 
 		[Fact]
@@ -32,20 +32,19 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddMessage("Key is not valid", ValidationSeverity.Error);
+				.AddMessage("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", validationMessage.Key);
-			Assert.Equal("Key is not valid", validationMessage.Message);
+			Assert.Equal("Error", validationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
-
 
 		[Fact]
 		public void ValidationPredicate_AddTrace()
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddTrace("Key is not valid");
+				.AddTrace("Trace");
 
 			Assert.Equal(ValidationSeverity.Trace, validationMessage.Severity);
 		}
@@ -55,7 +54,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddDebug("Key is not valid");
+				.AddDebug("Debug");
 
 			Assert.Equal(ValidationSeverity.Debug, validationMessage.Severity);
 		}
@@ -65,7 +64,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddInformation("Key is not valid");
+				.AddInformation("Information");
 
 			Assert.Equal(ValidationSeverity.Information, validationMessage.Severity);
 		}
@@ -75,7 +74,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddWarning("Key is not valid");
+				.AddWarning("Warning");
 
 			Assert.Equal(ValidationSeverity.Warning, validationMessage.Severity);
 		}
@@ -85,7 +84,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddError("Key is not valid");
+				.AddError("Error");
 
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
@@ -95,7 +94,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationMessage = validationContext.When("key", "value")
 				.Is(() => true)
-				.AddFatal("Key is not valid");
+				.AddFatal("Fatal");
 
 			Assert.Equal(ValidationSeverity.Fatal, validationMessage.Severity);
 		}
@@ -106,10 +105,10 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowMessage("Key is not valid", ValidationSeverity.Error));
+					.ThrowMessage("Error", ValidationSeverity.Error));
 
 			Assert.Equal("key", exception.ValidationMessage.Key);
-			Assert.Equal("Key is not valid", exception.ValidationMessage.Message);
+			Assert.Equal("Error", exception.ValidationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationMessage.Severity);
 		}
 
@@ -119,7 +118,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowTrace("Key is not valid"));
+					.ThrowTrace("Trace"));
 
 			Assert.Equal(ValidationSeverity.Trace, exception.ValidationMessage.Severity);
 		}
@@ -130,7 +129,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowDebug("Key is not valid"));
+					.ThrowDebug("Debug"));
 
 			Assert.Equal(ValidationSeverity.Debug, exception.ValidationMessage.Severity);
 		}
@@ -141,7 +140,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowInformation("Key is not valid"));
+					.ThrowInformation("Information"));
 
 			Assert.Equal(ValidationSeverity.Information, exception.ValidationMessage.Severity);
 		}
@@ -152,7 +151,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowWarning("Key is not valid"));
+					.ThrowWarning("Warning"));
 
 			Assert.Equal(ValidationSeverity.Warning, exception.ValidationMessage.Severity);
 		}
@@ -163,7 +162,7 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowError("Key is not valid"));
+					.ThrowError("Error"));
 
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationMessage.Severity);
 		}
@@ -174,9 +173,22 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationPredicateException>(() =>
 				validationContext.When("key", "value")
 					.Is(() => true)
-					.ThrowFatal("Key is not valid"));
+					.ThrowFatal("Fatal"));
 
 			Assert.Equal(ValidationSeverity.Fatal, exception.ValidationMessage.Severity);
+		}
+
+		[Fact]
+		public void ValidationPredicate_MessageDeconstruction()
+		{
+			var (key, message, severity) = validationContext.When("key", "value")
+				.Is(value => true)
+				.AddMessage("Error", ValidationSeverity.Error);
+
+			var validationMessage = Assert.Single(validationContext.ValidationMessages);
+			Assert.Equal(validationMessage.Key, key);
+			Assert.Equal(validationMessage.Message, message);
+			Assert.Equal(validationMessage.Severity, severity);
 		}
 	}
 }

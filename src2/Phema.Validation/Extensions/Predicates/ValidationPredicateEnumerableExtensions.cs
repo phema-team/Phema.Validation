@@ -6,24 +6,24 @@ namespace Phema.Validation.Conditions
 {
 	public static class ValidationPredicateEnumerableExtensions
 	{
-		public static IValidationPredicate<IEnumerable<TElement>> IsAny<TElement>(
-			this IValidationPredicate<IEnumerable<TElement>> predicate)
+		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
+			this IValidationCondition<IEnumerable<TElement>> condition)
 		{
-			return predicate.Is(value => value?.Any() ?? false);
+			return condition.Is(value => value?.Any() ?? false);
 		}
 
-		public static IValidationPredicate<IEnumerable<TElement>> IsAny<TElement>(
-			this IValidationPredicate<IEnumerable<TElement>> predicate,
-			Func<TElement, bool> condition)
+		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
+			this IValidationCondition<IEnumerable<TElement>> condition,
+			Func<TElement, bool> predicate)
 		{
-			return predicate.Is(value => value?.Any(condition) ?? false);
+			return condition.Is(value => value?.Any(predicate) ?? false);
 		}
 
-		public static IValidationPredicate<IEnumerable<TElement>> IsAll<TElement>(
-			this IValidationPredicate<IEnumerable<TElement>> predicate,
-			Func<TElement, bool> condition)
+		public static IValidationCondition<IEnumerable<TElement>> IsAll<TElement>(
+			this IValidationCondition<IEnumerable<TElement>> condition,
+			Func<TElement, bool> predicate)
 		{
-			return predicate.Is(value => value?.All(condition) ?? false);
+			return condition.Is(value => value?.All(predicate) ?? false);
 		}
 	}
 }

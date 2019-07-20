@@ -1,6 +1,6 @@
 namespace Phema.Validation
 {
-	public interface IValidationPredicate<out TValue>
+	public interface IValidationCondition<out TValue>
 	{
 		IValidationContext ValidationContext { get; }
 		
@@ -10,9 +10,9 @@ namespace Phema.Validation
 		bool? IsValid { get; set; }
 	}
 
-	public class ValidationPredicate<TValue> : IValidationPredicate<TValue>
+	public class ValidationCondition<TValue> : IValidationCondition<TValue>
 	{
-		public ValidationPredicate(
+		public ValidationCondition(
 			IValidationContext validationContext,
 			string validationKey,
 			TValue value)

@@ -4,44 +4,44 @@ namespace Phema.Validation.Conditions
 {
 	public static class ValidationPredicateCollectonExtensions
 	{
-		public static IValidationPredicate<ICollection<TElement>> IsEmpty<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate)
+		public static IValidationCondition<ICollection<TElement>> IsEmpty<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition)
 		{
-			return predicate.Is(value => value == null || value.Count == 0);
+			return condition.Is(value => value == null || value.Count == 0);
 		}
 
-		public static IValidationPredicate<ICollection<TElement>> IsNotEmpty<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate)
+		public static IValidationCondition<ICollection<TElement>> IsNotEmpty<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition)
 		{
-			return predicate.Is(value => value != null && value.Count != 0);
+			return condition.Is(value => value != null && value.Count != 0);
 		}
 
-		public static IValidationPredicate<ICollection<TElement>> HasCount<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate,
+		public static IValidationCondition<ICollection<TElement>> HasCount<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition,
 			int count)
 		{
-			return predicate.Is(value => value != null && value.Count == count);
+			return condition.Is(value => value != null && value.Count == count);
 		}
 
-		public static IValidationPredicate<ICollection<TElement>> NotHasCount<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate,
+		public static IValidationCondition<ICollection<TElement>> NotHasCount<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition,
 			int count)
 		{
-			return predicate.Is(value => value != null && value.Count != count);
+			return condition.Is(value => value != null && value.Count != count);
 		}
 
-		public static IValidationPredicate<ICollection<TElement>> IsContains<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate,
+		public static IValidationCondition<ICollection<TElement>> IsContains<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition,
 			TElement element)
 		{
-			return predicate.Is(value => value?.Contains(element) ?? false);
+			return condition.Is(value => value?.Contains(element) ?? false);
 		}
 
-		public static IValidationPredicate<ICollection<TElement>> IsNotContains<TElement>(
-			this IValidationPredicate<ICollection<TElement>> predicate,
+		public static IValidationCondition<ICollection<TElement>> IsNotContains<TElement>(
+			this IValidationCondition<ICollection<TElement>> condition,
 			TElement element)
 		{
-			return predicate.Is(value => !(value?.Contains(element) ?? false));
+			return condition.Is(value => !(value?.Contains(element) ?? false));
 		}
 	}
 }

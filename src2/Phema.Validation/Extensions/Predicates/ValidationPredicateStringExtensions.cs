@@ -5,65 +5,65 @@ namespace Phema.Validation.Conditions
 {
 	public static class ValidationPredicateStringExtensions
 	{
-		public static IValidationPredicate<string> IsEmpty(
-			this IValidationPredicate<string> predicate)
+		public static IValidationCondition<string> IsEmpty(
+			this IValidationCondition<string> condition)
 		{
-			return predicate.Is(value => value == string.Empty);
+			return condition.Is(value => value == string.Empty);
 		}
 
-		public static IValidationPredicate<string> IsNotEmpty(
-			this IValidationPredicate<string> predicate)
+		public static IValidationCondition<string> IsNotEmpty(
+			this IValidationCondition<string> condition)
 		{
-			return predicate.Is(value => value != string.Empty);
+			return condition.Is(value => value != string.Empty);
 		}
 
-		public static IValidationPredicate<string> IsNullOrWhitespace(
-			this IValidationPredicate<string> predicate)
+		public static IValidationCondition<string> IsNullOrWhitespace(
+			this IValidationCondition<string> condition)
 		{
-			return predicate.Is(string.IsNullOrWhiteSpace);
+			return condition.Is(string.IsNullOrWhiteSpace);
 		}
 
-		public static IValidationPredicate<string> IsMatch(
-			this IValidationPredicate<string> predicate,
+		public static IValidationCondition<string> IsMatch(
+			this IValidationCondition<string> condition,
 			string regex,
 			RegexOptions options = RegexOptions.None)
 		{
-			return predicate.Is(value => Regex.IsMatch(value, regex, options));
+			return condition.Is(value => Regex.IsMatch(value, regex, options));
 		}
 
-		public static IValidationPredicate<string> IsNotMatch(
-			this IValidationPredicate<string> predicate,
+		public static IValidationCondition<string> IsNotMatch(
+			this IValidationCondition<string> condition,
 			string regex,
 			RegexOptions options = RegexOptions.None)
 		{
-			return predicate.Is(value => !Regex.IsMatch(value, regex, options));
+			return condition.Is(value => !Regex.IsMatch(value, regex, options));
 		}
 
-		public static IValidationPredicate<string> IsNotEmail(
-			this IValidationPredicate<string> predicate)
+		public static IValidationCondition<string> IsNotEmail(
+			this IValidationCondition<string> condition)
 		{
-			return predicate.Is(value => !new EmailAddressAttribute().IsValid(value));
+			return condition.Is(value => !new EmailAddressAttribute().IsValid(value));
 		}
 
-		public static IValidationPredicate<string> HasLength(
-			this IValidationPredicate<string> predicate,
+		public static IValidationCondition<string> HasLength(
+			this IValidationCondition<string> condition,
 			int length)
 		{
-			return predicate.Is(value => value != null && value.Length == length);
+			return condition.Is(value => value != null && value.Length == length);
 		}
 
-		public static IValidationPredicate<string> HasLengthLess(
-			this IValidationPredicate<string> predicate,
+		public static IValidationCondition<string> HasLengthLess(
+			this IValidationCondition<string> condition,
 			int length)
 		{
-			return predicate.Is(value => value != null && value.Length < length);
+			return condition.Is(value => value != null && value.Length < length);
 		}
 
-		public static IValidationPredicate<string> HasLengthGreater(
-			this IValidationPredicate<string> predicate,
+		public static IValidationCondition<string> HasLengthGreater(
+			this IValidationCondition<string> condition,
 			int length)
 		{
-			return predicate.Is(value => value != null && value.Length > length);
+			return condition.Is(value => value != null && value.Length > length);
 		}
 	}
 }

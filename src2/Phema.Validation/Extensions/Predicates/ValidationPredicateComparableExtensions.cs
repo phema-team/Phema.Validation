@@ -4,29 +4,29 @@ namespace Phema.Validation.Conditions
 {
 	public static class ValidationPredicateComparableExtensions
 	{
-		public static IValidationPredicate<TValue> IsGreater<TValue>(
-			this IValidationPredicate<TValue> predicate,
+		public static IValidationCondition<TValue> IsGreater<TValue>(
+			this IValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
-			return predicate.Is(value => value.CompareTo(comparable) > 0);
+			return condition.Is(value => value.CompareTo(comparable) > 0);
 		}
 
-		public static IValidationPredicate<TValue> IsLess<TValue>(
-			this IValidationPredicate<TValue> predicate,
+		public static IValidationCondition<TValue> IsLess<TValue>(
+			this IValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
-			return predicate.Is(value => value.CompareTo(comparable) < 0);
+			return condition.Is(value => value.CompareTo(comparable) < 0);
 		}
 
-		public static IValidationPredicate<TValue> IsInRange<TValue>(
-			this IValidationPredicate<TValue> predicate,
+		public static IValidationCondition<TValue> IsInRange<TValue>(
+			this IValidationCondition<TValue> condition,
 			TValue min,
 			TValue max)
 			where TValue : IComparable<TValue>
 		{
-			return predicate.Is(value => value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
+			return condition.Is(value => value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
 		}
 	}
 }

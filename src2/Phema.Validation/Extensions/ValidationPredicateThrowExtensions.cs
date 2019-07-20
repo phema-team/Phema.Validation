@@ -3,11 +3,11 @@ namespace Phema.Validation
 	public static class ValidationPredicateThrowExtensions
 	{
 		public static void ThrowMessage<TValue>(
-			this IValidationPredicate<TValue> predicate,
+			this IValidationCondition<TValue> condition,
 			string message,
 			ValidationSeverity severity)
 		{
-			var validationMessage = predicate.AddMessage(message, severity);
+			var validationMessage = condition.AddMessage(message, severity);
 
 			if (validationMessage != null)
 			{
@@ -15,34 +15,34 @@ namespace Phema.Validation
 			}
 		}
 
-		public static void ThrowTrace<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowTrace<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Trace);
+			condition.ThrowMessage(message, ValidationSeverity.Trace);
 		}
 
-		public static void ThrowDebug<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowDebug<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Debug);
+			condition.ThrowMessage(message, ValidationSeverity.Debug);
 		}
 
-		public static void ThrowInformation<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowInformation<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Information);
+			condition.ThrowMessage(message, ValidationSeverity.Information);
 		}
 
-		public static void ThrowWarning<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowWarning<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Warning);
+			condition.ThrowMessage(message, ValidationSeverity.Warning);
 		}
 
-		public static void ThrowError<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowError<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Error);
+			condition.ThrowMessage(message, ValidationSeverity.Error);
 		}
 
-		public static void ThrowFatal<TValue>(this IValidationPredicate<TValue> predicate, string message)
+		public static void ThrowFatal<TValue>(this IValidationCondition<TValue> condition, string message)
 		{
-			predicate.ThrowMessage(message, ValidationSeverity.Fatal);
+			condition.ThrowMessage(message, ValidationSeverity.Fatal);
 		}
 	}
 }

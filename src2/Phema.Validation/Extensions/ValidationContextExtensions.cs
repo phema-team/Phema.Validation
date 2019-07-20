@@ -7,7 +7,7 @@ namespace Phema.Validation
 		/// <summary>
 		/// Specifies validation key with <see cref="TValue"/> value
 		/// </summary>
-		public static IValidationPredicate<TValue> When<TValue>(
+		public static IValidationCondition<TValue> When<TValue>(
 			this IValidationContext validationContext,
 			string validationKey,
 			TValue value)
@@ -17,7 +17,7 @@ namespace Phema.Validation
 			// ? validationKey
 			// : $"{validationContext.Prefix}{ValidationDefaults.DefaultPrefixSeparator}{validationKey}";
 
-			return new ValidationPredicate<TValue>(
+			return new ValidationCondition<TValue>(
 				validationContext,
 				// TODO: Prefix? Options? CreateSubPrefixValidationContext?
 				validationKey,
@@ -27,7 +27,7 @@ namespace Phema.Validation
 		/// <summary>
 		/// Specifies validation key with object predicate with null value. Use with closures in conditions
 		/// </summary>
-		public static IValidationPredicate<object> When(
+		public static IValidationCondition<object> When(
 			this IValidationContext validationContext,
 			string validationKey)
 		{
