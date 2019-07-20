@@ -5,6 +5,9 @@ namespace Phema.Validation
 {
 	public static class ServiceCollectionExtensions
 	{
+		/// <summary>
+		/// Adds <see cref="IValidationContext"/> dependency and configures <see cref="ValidationOptions"/>
+		/// </summary>
 		public static IServiceCollection AddValidation(
 			this IServiceCollection services,
 			Action<ValidationOptions> options = null)

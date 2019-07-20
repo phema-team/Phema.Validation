@@ -55,13 +55,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationContext_NoValidationKey_HasMessage()
 		{
-			validationContext.When("value")
-				.Is(value => true)
+			validationContext.When("key")
+				.Is(() => true)
 				.AddMessage("Key is not valid", ValidationSeverity.Error);
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
-			Assert.Equal(ValidationDefaults.DefaultValidationKey, validationMessage.Key);
+			Assert.Equal("key", validationMessage.Key);
 			Assert.Equal("Key is not valid", validationMessage.Message);
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
@@ -69,8 +69,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationContext_HasMessage_IsNotValid()
 		{
-			validationContext.When("value")
-				.Is(value => true)
+			validationContext.When("key")
+				.Is(() => true)
 				.AddMessage("Key is not valid", ValidationSeverity.Error);
 
 			Assert.False(validationContext.IsValid());
@@ -79,18 +79,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationContext_HasMessage_IsNotValid_FilterByKey()
 		{
-			validationContext.When("value")
-				.Is(value => true)
+			validationContext.When("key")
+				.Is(() => true)
 				.AddMessage("Key is not valid", ValidationSeverity.Error);
 
-			Assert.False(validationContext.IsValid(ValidationDefaults.DefaultValidationKey));
+			Assert.False(validationContext.IsValid("key"));
 		}
 
 		[Fact]
 		public void ValidationContext_HasNoMessage_IsValid()
 		{
-			validationContext.When("value")
-				.Is(value => false)
+			validationContext.When("key")
+				.Is(() => false)
 				.AddMessage("Key is not valid", ValidationSeverity.Error);
 
 			Assert.True(validationContext.IsValid());

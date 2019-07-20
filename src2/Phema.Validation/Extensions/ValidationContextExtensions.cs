@@ -4,6 +4,9 @@ namespace Phema.Validation
 {
 	public static class ValidationContextExtensions
 	{
+		/// <summary>
+		/// Specifies validation key with <see cref="TValue"/> value
+		/// </summary>
 		public static IValidationPredicate<TValue> When<TValue>(
 			this IValidationContext validationContext,
 			string validationKey,
@@ -20,14 +23,20 @@ namespace Phema.Validation
 				validationKey,
 				value);
 		}
-		
-		public static IValidationPredicate<TValue> When<TValue>(
+
+		/// <summary>
+		/// Specifies validation key with object predicate with null value. Use with closures in conditions
+		/// </summary>
+		public static IValidationPredicate<object> When(
 			this IValidationContext validationContext,
-			TValue value)
+			string validationKey)
 		{
-			return validationContext.When(ValidationDefaults.DefaultValidationKey, value);
+			return validationContext.When(validationKey, default(object));
 		}
 
+		/// <summary>
+		/// Checks validation context for any message with greater or equal severity. Additional filtering by validation key
+		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, string validationKey = null)
 		{
 			return !validationContext.ValidationMessages
@@ -35,6 +44,9 @@ namespace Phema.Validation
 					&& m.Severity >= validationContext.ValidationSeverity);
 		}
 
+		/// <summary>
+		/// If validation context is not valid, throws <see cref="ValidationContextException"/>
+		/// </summary>
 		public static void EnsureIsValid(this IValidationContext validationContext, string validationKey = null)
 		{
 			if (!validationContext.IsValid(validationKey))

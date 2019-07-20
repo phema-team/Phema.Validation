@@ -1,9 +1,28 @@
 using System;
 
-namespace Phema.Validation.Conditions
+namespace Phema.Validation
 {
 	public static class ValidationPredicateExtensions
 	{
+		public static IValidationPredicate<TValue> Is<TValue>(
+			this IValidationPredicate<TValue> predicate,
+			Func<TValue, bool> condition)
+		{
+			if (predicate.IsValid != false)
+			{
+				predicate.IsValid = !condition(predicate.Value);
+			}
+
+			return predicate;
+		}
+
+		public static IValidationPredicate<TValue> Is<TValue>(
+			this IValidationPredicate<TValue> predicate,
+			Func<bool> condition)
+		{
+			return predicate.Is(value => condition());
+		}
+
 		public static IValidationPredicate<TValue> IsNot<TValue>(
 			this IValidationPredicate<TValue> predicate,
 			Func<TValue, bool> condition)
