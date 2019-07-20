@@ -16,7 +16,7 @@ namespace Phema.Validation.Tests
 				.AddMvcCore()
 				.AddValidation(configuration => configuration.AddValidation<TestModel, TestModelValidator>())
 				.Services;
-			
+
 			Assert.Single(services.Where(s => s.ServiceType == typeof(IValidator<TestModel>)));
 		}
 		
