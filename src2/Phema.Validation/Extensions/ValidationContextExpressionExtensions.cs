@@ -23,6 +23,27 @@ namespace Phema.Validation
 			return validationContext.When(validationKey, value);
 		}
 		
+		public static bool IsValid<TModel, TValue>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TValue>> expression)
+		{
+			var validationKey = GetValidationKeyFor(expression.Body);
+
+			return validationContext.IsValid(validationKey);
+		}
+
+		public static void EnsureIsValid<TModel, TValue>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TValue>> expression)
+		{
+			if (!validationContext.IsValid(model, expression))
+			{
+				throw new ValidationContextException(validationContext);
+			}
+		}
+
 		public static IValidationContext CreateFor<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,

@@ -18,9 +18,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void BasicCondition_HasMessage()
 		{
-			validationContext.When("key", "value")
-				.Is(value => true)
-				.AddError("Error");
+			validationContext.When("key", "value").AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -42,8 +40,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NoCondition_HasMessage()
 		{
-			validationContext.When("key", "value")
-				.AddError("Error");
+			validationContext.When("key", "value").AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -55,9 +52,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NoValidationKey_HasMessage()
 		{
-			validationContext.When("key")
-				.Is(() => true)
-				.AddError("Error");
+			validationContext.When("key").AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -69,9 +64,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessage_IsNotValid()
 		{
-			validationContext.When("key")
-				.Is(() => true)
-				.AddError("Error");
+			validationContext.When("key").AddError("Error");
 
 			Assert.False(validationContext.IsValid());
 		}
@@ -79,9 +72,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessage_IsNotValid_FilterByKey()
 		{
-			validationContext.When("key")
-				.Is(() => true)
-				.AddError("Error");
+			validationContext.When("key").AddError("Error");
 
 			Assert.False(validationContext.IsValid("key"));
 		}
@@ -99,13 +90,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessages_IsNotValid_FilterByKey()
 		{
-			validationContext.When("key1", "value")
-				.Is(value => value.Contains("value"))
-				.AddError("Error");
-
-			validationContext.When("key2", "value")
-				.Is(value => true)
-				.AddError("Error");
+			validationContext.When("key1", "value").AddError("Error");
+			validationContext.When("key2", "value").AddError("Error");
 
 			Assert.True(validationContext.IsValid("key3"));
 		}
@@ -113,9 +99,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessages_EnsureIsNotValid()
 		{
-			validationContext.When("key", "value")
-				.Is(value => true)
-				.AddError("Error");
+			validationContext.When("key", "value").AddError("Error");
 
 			var exception = Assert.Throws<ValidationContextException>(() => validationContext.EnsureIsValid());
 
@@ -153,9 +137,7 @@ namespace Phema.Validation.Tests
 		{
 			var withPrefix = validationContext.CreateFor("path");
 
-			var (key, _) = withPrefix.When("key", "value")
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When("key", "value").AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -169,11 +151,22 @@ namespace Phema.Validation.Tests
 			var withPrefix = validationContext.CreateFor("path1");
 			withPrefix = withPrefix.CreateFor("path2");
 
-			var (key, _) = withPrefix.When("key", "value")
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When("key", "value").AddError("Error");
 
 			Assert.Equal("path1.path2.key", key);
+		}
+		
+		[Fact]
+		public void IsValid_InnerPath_InnerValidationContext()
+		{
+			var withPrefix = validationContext.CreateFor("path");
+
+			withPrefix.When("key", "value").AddError("Error");
+
+			Assert.False(withPrefix.IsValid("key"));
+			Assert.False(validationContext.IsValid("path.key"));
+
+			Assert.True(validationContext.IsValid("key"));
 		}
 	}
 }

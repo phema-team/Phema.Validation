@@ -18,9 +18,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddMessage_ReturnsMessage()
 		{
-			var (key, message, severity) = validationContext.When("key", "value")
-				.Is(value => true)
-				.AddMessage("Error", ValidationSeverity.Error);
+			var (key, message, severity) = validationContext.When("key", "value").AddMessage("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", key);
 			Assert.Equal("Error", message);
@@ -30,9 +28,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EmptyIs_HasMessage()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddMessage("Error", ValidationSeverity.Error);
+			var validationMessage = validationContext.When("key", "value").AddMessage("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", validationMessage.ValidationKey);
 			Assert.Equal("Error", validationMessage.Message);
@@ -42,9 +38,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddTrace()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddTrace("Trace");
+			var validationMessage = validationContext.When("key", "value").AddTrace("Trace");
 
 			Assert.Equal(ValidationSeverity.Trace, validationMessage.Severity);
 		}
@@ -52,9 +46,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddDebug()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddDebug("Debug");
+			var validationMessage = validationContext.When("key", "value").AddDebug("Debug");
 
 			Assert.Equal(ValidationSeverity.Debug, validationMessage.Severity);
 		}
@@ -62,9 +54,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddInformation()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddInformation("Information");
+			var validationMessage = validationContext.When("key", "value").AddInformation("Information");
 
 			Assert.Equal(ValidationSeverity.Information, validationMessage.Severity);
 		}
@@ -72,9 +62,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddWarning()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddWarning("Warning");
+			var validationMessage = validationContext.When("key", "value").AddWarning("Warning");
 
 			Assert.Equal(ValidationSeverity.Warning, validationMessage.Severity);
 		}
@@ -82,9 +70,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddError()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddError("Error");
+			var validationMessage = validationContext.When("key", "value").AddError("Error");
 
 			Assert.Equal(ValidationSeverity.Error, validationMessage.Severity);
 		}
@@ -92,9 +78,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddFatal()
 		{
-			var validationMessage = validationContext.When("key", "value")
-				.Is(() => true)
-				.AddFatal("Fatal");
+			var validationMessage = validationContext.When("key", "value").AddFatal("Fatal");
 
 			Assert.Equal(ValidationSeverity.Fatal, validationMessage.Severity);
 		}
@@ -102,10 +86,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowMessage()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowMessage("Error", ValidationSeverity.Error));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowMessage("Error", ValidationSeverity.Error));
 
 			Assert.Equal("key", exception.ValidationMessage.ValidationKey);
 			Assert.Equal("Error", exception.ValidationMessage.Message);
@@ -115,10 +97,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowTrace()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowTrace("Trace"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowTrace("Trace"));
 
 			Assert.Equal(ValidationSeverity.Trace, exception.ValidationMessage.Severity);
 		}
@@ -126,10 +106,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowDebug()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowDebug("Debug"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowDebug("Debug"));
 
 			Assert.Equal(ValidationSeverity.Debug, exception.ValidationMessage.Severity);
 		}
@@ -137,10 +115,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowInformation()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowInformation("Information"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowInformation("Information"));
 
 			Assert.Equal(ValidationSeverity.Information, exception.ValidationMessage.Severity);
 		}
@@ -148,10 +124,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowWarning()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowWarning("Warning"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowWarning("Warning"));
 
 			Assert.Equal(ValidationSeverity.Warning, exception.ValidationMessage.Severity);
 		}
@@ -159,10 +133,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowError()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowError("Error"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowError("Error"));
 
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationMessage.Severity);
 		}
@@ -170,10 +142,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ThrowFatal()
 		{
-			var exception = Assert.Throws<ValidationPredicateException>(() =>
-				validationContext.When("key", "value")
-					.Is(() => true)
-					.ThrowFatal("Fatal"));
+			var exception = Assert.Throws<ValidationConditionException>(() =>
+				validationContext.When("key", "value").ThrowFatal("Fatal"));
 
 			Assert.Equal(ValidationSeverity.Fatal, exception.ValidationMessage.Severity);
 		}
@@ -182,7 +152,6 @@ namespace Phema.Validation.Tests
 		public void MessageDeconstruction()
 		{
 			var (key, message, severity) = validationContext.When("key", "value")
-				.Is(value => true)
 				.AddMessage("Error", ValidationSeverity.Error);
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);

@@ -15,7 +15,64 @@ namespace Phema.Validation.Tests
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
-		
+
+		[Fact]
+		public void ExpressionKey_IsValid_SameKey()
+		{
+			var model = new TestModel
+			{
+				Property = 12
+			};
+
+			validationContext.When(model, m => m.Property).AddError("Error");
+
+			Assert.False(validationContext.IsValid(model, m => m.Property));
+		}
+
+		[Fact]
+		public void ExpressionKey_IsValid_KeyNotPresent()
+		{
+			var model = new TestModel
+			{
+				Property = 12
+			};
+
+			validationContext.When(model, m => m.Property).AddError("Error");
+
+			Assert.True(validationContext.IsValid(model, m => m.List));
+		}
+
+		[Fact]
+		public void ExpressionKey_EnsureIsValid_SameKey()
+		{
+			var model = new TestModel
+			{
+				Property = 12
+			};
+
+			validationContext.When(model, m => m.Property).AddError("Error");
+
+			var exception = Assert.Throws<ValidationContextException>(
+				() => validationContext.EnsureIsValid(model, m => m.Property));
+
+			var validationMessage = Assert.Single(exception.ValidationMessages);
+			
+			Assert.Equal("Property", validationMessage.ValidationKey);
+		}
+
+		[Fact]
+		public void ExpressionKey_EnsureIsValid_KeyNotPresent()
+		{
+			var model = new TestModel
+			{
+				Property = 12
+			};
+
+			validationContext.When(model, m => m.Property).AddError("Error");
+
+			validationContext.EnsureIsValid(model, m => m.List);
+		}
+
 		[Fact]
 		public void ExpressionKey_Property()
 		{
@@ -35,7 +92,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("Property", key);
 			Assert.Equal("Error", message);
 		}
-		
+
 		[Fact]
 		public void ExpressionKey_ArrayProperty_ConstantIndex()
 		{
@@ -172,9 +229,7 @@ namespace Phema.Validation.Tests
 			
 			var withPrefix = validationContext.CreateFor(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, list => list.Count)
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -193,9 +248,7 @@ namespace Phema.Validation.Tests
 			var withPrefix = validationContext.CreateFor(model, m => m.List);
 			withPrefix = withPrefix.CreateFor(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, c => c.Count)
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When(model.List, c => c.Count).AddError("Error");
 
 			Assert.Equal("List.List.Count", key);
 		}

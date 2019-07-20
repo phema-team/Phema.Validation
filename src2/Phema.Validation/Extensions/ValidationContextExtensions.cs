@@ -15,7 +15,7 @@ namespace Phema.Validation
 		{
 			if (validationContext.ValidationPath != null)
 			{
-				validationKey = $"{validationContext.ValidationPath}{ValidationDefaults.PathSeparator}{validationKey}";
+				validationKey = GetFullValidationPath(validationContext.ValidationPath, validationKey);
 			}
 
 			return new ValidationCondition<TValue>(
@@ -39,6 +39,11 @@ namespace Phema.Validation
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, string validationKey = null)
 		{
+			if (validationContext.ValidationPath != null)
+			{
+				validationKey = GetFullValidationPath(validationContext.ValidationPath, validationKey);
+			}
+
 			return !validationContext.ValidationMessages
 				.Any(m => (validationKey is null || m.ValidationKey == validationKey)
 					&& m.Severity >= validationContext.ValidationSeverity);
@@ -59,7 +64,7 @@ namespace Phema.Validation
 		{
 			if (validationContext.ValidationPath != null)
 			{
-				validationPath = $"{validationContext.ValidationPath}{ValidationDefaults.PathSeparator}{validationPath}";
+				validationPath = GetFullValidationPath(validationContext.ValidationPath, validationPath);
 			}
 
 			return new ValidationContext(
@@ -70,6 +75,11 @@ namespace Phema.Validation
 						DefaultValidationSeverity = validationContext.ValidationSeverity,
 						DefaultValidationMessageFactory = () => validationContext.ValidationMessages
 					}));
+		}
+
+		private static string GetFullValidationPath(string validationPath, string validationPart)
+		{
+			return $"{validationPath}{ValidationDefaults.PathSeparator}{validationPart}";
 		}
 	}
 }

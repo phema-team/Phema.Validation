@@ -2,9 +2,9 @@
 
 namespace Phema.Validation
 {
-	public sealed class ValidationPredicateException : Exception
+	public sealed class ValidationConditionException : Exception
 	{
-		public ValidationPredicateException(IValidationMessage validationMessage)
+		public ValidationConditionException(IValidationMessage validationMessage)
 		{
 			ValidationMessage = validationMessage;
 		}

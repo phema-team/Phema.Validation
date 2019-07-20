@@ -11,7 +11,7 @@ namespace Phema.Validation
 
 			if (validationMessage != null)
 			{
-				throw new ValidationPredicateException(validationMessage);
+				throw new ValidationConditionException(validationMessage);
 			}
 		}
 

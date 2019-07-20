@@ -22,9 +22,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 
-			var validationMessage = validationContext.When(model, m => m.Property)
-				.Is(value => true)
-				.AddError("Error");
+			var validationMessage = validationContext.When(model, m => m.Property).AddError("Error");
 
 			Assert.Equal("property", validationMessage.ValidationKey);
 		}
@@ -37,9 +35,7 @@ namespace Phema.Validation.Tests
 				Array = new[] {12}
 			};
 
-			var validationMessage = validationContext.When(model, m => m.Array[0])
-				.Is(value => true)
-				.AddError("Error");
+			var validationMessage = validationContext.When(model, m => m.Array[0]).AddError("Error");
 
 			Assert.Equal("array[0]", validationMessage.ValidationKey);
 		}
@@ -52,9 +48,7 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 
-			var validationMessage = validationContext.When(model, m => m.List[0])
-				.Is(value => true)
-				.AddError("Error");
+			var validationMessage = validationContext.When(model, m => m.List[0]).AddError("Error");
 
 			Assert.Equal("list[0]", validationMessage.ValidationKey);
 		}
@@ -69,9 +63,7 @@ namespace Phema.Validation.Tests
 			
 			var withPrefix = validationContext.CreateFor(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, list => list.Count)
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
 			var validationMessage = Assert.Single(validationContext.ValidationMessages);
 
@@ -90,9 +82,7 @@ namespace Phema.Validation.Tests
 			var withPrefix = validationContext.CreateFor(model, m => m.List);
 			withPrefix = withPrefix.CreateFor(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, c => c.Count)
-				.Is(() => true)
-				.AddError("Error");
+			var (key, _) = withPrefix.When(model.List, c => c.Count).AddError("Error");
 
 			Assert.Equal("list.list.Count", key);
 		}
