@@ -1,3 +1,5 @@
+using System;
+
 namespace Phema.Validation
 {
 	public interface IValidationCondition<out TValue>
@@ -17,8 +19,8 @@ namespace Phema.Validation
 			string validationKey,
 			TValue value)
 		{
-			ValidationContext = validationContext;
-			ValidationKey = validationKey;
+			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
 			Value = value;
 		}
 		

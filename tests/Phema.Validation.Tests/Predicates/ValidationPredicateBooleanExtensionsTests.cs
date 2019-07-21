@@ -19,49 +19,49 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsTrue()
 		{
-			var message = validationContext.When("key", true)
+			var detail = validationContext.When("key", true)
 				.IsTrue()
 				.AddError("template1");
 
-			Assert.NotNull(message);
+			Assert.NotNull(detail);
 
-			Assert.Equal("key", message.ValidationKey);
-			Assert.Equal("template1", message.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, message.ValidationSeverity);
+			Assert.Equal("key", detail.ValidationKey);
+			Assert.Equal("template1", detail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, detail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void IsTrue_Valid()
 		{
-			var error = validationContext.When("key", false)
+			var detail = validationContext.When("key", false)
 				.IsTrue()
 				.AddError("template1");
 
-			Assert.Null(error);
+			Assert.Null(detail);
 		}
 
 		[Fact]
 		public void IsFalse()
 		{
-			var message = validationContext.When("key", false)
+			var detail = validationContext.When("key", false)
 				.IsFalse()
 				.AddError("template1");
 
-			Assert.NotNull(message);
+			Assert.NotNull(detail);
 
-			Assert.Equal("key", message.ValidationKey);
-			Assert.Equal("template1", message.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, message.ValidationSeverity);
+			Assert.Equal("key", detail.ValidationKey);
+			Assert.Equal("template1", detail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, detail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void IsFalse_Valid()
 		{
-			var message = validationContext.When("key", true)
+			var detail = validationContext.When("key", true)
 				.IsFalse()
 				.AddError("template1");
 
-			Assert.Null(message);
+			Assert.Null(detail);
 		}
 	}
 }

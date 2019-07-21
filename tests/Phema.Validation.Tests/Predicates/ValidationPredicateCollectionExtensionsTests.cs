@@ -21,13 +21,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsEmpty()
 		{
-			var message = validationContext.When("key", Array.Empty<int>())
+			var detail = validationContext.When("key", Array.Empty<int>())
 				.IsEmpty()
 				.AddError("template1");
 
-			Assert.NotNull(message);
-			Assert.Equal("key", message.ValidationKey);
-			Assert.Equal("template1", message.ValidationMessage);
+			Assert.NotNull(detail);
+			Assert.Equal("key", detail.ValidationKey);
+			Assert.Equal("template1", detail.ValidationMessage);
 		}
 
 		[Fact]

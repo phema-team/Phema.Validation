@@ -76,18 +76,12 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void AddFatal()
+		public void Warning_ThrowErrorDetail_Greater()
 		{
-			var validationMessage = validationContext.When("key", "value").AddFatal("Fatal");
-
-			Assert.Equal(ValidationSeverity.Fatal, validationMessage.ValidationSeverity);
-		}
-
-		[Fact]
-		public void ThrowMessage()
-		{
+			validationContext.ValidationSeverity = ValidationSeverity.Warning;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowMessage("Error", ValidationSeverity.Error));
+				validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error));
 
 			Assert.Equal("key", exception.ValidationDetail.ValidationKey);
 			Assert.Equal("Error", exception.ValidationDetail.ValidationMessage);
@@ -95,57 +89,74 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ThrowTrace()
+		public void Trace_Never_Throw()
 		{
-			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowTrace("Trace"));
+			validationContext.ValidationSeverity = ValidationSeverity.Trace;
 
-			Assert.Equal(ValidationSeverity.Trace, exception.ValidationDetail.ValidationSeverity);
+			Assert.NotNull(validationContext.When("key", "value").AddTrace("Trace"));
 		}
 
 		[Fact]
-		public void ThrowDebug()
+		public void Trace_ThrowDebug()
 		{
+			validationContext.ValidationSeverity = ValidationSeverity.Trace;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowDebug("Debug"));
+				validationContext.When("key", "value").AddDebug("Debug"));
 
 			Assert.Equal(ValidationSeverity.Debug, exception.ValidationDetail.ValidationSeverity);
 		}
 
 		[Fact]
-		public void ThrowInformation()
+		public void Debug_ThrowInformation()
 		{
+			validationContext.ValidationSeverity = ValidationSeverity.Debug;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowInformation("Information"));
+				validationContext.When("key", "value").AddInformation("Information"));
 
 			Assert.Equal(ValidationSeverity.Information, exception.ValidationDetail.ValidationSeverity);
 		}
 
 		[Fact]
-		public void ThrowWarning()
+		public void Information_ThrowWarning()
 		{
+			validationContext.ValidationSeverity = ValidationSeverity.Information;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowWarning("Warning"));
+				validationContext.When("key", "value").AddWarning("Warning"));
 
 			Assert.Equal(ValidationSeverity.Warning, exception.ValidationDetail.ValidationSeverity);
 		}
 
 		[Fact]
-		public void ThrowError()
+		public void Warning_ThrowError()
 		{
+			validationContext.ValidationSeverity = ValidationSeverity.Warning;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowError("Error"));
+				validationContext.When("key", "value").AddError("Error"));
 
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationDetail.ValidationSeverity);
 		}
 
 		[Fact]
-		public void ThrowFatal()
+		public void Error_ThrowFatal()
 		{
+			validationContext.ValidationSeverity = ValidationSeverity.Error;
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").ThrowFatal("Fatal"));
+				validationContext.When("key", "value").AddFatal("Fatal"));
 
 			Assert.Equal(ValidationSeverity.Fatal, exception.ValidationDetail.ValidationSeverity);
+		}
+		
+		[Fact]
+		public void Fatal_FatalNotThrows()
+		{
+			validationContext.ValidationSeverity = ValidationSeverity.Fatal;
+
+			Assert.NotNull(validationContext.When("key", "value").AddFatal("Fatal"));
 		}
 
 		[Fact]

@@ -35,7 +35,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks validation context for any message with greater or equal severity. Additional filtering by validation key
+		/// Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, string validationKey = null)
 		{
@@ -43,6 +43,11 @@ namespace Phema.Validation
 			{
 				validationKey = GetFullValidationPath(validationContext.ValidationPath, validationKey);
 			}
+
+			// TODO: Should severity be ignored when validationKey specified?
+			// return validationContext.ValidationDetails
+			// 	.Any(m => validationKey is null && m.ValidationSeverity >= validationContext.ValidationSeverity
+			// 		|| m.ValidationKey == validationKey);
 
 			return !validationContext.ValidationDetails
 				.Any(m => (validationKey is null || m.ValidationKey == validationKey)
@@ -74,9 +79,9 @@ namespace Phema.Validation
 				new OptionsWrapper<ValidationOptions>(
 					new ValidationOptions
 					{
-						DefaultValidationPath = validationPath,
-						DefaultValidationSeverity = validationContext.ValidationSeverity,
-						DefaultValidationDetailsFactory = () => validationContext.ValidationDetails
+						ValidationPath = validationPath,
+						ValidationSeverity = validationContext.ValidationSeverity,
+						ValidationDetailsFactory = () => validationContext.ValidationDetails
 					}));
 		}
 

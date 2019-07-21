@@ -23,6 +23,9 @@ namespace Phema.Validation
 			return validationContext.When(validationKey, value);
 		}
 		
+		/// <summary>
+		/// Checks validation context for any detail with greater or equal severity for specified expression
+		/// </summary>
 		public static bool IsValid<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
@@ -33,6 +36,10 @@ namespace Phema.Validation
 			return validationContext.IsValid(validationKey);
 		}
 
+		/// <summary>
+		/// Ensures that validation context has no details with greater or equal severity than ValidationContext.ValidationSeverity
+		/// </summary>
+		/// <exception cref="ValidationContextException">Throws when any detail has greater or equal severity</exception>
 		public static void EnsureIsValid<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
@@ -45,7 +52,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Creates new validation context for specified validation path
+		/// Creates new validation context with specified validation path
 		/// </summary>
 		public static IValidationContext CreateFor<TModel, TValue>(
 			this IValidationContext validationContext,

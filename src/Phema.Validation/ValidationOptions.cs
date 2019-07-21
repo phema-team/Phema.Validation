@@ -7,13 +7,13 @@ namespace Phema.Validation
 	{
 		public ValidationOptions()
 		{
-			DefaultValidationSeverity = ValidationDefaults.DefaultValidationSeverity;
-			DefaultValidationDetailsFactory = ValidationDefaults.DefaultValidationDetailsFactory;
-			DefaultValidationPath = ValidationDefaults.DefaultValidationPath;
+			ValidationSeverity = ValidationDefaults.DefaultValidationSeverity;
+			ValidationDetailsFactory = ValidationDefaults.DefaultValidationDetailsFactory;
+			ValidationPath = ValidationDefaults.DefaultValidationPath;
 		}
 
-		public ValidationSeverity DefaultValidationSeverity { get; set; }
-		public Func<ICollection<IValidationDetail>> DefaultValidationDetailsFactory { get; set; }
-		public string? DefaultValidationPath { get; set; }
+		public ValidationSeverity ValidationSeverity { get; set; }
+		public Func<ICollection<IValidationDetail>> ValidationDetailsFactory { get; set; }
+		public string? ValidationPath { get; set; }
 	}
 }

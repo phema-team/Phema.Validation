@@ -1,6 +1,6 @@
 namespace Phema.Validation
 {
-	public static class ValidationMessageExtensions
+	public static class ValidationDetailExtensions
 	{
 		public static void Deconstruct(
 			this IValidationDetail validationDetail,
