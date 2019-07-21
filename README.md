@@ -31,14 +31,15 @@ var details = validationContext.When(person, p => p.Age)
   .IsNull()
   .AddError("Age must be set");
 
-// Throw details when completely invalid state
+// Throw exception when details severity greater than ValidationContext.ValidationSeverity
 validationContext.When(model, m => m.Address)
   .IsNull()
-  .ThrowFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
+  .AddFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
 
 // Validate collections
 for(var index = 0; index < 10; index++)
 {
+  // Reuse for nested model validation
   var forCollection = validationContext.CreateFor(model, m => m.Collection[index]);
 
   // It will produce `Collection[0].Property` key. 0 - concrete index
@@ -65,5 +66,7 @@ ValidateChildren(validationContext.CreateFor(person, p => p.Children)) // It wil
 // Combine paths
 ValidateLocation(validationContext
   .CreateFor(person, p => p.Address)
-  .CreateFor(person.Address, a => a.Location)) // It will be `Address.Location.*ValidationKey*` path
+  .CreateFor(person.Address, a => a.Locations[0])) // It will be `Address.Locations[0].*ValidationKey*` path
+  
+// Override validation key parts with `DataMemberAttribute`
 ```
