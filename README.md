@@ -11,7 +11,7 @@ C# strongly typed validation library for .NET
 $> dotnet add package Phema.Validation
 ```
 
-## Usage
+## Usage ([example](https://github.com/phema-team/Phema.Validation/blob/master/examples/Phema.Validation.Example/Orders/ExampleOrdersController.cs))
 
 ```csharp
 // Add

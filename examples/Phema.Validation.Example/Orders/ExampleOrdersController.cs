@@ -13,7 +13,7 @@ namespace Phema.Validation.Example
 		}
 
 		/*
-			Try to remove some fields and watch for validation messages
+			Try to remove or edit some fields and watch for validation messages
 			POST
 			{
 				"name": "Cookies",
