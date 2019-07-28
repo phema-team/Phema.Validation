@@ -49,11 +49,11 @@ validationContext.EnsureIsValid(); // If invalid throw ValidationContextExceptio
 validationContext.IsValid(person, p => p.Age);
 
 // Create nested validationContext
-// It will be `Child.*ValidationKey*` path
+// It will be `Child.*ValidationPart*` validation key
 ValidateChild(validationContext.CreateFor(parent, p => p.Child))
 
 // Combine paths
-// It will be `Address.Locations[0].*ValidationKey*` path
+// It will be `Address.Locations[0].*ValidationPart*` validation key
 ValidateLocation(validationContext.CreateFor(person, p => p.Address.Locations[0]))
 
 // It will be `Address.Locations[0].Latitude`
@@ -61,7 +61,7 @@ validationContext.When(person, p => p.Address.Locations[0].Latitude)
   .Is(latitude => ...)
   .AddError("Some custom check failed");
   
-// Override validation key parts with `DataMemberAttribute`
+// Override validation parts with `DataMemberAttribute`
 [DataMember(Name = "age")]
 public int Age { get; set; }
 ```
