@@ -252,7 +252,105 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("List.List.Count", key);
 		}
+		
+		[Fact]
+		public void Expression_ChainExpressionPath()
+		{
+			var model = new TestModel
+			{
+				Model = new TestModel
+				{
+					Property = 12
+				}
+			};
 
+			var detail = validationContext.When(model, m => m.Model.Property)
+				.AddError("Error");
+
+			Assert.Equal("Model.Property", detail.ValidationKey);
+		}
+		
+		[Fact]
+		public void Expression_ChainExpressionPath_Arrays()
+		{
+			var model = new TestModel
+			{
+				Model = new TestModel
+				{
+					List = new List<int> { 12 }
+				}
+			};
+
+			var detail = validationContext.When(model, m => m.Model.List[0])
+				.AddError("Error");
+
+			Assert.Equal("Model.List[0]", detail.ValidationKey);
+		}
+		
+		[Fact]
+		public void Expression_CreateFor_ChainExpressionPath()
+		{
+			var model = new TestModel
+			{
+				Model = new TestModel
+				{
+					Property = 12
+				}
+			};
+
+			var forList = validationContext.CreateFor(model, m => m.Model.List[0]);
+
+			Assert.Equal("Model.List[0]", forList.ValidationPath);
+
+			var detail = forList.When("Key", "Value").AddError("Error");
+			
+			Assert.Equal("Model.List[0].Key", detail.ValidationKey);
+		}
+
+		[Fact]
+		public void Expression_ModelArray()
+		{
+			var model = new TestModel
+			{
+				Model = new TestModel
+				{
+					ModelArray = new[]
+					{
+						new TestModel
+						{
+							Property = 12
+						}
+					}
+				}
+			};
+
+			var validationPath = validationContext.CreateFor(model, m => m.Model.ModelArray[0].Property).ValidationPath;
+
+			Assert.Equal("Model.ModelArray[0].Property", validationPath);
+		}
+
+		[Fact]
+		public void Expression_ModelList()
+		{
+			var model = new TestModel
+			{
+				Model = new TestModel
+				{
+					ModelList = new List<TestModel>
+					{
+						new TestModel
+						{
+							Property = 12
+						}
+					}
+				}
+			};
+
+			var validationPath = validationContext.CreateFor(model, m => m.Model.ModelList[0].Property).ValidationPath;
+
+			Assert.Equal("Model.ModelList[0].Property", validationPath);
+		}
+		
 		private class TestModel
 		{
 			public int Property { get; set; }
@@ -262,6 +360,11 @@ namespace Phema.Validation.Tests
 			public List<int> List { get; set; }
 
 			public int[,] DoubleArray { get; set; }
+
+			public TestModel Model { get; set; }
+			
+			public TestModel[] ModelArray { get; set; }
+			public List<TestModel> ModelList { get; set; }
 		}
 	}
 }

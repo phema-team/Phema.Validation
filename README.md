@@ -3,7 +3,7 @@
 [![Build Status](https://cloud.drone.io/api/badges/phema-team/Phema.Validation/status.svg)](https://cloud.drone.io/phema-team/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 
-C# strongly typed validation library for .NET
+C# strongly typed expression-based validation library for .NET
 
 ## Installation
 
@@ -14,7 +14,7 @@ $> dotnet add package Phema.Validation
 ## Usage ([example](https://github.com/phema-team/Phema.Validation/blob/master/examples/Phema.Validation.Example/Orders/ExampleOrdersController.cs))
 
 ```csharp
-// Add
+// Add `IValidationContext` as scoped service
 services.AddValidation(options => ...);
 
 // Get or inject
@@ -32,26 +32,14 @@ var details = validationContext.When(person, p => p.Age)
   .AddError("Age must be set");
 
 // Throw exception when details severity greater than ValidationContext.ValidationSeverity
-validationContext.When(model, m => m.Address)
+validationContext.When(person, p => p.Address)
   .IsNull()
   .AddFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
 
 // Validate collections
-for(var index = 0; index < 10; index++)
-{
-  // Reuse for nested model validation
-  var forCollection = validationContext.CreateFor(model, m => m.Collection[index]);
-
-  // It will produce `Collection[0].Property` key. 0 - concrete index
-  forCollection.When(model.Collection[index], m => m.Property)
-    .IsNull()
-    .AddError($"Property is null. Index: {index}");
-
-  // It will produce `Collection[0].Field` key. 0 - concrete index
-  forCollection.When(model.Collection[index], m => m.Field)
-    .IsNull()
-    .AddError($"Field is null. Index: {index}");
-}
+validationContext.When(person, p => p.Children)
+  .IsEmpty()
+  .AddError("You have no children")
 
 // Check if context is valid
 validationContext.IsValid();
@@ -61,12 +49,19 @@ validationContext.EnsureIsValid(); // If invalid throw ValidationContextExceptio
 validationContext.IsValid(person, p => p.Age);
 
 // Create nested validationContext
-ValidateChildren(validationContext.CreateFor(person, p => p.Children)) // It will be `Children.*ValidationKey*` path
+// It will be `Child.*ValidationKey*` path
+ValidateChild(validationContext.CreateFor(parent, p => p.Child))
 
 // Combine paths
-ValidateLocation(validationContext
-  .CreateFor(person, p => p.Address)
-  .CreateFor(person.Address, a => a.Locations[0])) // It will be `Address.Locations[0].*ValidationKey*` path
+// It will be `Address.Locations[0].*ValidationKey*` path
+ValidateLocation(validationContext.CreateFor(person, p => p.Address.Locations[0]))
+
+// It will be `Address.Locations[0].Latitude`
+validationContext.When(person, p => p.Address.Locations[0].Latitude)
+  .Is(latitude => ...)
+  .AddError("Some custom check failed");
   
 // Override validation key parts with `DataMemberAttribute`
+[DataMember(Name = "age")]
+public int Age { get; set; }
 ```

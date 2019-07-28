@@ -17,10 +17,10 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			var validationKey = GetValidationKeyFor(expression.Body);
 			var value = expression.Compile().Invoke(model);
+			var validationPart = GetValidationPart(expression.Body);
 
-			return validationContext.When(validationKey, value);
+			return validationContext.When(validationPart, value);
 		}
 		
 		/// <summary>
@@ -31,9 +31,9 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			var validationKey = GetValidationKeyFor(expression.Body);
+			var validationPart = GetValidationPart(expression.Body);
 
-			return validationContext.IsValid(validationKey);
+			return validationContext.IsValid(validationPart);
 		}
 
 		/// <summary>
@@ -59,49 +59,86 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			var validationPath = GetValidationKeyFor(expression.Body);
+			var validationPart = GetValidationPart(expression.Body);
 
-			return validationContext.CreateFor(validationPath);
+			return validationContext.CreateFor(validationPart);
 		}
 
-		private static string GetValidationKeyFor(Expression expression)
+		private static string GetValidationPart(Expression expression)
 		{
 			switch (expression)
 			{
 				case BinaryExpression binaryExpression:
 				{
-					var memberName = GetValidationKeyFor(binaryExpression.Left);
-					var arguments = GetValidationKeyFor(binaryExpression.Right);
+					var validationPart = GetValidationPart(binaryExpression.Left);
+					var arguments = GetValidationPart(binaryExpression.Right);
 
-					return $"{memberName}[{arguments}]";
+					return $"{validationPart}[{arguments}]";
 				}
 
 				case MethodCallExpression methodCallExpression:
 				{
-					var memberName = GetValidationKeyFor(methodCallExpression.Object);
-					var arguments = string.Join(", ", methodCallExpression.Arguments.Select(GetValidationKeyFor));
+					var validationPart = GetValidationPart(methodCallExpression.Object);
+					var arguments = string.Join(", ", methodCallExpression.Arguments.Select(GetValidationPart));
 
-					return $"{memberName}[{arguments}]";
+					return $"{validationPart}[{arguments}]";
 				}
 
 				case MemberExpression memberExpression:
-					if (memberExpression.Expression is ConstantExpression constant)
+				{
+					return memberExpression.Expression switch
 					{
-						return constant.Type
-							.GetField(memberExpression.Member.Name)
-							.GetValue(constant.Value)
-							.ToString();
-					}
+						ConstantExpression constantExpression => GetIndexFrom(memberExpression, constantExpression),
+						MemberExpression innerMemberExpression => JoinValidationPart(innerMemberExpression, memberExpression),
+						MethodCallExpression methodCallExpression => JoinValidationPart(methodCallExpression, memberExpression),
+						BinaryExpression binaryExpression => JoinValidationPart(binaryExpression, memberExpression),
 
-					var dataMemberName = memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name; 
-
-					return dataMemberName ?? memberExpression.Member.Name;
+						_ => GetPathFor(memberExpression)
+					};
+				}
 
 				case ConstantExpression constantExpression:
+				{
 					return constantExpression.Value.ToString();
+				}
 			}
 
 			throw new InvalidExpressionException();
+		}
+
+		private static string GetIndexFrom(MemberExpression memberExpression, ConstantExpression constantExpression)
+		{
+			var type = memberExpression.Member.DeclaringType;
+			
+			return memberExpression.Member.MemberType switch
+			{
+				MemberTypes.Field => type
+					.GetField(memberExpression.Member.Name,
+						BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+					.GetValue(constantExpression.Value)
+					.ToString(),
+
+				MemberTypes.Property => type
+					.GetProperty(memberExpression.Member.Name,
+						BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+					.GetValue(constantExpression.Value)
+					.ToString(),
+
+				_ => throw new InvalidOperationException("Only fields and properties supported")
+			};
+		}
+
+		private static string JoinValidationPart(Expression expression, MemberExpression memberExpression)
+		{
+			// Path sould be reversed, because reversed expression call
+			return $"{GetValidationPart(expression)}{ValidationDefaults.PathSeparator}{GetPathFor(memberExpression)}";
+		}
+
+		private static string GetPathFor(MemberExpression memberExpression)
+		{
+			var dataMemberName = memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name; 
+
+			return dataMemberName ?? memberExpression.Member.Name;
 		}
 	}
 }

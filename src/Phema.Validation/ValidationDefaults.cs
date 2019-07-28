@@ -9,6 +9,6 @@ namespace Phema.Validation
 		public const string? DefaultValidationPath = null;
 		public const ValidationSeverity DefaultValidationSeverity = ValidationSeverity.Error;
 
-		public static Func<ICollection<IValidationDetail>> DefaultValidationDetailsFactory => () => new List<IValidationDetail>();
+		public static Func<ICollection<IValidationDetail>> DefaultValidationDetailsProvider => () => new List<IValidationDetail>();
 	}
 }

@@ -7,7 +7,7 @@ namespace Phema.Validation.Conditions
 		public static IValidationCondition<ICollection<TElement>> IsEmpty<TElement>(
 			this IValidationCondition<ICollection<TElement>> condition)
 		{
-			return condition.Is(value => value == null || value.Count == 0);
+			return condition.Is(value => value is null || value.Count == 0);
 		}
 
 		public static IValidationCondition<ICollection<TElement>> IsNotEmpty<TElement>(
