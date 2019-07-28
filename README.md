@@ -39,7 +39,7 @@ validationContext.When(person, p => p.Address)
 // Validate collections
 validationContext.When(person, p => p.Children)
   .IsEmpty()
-  .AddError("You have no children")
+  .AddError("You have no children");
 
 // Check if context is valid
 validationContext.IsValid();
