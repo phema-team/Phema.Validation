@@ -6,17 +6,14 @@ namespace Phema.Validation
 	public static class ValidationContextExtensions
 	{
 		/// <summary>
-		/// Specifies validation key with <see cref="TValue"/> value
+		/// Specifies validation part with <see cref="TValue"/> value
 		/// </summary>
 		public static IValidationCondition<TValue> When<TValue>(
 			this IValidationContext validationContext,
-			string validationKey,
+			string validationPart,
 			TValue value)
 		{
-			if (validationContext.ValidationPath != null)
-			{
-				validationKey = GetFullValidationPath(validationContext.ValidationPath, validationKey);
-			}
+			var validationKey = JoinValidationPath(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
@@ -25,30 +22,23 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Specifies validation key with object predicate with null value. Use with closures in conditions
+		/// Specifies validation part with object predicate with null value. Use with closures in conditions
 		/// </summary>
 		public static IValidationCondition<object> When(
 			this IValidationContext validationContext,
-			string validationKey)
+			string validationPart)
 		{
-			return validationContext.When(validationKey, default(object));
+			return validationContext.When(validationPart, default(object));
 		}
 
 		/// <summary>
 		/// Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
 		/// </summary>
-		public static bool IsValid(this IValidationContext validationContext, string validationKey = null)
+		public static bool IsValid(this IValidationContext validationContext, string validationPart = null)
 		{
-			if (validationContext.ValidationPath != null)
-			{
-				validationKey = GetFullValidationPath(validationContext.ValidationPath, validationKey);
-			}
+			var validationKey = JoinValidationPath(validationContext.ValidationPath, validationPart);
 
 			// TODO: Should severity be ignored when validationKey specified?
-			// return validationContext.ValidationDetails
-			// 	.Any(m => validationKey is null && m.ValidationSeverity >= validationContext.ValidationSeverity
-			// 		|| m.ValidationKey == validationKey);
-
 			return !validationContext.ValidationDetails
 				.Any(m => (validationKey is null || m.ValidationKey == validationKey)
 					&& m.ValidationSeverity >= validationContext.ValidationSeverity);
@@ -57,9 +47,9 @@ namespace Phema.Validation
 		/// <summary>
 		/// If validation context is not valid, throws <see cref="ValidationContextException"/>
 		/// </summary>
-		public static void EnsureIsValid(this IValidationContext validationContext, string validationKey = null)
+		public static void EnsureIsValid(this IValidationContext validationContext, string validationPart = null)
 		{
-			if (!validationContext.IsValid(validationKey))
+			if (!validationContext.IsValid(validationPart))
 			{
 				throw new ValidationContextException(validationContext);
 			}
@@ -68,12 +58,9 @@ namespace Phema.Validation
 		/// <summary>
 		/// Creates new validation context with specified validation path
 		/// </summary>
-		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPath)
+		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPart)
 		{
-			if (validationContext.ValidationPath != null)
-			{
-				validationPath = GetFullValidationPath(validationContext.ValidationPath, validationPath);
-			}
+			var validationPath = JoinValidationPath(validationContext.ValidationPath, validationPart);
 
 			return new ValidationContext(
 				new OptionsWrapper<ValidationOptions>(
@@ -81,13 +68,15 @@ namespace Phema.Validation
 					{
 						ValidationPath = validationPath,
 						ValidationSeverity = validationContext.ValidationSeverity,
-						ValidationDetailsFactory = () => validationContext.ValidationDetails
+						ValidationDetailsProvider = () => validationContext.ValidationDetails
 					}));
 		}
 
-		private static string GetFullValidationPath(string validationPath, string validationPart)
+		private static string JoinValidationPath(string validationPath, string validationPart)
 		{
-			return $"{validationPath}{ValidationDefaults.PathSeparator}{validationPart}";
+			return validationPath is null
+				? validationPart
+				: $"{validationPath}{ValidationDefaults.PathSeparator}{validationPart}";
 		}
 	}
 }

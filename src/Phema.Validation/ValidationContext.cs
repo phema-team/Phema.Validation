@@ -33,7 +33,7 @@ namespace Phema.Validation
 	{
 		public ValidationContext(IOptions<ValidationOptions> options)
 		{
-			ValidationDetails = options.Value.ValidationDetailsFactory();
+			ValidationDetails = options.Value.ValidationDetailsProvider();
 			ValidationSeverity = options.Value.ValidationSeverity;
 			ValidationPath = options.Value.ValidationPath;
 		}

@@ -41,7 +41,7 @@ namespace Phema.Validation
 		public static IValidationCondition<TValue> IsNull<TValue>(
 			this IValidationCondition<TValue> condition)
 		{
-			return condition.Is(value => value == null);
+			return condition.Is(value => value is null);
 		}
 
 		public static IValidationCondition<TValue> IsNotNull<TValue>(
