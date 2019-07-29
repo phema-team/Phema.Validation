@@ -2,7 +2,7 @@ using System;
 
 namespace Phema.Validation.Conditions
 {
-	public static class ValidationPredicateComparableExtensions
+	public static class ValidationConditionComparableExtensions
 	{
 		public static IValidationCondition<TValue> IsGreater<TValue>(
 			this IValidationCondition<TValue> condition,

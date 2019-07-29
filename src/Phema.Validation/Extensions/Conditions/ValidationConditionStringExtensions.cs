@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Phema.Validation.Conditions
 {
-	public static class ValidationPredicateStringExtensions
+	public static class ValidationConditionStringExtensions
 	{
 		public static IValidationCondition<string> IsEmpty(
 			this IValidationCondition<string> condition)

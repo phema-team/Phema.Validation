@@ -1,6 +1,6 @@
 namespace Phema.Validation.Conditions
 {
-	public static class ValidationPredicateBooleanExtensions
+	public static class ValidationBooleanExtensions
 	{
 		public static IValidationCondition<bool> IsTrue(
 			this IValidationCondition<bool> condition)

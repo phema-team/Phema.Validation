@@ -2,7 +2,7 @@ using System;
 
 namespace Phema.Validation
 {
-	public static class ValidationPredicateExtensions
+	public static class ValidationConditionIsExtensions
 	{
 		public static IValidationCondition<TValue> Is<TValue>(
 			this IValidationCondition<TValue> condition,
