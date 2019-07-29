@@ -178,6 +178,22 @@ namespace Phema.Validation.Tests
 		}
 		
 		[Fact]
+		public void CompositeIndexer()
+		{
+			var model = new TestModel
+			{
+				List = new List<int>{ 12 }
+			};
+
+			var provider = new { ForModel = new { Index = 0}};
+			
+			var (key, message) = validationContext.When(model, m => m.List[provider.ForModel.Index]).AddError("Error");
+
+			Assert.Equal("List[0]", key);
+			Assert.Equal("Error", message);
+		}
+		
+		[Fact]
 		public void ExpressionKey_DoubleProperty_ConstantIndex()
 		{
 			var model = new TestModel
@@ -286,7 +302,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Model.List[0]", detail.ValidationKey);
 		}
-		
+
 		[Fact]
 		public void Expression_CreateFor_ChainExpressionPath()
 		{

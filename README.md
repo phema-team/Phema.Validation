@@ -65,3 +65,22 @@ validationContext.When(person, p => p.Address.Locations[0].Latitude)
 [DataMember(Name = "age")]
 public int Age { get; set; }
 ```
+
+## Performance
+
+- Simpler expression = less costs
+- Try to use non-expression extensions in hot paths
+- Use CreateFor to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
+- Expression-based `When` extensions use expression compilation to get value
+- Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation
+
+```csharp
+validationContext.When("key", value)
+  .IsNull()
+  .AddError("Value is null");
+
+validationContext.CreateFor("key");
+
+validationContext.IsValid("key");
+validationContext.EnsureIsValid("key");
+```

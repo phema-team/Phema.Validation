@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class ValidationPredicateComparableExtensionsTests
+	public class ValidationConditionComparableExtensionsTests
 	{
 		private readonly IValidationContext validationContext;
 
-		public ValidationPredicateComparableExtensionsTests()
+		public ValidationConditionComparableExtensionsTests()
 		{
 			validationContext = new ServiceCollection()
 				.AddValidation()

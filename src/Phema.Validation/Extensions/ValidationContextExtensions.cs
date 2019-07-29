@@ -16,9 +16,9 @@ namespace Phema.Validation
 			TValue value)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationKey = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
@@ -42,9 +42,9 @@ namespace Phema.Validation
 		public static bool IsValid(this IValidationContext validationContext, string validationPart = null)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationKey = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			// TODO: Should severity be ignored when validationKey specified?
 			return !validationContext.ValidationDetails
@@ -69,9 +69,9 @@ namespace Phema.Validation
 		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPart)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationPath = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationPath = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationContext(
 				serviceProvider: serviceProvider,
