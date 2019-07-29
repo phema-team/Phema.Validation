@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using Phema.Validation.Conditions;
 
-namespace Phema.Validation.Example
+namespace Phema.Validation.Examples.AspNetCore
 {
 	[DataContract]
 	public class ExampleAddressModel

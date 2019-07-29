@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Phema.Validation.Example
+namespace Phema.Validation.Examples.AspNetCore
 {
 	[Route("orders")]
 	public class ExampleOrdersController : Controller

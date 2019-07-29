@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -25,11 +24,11 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPathOverride_CreateFor()
+		public void ValidationPathOverride_CreateScope()
 		{
 			var validationContext = CreateValidationContext(o => o.ValidationPath = "context");
 
-			var forKey = validationContext.CreateFor("key");
+			var forKey = validationContext.CreateScope("key");
 
 			Assert.Equal("context.key", forKey.ValidationPath);
 		}
@@ -52,7 +51,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void ValidationPathSeparatorOverride_CreateFor()
+		public void ValidationPathSeparatorOverride_CreateScope()
 		{
 			var validationContext = CreateValidationContext(o => o.ValidationPathSeparator = ":");
 
@@ -61,23 +60,9 @@ namespace Phema.Validation.Tests
 				Model = new TestModel()
 			};
 
-			var forModel = validationContext.CreateFor(model, m => m.Model.Model);
+			var forModel = validationContext.CreateScope(model, m => m.Model.Model);
 
 			Assert.Equal("Model:Model", forModel.ValidationPath);
-		}
-
-		[Fact]
-		public void ValidationDetailsProviderOverride()
-		{
-			var validationContext = CreateValidationContext(o => o.ValidationDetailsProvider = () =>
-				new List<ValidationDetail>
-				{
-					new ValidationDetail("predefined", "message", ValidationSeverity.Information)
-				});
-
-			var details = Assert.Single(validationContext.ValidationDetails);
-
-			Assert.Equal("predefined", details.ValidationKey);
 		}
 
 		[Theory]

@@ -61,7 +61,7 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 			
-			var withPrefix = validationContext.CreateFor(model, m => m.List);
+			var withPrefix = validationContext.CreateScope(model, m => m.List);
 
 			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
@@ -79,8 +79,8 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 			
-			var withPrefix = validationContext.CreateFor(model, m => m.List);
-			withPrefix = withPrefix.CreateFor(model, m => m.List);
+			var withPrefix = validationContext.CreateScope(model, m => m.List);
+			withPrefix = withPrefix.CreateScope(model, m => m.List);
 
 			var (key, _) = withPrefix.When(model.List, c => c.Count).AddError("Error");
 

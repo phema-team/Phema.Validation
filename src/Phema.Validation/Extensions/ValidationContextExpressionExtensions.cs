@@ -55,9 +55,9 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Creates new validation context with specified validation path
+		/// Creates new validation scope with specified validation path from expression
 		/// </summary>
-		public static IValidationContext CreateFor<TModel, TValue>(
+		public static IValidationContext CreateScope<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
@@ -67,7 +67,7 @@ namespace Phema.Validation
 
 			var validationPart = validationExpressionVisitor.FromExpression(expression.Body);
 
-			return validationContext.CreateFor(validationPart);
+			return validationContext.CreateScope(validationPart);
 		}
 	}
 }

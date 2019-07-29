@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Phema.Validation.Example
+namespace Phema.Validation.Examples.AspNetCore
 {
 	public class Startup
 	{

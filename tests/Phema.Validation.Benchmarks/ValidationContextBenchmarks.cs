@@ -23,9 +23,9 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
-		public void CreateFor()
+		public void CreateScope()
 		{
-			validationContext.CreateFor("Model");
+			validationContext.CreateScope("Model");
 		}
 
 		[Benchmark]
