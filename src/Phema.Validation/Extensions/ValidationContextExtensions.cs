@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
@@ -13,7 +15,10 @@ namespace Phema.Validation
 			string validationPart,
 			TValue value)
 		{
-			var validationKey = JoinValidationPath(validationContext.ValidationPath, validationPart);
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
+			var validationKey = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
@@ -36,7 +41,10 @@ namespace Phema.Validation
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, string validationPart = null)
 		{
-			var validationKey = JoinValidationPath(validationContext.ValidationPath, validationPart);
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
+			var validationKey = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			// TODO: Should severity be ignored when validationKey specified?
 			return !validationContext.ValidationDetails
@@ -60,23 +68,20 @@ namespace Phema.Validation
 		/// </summary>
 		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPart)
 		{
-			var validationPath = JoinValidationPath(validationContext.ValidationPath, validationPart);
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
+			var validationPath = validationPathFactory.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationContext(
-				new OptionsWrapper<ValidationOptions>(
+				serviceProvider: serviceProvider,
+				validationOptions: new OptionsWrapper<ValidationOptions>(
 					new ValidationOptions
 					{
 						ValidationPath = validationPath,
 						ValidationSeverity = validationContext.ValidationSeverity,
 						ValidationDetailsProvider = () => validationContext.ValidationDetails
 					}));
-		}
-
-		private static string JoinValidationPath(string validationPath, string validationPart)
-		{
-			return validationPath is null
-				? validationPart
-				: $"{validationPath}{ValidationDefaults.PathSeparator}{validationPart}";
 		}
 	}
 }

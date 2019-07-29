@@ -1,9 +1,6 @@
 using System;
-using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Phema.Validation
 {
@@ -17,12 +14,15 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
 			var value = expression.Compile().Invoke(model);
-			var validationPart = GetValidationPart(expression.Body);
+			var validationPart = validationPathFactory.FromExpression(expression.Body);
 
 			return validationContext.When(validationPart, value);
 		}
-		
+
 		/// <summary>
 		/// Checks validation context for any detail with greater or equal severity for specified expression
 		/// </summary>
@@ -31,7 +31,10 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			var validationPart = GetValidationPart(expression.Body);
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
+			var validationPart = validationPathFactory.FromExpression(expression.Body);
 
 			return validationContext.IsValid(validationPart);
 		}
@@ -59,86 +62,12 @@ namespace Phema.Validation
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
 		{
-			var validationPart = GetValidationPart(expression.Body);
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathFactory = serviceProvider.GetRequiredService<IValidationPathFactory>();
+
+			var validationPart = validationPathFactory.FromExpression(expression.Body);
 
 			return validationContext.CreateFor(validationPart);
-		}
-
-		private static string GetValidationPart(Expression expression)
-		{
-			switch (expression)
-			{
-				case BinaryExpression binaryExpression:
-				{
-					var validationPart = GetValidationPart(binaryExpression.Left);
-					var arguments = GetValidationPart(binaryExpression.Right);
-
-					return $"{validationPart}[{arguments}]";
-				}
-
-				case MethodCallExpression methodCallExpression:
-				{
-					var validationPart = GetValidationPart(methodCallExpression.Object);
-					var arguments = string.Join(", ", methodCallExpression.Arguments.Select(GetValidationPart));
-
-					return $"{validationPart}[{arguments}]";
-				}
-
-				case MemberExpression memberExpression:
-				{
-					return memberExpression.Expression switch
-					{
-						ConstantExpression constantExpression => GetIndexFrom(memberExpression, constantExpression),
-						MemberExpression innerMemberExpression => JoinValidationPart(innerMemberExpression, memberExpression),
-						MethodCallExpression methodCallExpression => JoinValidationPart(methodCallExpression, memberExpression),
-						BinaryExpression binaryExpression => JoinValidationPart(binaryExpression, memberExpression),
-
-						_ => GetPathFor(memberExpression)
-					};
-				}
-
-				case ConstantExpression constantExpression:
-				{
-					return constantExpression.Value.ToString();
-				}
-			}
-
-			throw new InvalidExpressionException();
-		}
-
-		private static string GetIndexFrom(MemberExpression memberExpression, ConstantExpression constantExpression)
-		{
-			var type = memberExpression.Member.DeclaringType;
-			
-			return memberExpression.Member.MemberType switch
-			{
-				MemberTypes.Field => type
-					.GetField(memberExpression.Member.Name,
-						BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-					.GetValue(constantExpression.Value)
-					.ToString(),
-
-				MemberTypes.Property => type
-					.GetProperty(memberExpression.Member.Name,
-						BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-					.GetValue(constantExpression.Value)
-					.ToString(),
-
-				_ => throw new InvalidOperationException("Only fields and properties supported")
-			};
-		}
-
-		private static string JoinValidationPart(Expression expression, MemberExpression memberExpression)
-		{
-			// Path sould be reversed, because reversed expression call
-			return $"{GetValidationPart(expression)}{ValidationDefaults.PathSeparator}{GetPathFor(memberExpression)}";
-		}
-
-		private static string GetPathFor(MemberExpression memberExpression)
-		{
-			var dataMemberName = memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name; 
-
-			return dataMemberName ?? memberExpression.Member.Name;
 		}
 	}
 }

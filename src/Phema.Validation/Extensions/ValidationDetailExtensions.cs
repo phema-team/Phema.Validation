@@ -3,7 +3,7 @@ namespace Phema.Validation
 	public static class ValidationDetailExtensions
 	{
 		public static void Deconstruct(
-			this IValidationDetail validationDetail,
+			this ValidationDetail validationDetail,
 			out string? key,
 			out string? message)
 		{
@@ -12,7 +12,7 @@ namespace Phema.Validation
 		}
 
 		public static void Deconstruct(
-			this IValidationDetail validationDetail,
+			this ValidationDetail validationDetail,
 			out string? key,
 			out string? message,
 			out ValidationSeverity validationSeverity)

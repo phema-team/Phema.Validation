@@ -13,6 +13,6 @@ namespace Phema.Validation
 				.ToList();
 		}
 
-		public IReadOnlyCollection<IValidationDetail> ValidationDetails { get; }
+		public IReadOnlyCollection<ValidationDetail> ValidationDetails { get; }
 	}
 }
