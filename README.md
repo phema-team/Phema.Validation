@@ -48,7 +48,7 @@ validationContext.EnsureIsValid(); // If invalid throw ValidationContextExceptio
 // Check concrete validation details
 validationContext.IsValid(person, p => p.Age);
 
-// Create nested validationContext
+// Create nested IValidationScope
 // It will be `Child.*ValidationPart*` validation key
 ValidateChild(validationContext.CreateScope(parent, p => p.Child))
 
@@ -70,7 +70,7 @@ public int Age { get; set; }
 
 - Simpler expression = less costs
 - Try to use non-expression extensions in hot paths
-- Use CreateScope to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
+- Use `CreateScope` to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
 - Expression-based `When` extensions use expression compilation to get value (Invoke)
 - Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation (DynamicInvoke)
 
