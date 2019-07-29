@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Phema.Validation.Tests
 {
-	public class ValidationContextExpressionTests
+	public class ValidationExpressionTests
 	{
 		private readonly IValidationContext validationContext;
 
-		public ValidationContextExpressionTests()
+		public ValidationExpressionTests()
 		{
 			validationContext = new ServiceCollection()
 				.AddValidation()
@@ -121,6 +121,8 @@ namespace Phema.Validation.Tests
 				Array = new[]{ 12 }
 			};
 
+			// Should be a local variable for closure
+			// ReSharper disable once ConvertToConstant.Local
 			var index = 0;
 
 			var (key, message) = validationContext.When(model, m => m.Array[index])
@@ -243,7 +245,7 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 			
-			var withPrefix = validationContext.CreateFor(model, m => m.List);
+			var withPrefix = validationContext.CreateScope(model, m => m.List);
 
 			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
@@ -261,8 +263,8 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 			
-			var withPrefix = validationContext.CreateFor(model, m => m.List);
-			withPrefix = withPrefix.CreateFor(model, m => m.List);
+			var withPrefix = validationContext.CreateScope(model, m => m.List);
+			withPrefix = withPrefix.CreateScope(model, m => m.List);
 
 			var (key, _) = withPrefix.When(model.List, c => c.Count).AddError("Error");
 
@@ -304,7 +306,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void Expression_CreateFor_ChainExpressionPath()
+		public void Expression_CreateScope_ChainExpressionPath()
 		{
 			var model = new TestModel
 			{
@@ -314,7 +316,7 @@ namespace Phema.Validation.Tests
 				}
 			};
 
-			var forList = validationContext.CreateFor(model, m => m.Model.List[0]);
+			var forList = validationContext.CreateScope(model, m => m.Model.List[0]);
 
 			Assert.Equal("Model.List[0]", forList.ValidationPath);
 
@@ -340,7 +342,7 @@ namespace Phema.Validation.Tests
 				}
 			};
 
-			var validationPath = validationContext.CreateFor(model, m => m.Model.ModelArray[0].Property).ValidationPath;
+			var validationPath = validationContext.CreateScope(model, m => m.Model.ModelArray[0].Property).ValidationPath;
 
 			Assert.Equal("Model.ModelArray[0].Property", validationPath);
 		}
@@ -362,7 +364,7 @@ namespace Phema.Validation.Tests
 				}
 			};
 
-			var validationPath = validationContext.CreateFor(model, m => m.Model.ModelList[0].Property).ValidationPath;
+			var validationPath = validationContext.CreateScope(model, m => m.Model.ModelList[0].Property).ValidationPath;
 
 			Assert.Equal("Model.ModelList[0].Property", validationPath);
 		}

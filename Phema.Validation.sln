@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C0058AB5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{B5303F65-3D0C-48D3-BB60-0EB3BF2B688E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Example", "examples\Phema.Validation.Example\Phema.Validation.Example.csproj", "{0F3C8149-C09F-40D5-BA9B-89A6B21303C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Examples.AspNetCore", "examples\Phema.Validation.Examples.AspNetCore\Phema.Validation.Examples.AspNetCore.csproj", "{0F3C8149-C09F-40D5-BA9B-89A6B21303C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation", "src\Phema.Validation\Phema.Validation.csproj", "{7A2D1203-D661-485A-8BA4-491B93DE9F5C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Tests", "tests\Phema.Validation.Tests\Phema.Validation.Tests.csproj", "{D71E2A1F-E37C-4490-9EC7-00E568DACB63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Benchmarks", "tests\Phema.Validation.Benchmarks\Phema.Validation.Benchmarks.csproj", "{7480A608-B7B4-483C-B833-85EC41786A63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phema.Validation.Examples.WorkerService", "examples\Phema.Validation.Examples.WorkerService\Phema.Validation.Examples.WorkerService.csproj", "{14BFED86-BE87-4CC1-9464-FE8FC3642DED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,7 @@ Global
 		{7A2D1203-D661-485A-8BA4-491B93DE9F5C} = {7604BD73-B9F9-4685-A350-E90D4D0AB2DC}
 		{D71E2A1F-E37C-4490-9EC7-00E568DACB63} = {C0058AB5-E5B2-4EED-A773-0DD136F62526}
 		{7480A608-B7B4-483C-B833-85EC41786A63} = {C0058AB5-E5B2-4EED-A773-0DD136F62526}
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED} = {B5303F65-3D0C-48D3-BB60-0EB3BF2B688E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0F3C8149-C09F-40D5-BA9B-89A6B21303C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -84,5 +87,17 @@ Global
 		{7480A608-B7B4-483C-B833-85EC41786A63}.Release|x64.Build.0 = Release|Any CPU
 		{7480A608-B7B4-483C-B833-85EC41786A63}.Release|x86.ActiveCfg = Release|Any CPU
 		{7480A608-B7B4-483C-B833-85EC41786A63}.Release|x86.Build.0 = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|x64.Build.0 = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Debug|x86.Build.0 = Debug|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|x64.ActiveCfg = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|x64.Build.0 = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|x86.ActiveCfg = Release|Any CPU
+		{14BFED86-BE87-4CC1-9464-FE8FC3642DED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

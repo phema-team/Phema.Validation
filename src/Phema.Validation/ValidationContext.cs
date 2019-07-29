@@ -22,10 +22,10 @@ namespace Phema.Validation
 
 		/// <summary>
 		/// Used as ValidationKey prefix. To create new context with specified validation path
-		/// use <see cref="ValidationContextExtensions.CreateFor"/> extensions
+		/// use <see cref="ValidationContextExtensions.CreateScope"/> extensions
 		/// </summary>
 		/// <example>
-		/// ValidateDelivery(validationContext.CreateFor(order, o => o.Delivery))
+		/// ValidateDelivery(validationContext.CreateScope(order, o => o.Delivery))
 		/// </example>
 		string? ValidationPath { get; }
 	}
@@ -38,7 +38,7 @@ namespace Phema.Validation
 		{
 			this.serviceProvider = serviceProvider;
 
-			ValidationDetails = validationOptions.Value.ValidationDetailsProvider();
+			ValidationDetails = new List<ValidationDetail>();
 			ValidationSeverity = validationOptions.Value.ValidationSeverity;
 			ValidationPath = validationOptions.Value.ValidationPath;
 		}

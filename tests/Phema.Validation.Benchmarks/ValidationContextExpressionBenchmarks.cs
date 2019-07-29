@@ -74,15 +74,15 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
-		public void CreateFor_SimpleExpression()
+		public void CreateScope_SimpleExpression()
 		{
-			validationContext.CreateFor(model, m => m.Model);
+			validationContext.CreateScope(model, m => m.Model);
 		}
 
 		[Benchmark]
-		public void CreateFor_ChainedExpression()
+		public void CreateScope_ChainedExpression()
 		{
-			validationContext.CreateFor(model, m => m.Model.Model);
+			validationContext.CreateScope(model, m => m.Model.Model);
 		}
 
 		[Benchmark]

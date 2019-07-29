@@ -50,11 +50,11 @@ validationContext.IsValid(person, p => p.Age);
 
 // Create nested validationContext
 // It will be `Child.*ValidationPart*` validation key
-ValidateChild(validationContext.CreateFor(parent, p => p.Child))
+ValidateChild(validationContext.CreateScope(parent, p => p.Child))
 
 // Combine paths
 // It will be `Address.Locations[0].*ValidationPart*` validation key
-ValidateLocation(validationContext.CreateFor(person, p => p.Address.Locations[0]))
+ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
 
 // It will be `Address.Locations[0].Latitude`
 validationContext.When(person, p => p.Address.Locations[0].Latitude)
@@ -70,7 +70,7 @@ public int Age { get; set; }
 
 - Simpler expression = less costs
 - Try to use non-expression extensions in hot paths
-- Use CreateFor to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
+- Use CreateScope to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
 - Expression-based `When` extensions use expression compilation to get value (Invoke)
 - Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation (DynamicInvoke)
 
@@ -79,7 +79,7 @@ validationContext.When("key", value)
   .IsNull()
   .AddError("Value is null");
 
-validationContext.CreateFor("key");
+validationContext.CreateScope("key");
 
 validationContext.IsValid("key");
 validationContext.EnsureIsValid("key");
@@ -91,22 +91,22 @@ validationContext.EnsureIsValid("key");
 
 |        Method |     Mean |     Error |    StdDev |      Max | Iterations |
 |-------------- |---------:|----------:|----------:|---------:|-----------:|
-|        Simple | 1.414 us | 0.0043 us | 0.0405 us | 1.519 us |      970.0 |
-|     CreateFor | 1.315 us | 0.0100 us | 0.0937 us | 1.475 us |      964.0 |
-|       IsValid | 1.353 us | 0.0045 us | 0.0430 us | 1.469 us |      985.0 |
-| EnsureIsValid | 1.389 us | 0.0042 us | 0.0394 us | 1.494 us |      979.0 |
+|        Simple | 1.421 us | 0.0071 us | 0.0653 us | 1.581 us |      925.0 |
+|   CreateScope | 1.287 us | 0.0046 us | 0.0431 us | 1.394 us |      971.0 |
+|       IsValid | 1.350 us | 0.0042 us | 0.0401 us | 1.444 us |      986.0 |
+| EnsureIsValid | 1.374 us | 0.0042 us | 0.0401 us | 1.475 us |      987.0 |
 
 ### Expression validation
 
 |                                      Method |       Mean |     Error |    StdDev |        Max | Iterations |
 |-------------------------------------------- |-----------:|----------:|----------:|-----------:|-----------:|
-|                            SimpleExpression |  52.033 us | 0.3253 us | 3.1138 us |  60.147 us |      998.0 |
-|                           ChainedExpression |  59.606 us | 0.3156 us | 3.0182 us |  66.756 us |      996.0 |
-|                       ArrayAccessExpression |  73.399 us | 0.4523 us | 4.3227 us |  87.112 us |      995.0 |
-|                ChainedArrayAccessExpression |  80.073 us | 0.4517 us | 4.3173 us |  92.631 us |      995.0 |
-| ChainedArrayAccess_DynamicInvoke_Expression | 287.499 us | 0.7942 us | 7.4353 us | 307.544 us |      955.0 |
-|                  CreateFor_SimpleExpression |   4.764 us | 0.0276 us | 0.2634 us |   5.484 us |      991.0 |
-|                 CreateFor_ChainedExpression |   5.840 us | 0.0239 us | 0.2261 us |   6.375 us |      978.0 |
-|                               IsValid_Empty |   4.669 us | 0.0316 us | 0.3008 us |   5.513 us |      990.0 |
-|                          IsValid_Expression |   4.653 us | 0.0193 us | 0.1834 us |   5.169 us |      985.0 |
-|                    EnsureIsValid_Expression |   4.689 us | 0.0307 us | 0.2890 us |   5.537 us |      966.0 |
+|                            SimpleExpression |  52.181 us | 0.2692 us | 2.5770 us |  60.106 us |      998.0 |
+|                           ChainedExpression |  59.643 us | 0.3316 us | 3.1521 us |  68.800 us |      984.0 |
+|                       ArrayAccessExpression |  73.636 us | 0.4902 us | 4.6804 us |  89.787 us |      993.0 |
+|                ChainedArrayAccessExpression |  80.645 us | 0.5602 us | 5.3484 us |  98.931 us |      993.0 |
+| ChainedArrayAccess_DynamicInvoke_Expression | 288.098 us | 0.9826 us | 9.3864 us | 317.175 us |      994.0 |
+|                CreateScope_SimpleExpression |   4.443 us | 0.0156 us | 0.1469 us |   4.838 us |      965.0 |
+|               CreateScope_ChainedExpression |   5.467 us | 0.0301 us | 0.2849 us |   6.237 us |      973.0 |
+|                               IsValid_Empty |   4.642 us | 0.0241 us | 0.2275 us |   5.275 us |      970.0 |
+|                          IsValid_Expression |   4.659 us | 0.0192 us | 0.1826 us |   5.138 us |      982.0 |
+|                    EnsureIsValid_Expression |   4.664 us | 0.0262 us | 0.2496 us |   5.450 us |      991.0 |

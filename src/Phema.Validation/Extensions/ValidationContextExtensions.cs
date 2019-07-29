@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
@@ -48,7 +47,7 @@ namespace Phema.Validation
 
 			// TODO: Should severity be ignored when validationKey specified?
 			return !validationContext.ValidationDetails
-				.Any(m => (validationKey is null || m.ValidationKey == validationKey)
+				.Any(m => (validationPart is null || m.ValidationKey == validationKey)
 					&& m.ValidationSeverity >= validationContext.ValidationSeverity);
 		}
 
@@ -64,24 +63,18 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Creates new validation context with specified validation path
+		/// Creates new validation scope with specified validation path
 		/// </summary>
-		public static IValidationContext CreateFor(this IValidationContext validationContext, string validationPart)
+		public static IValidationScope CreateScope(this IValidationContext validationContext, string validationPart)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
 			var validationPath = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
 
-			return new ValidationContext(
-				serviceProvider: serviceProvider,
-				validationOptions: new OptionsWrapper<ValidationOptions>(
-					new ValidationOptions
-					{
-						ValidationPath = validationPath,
-						ValidationSeverity = validationContext.ValidationSeverity,
-						ValidationDetailsProvider = () => validationContext.ValidationDetails
-					}));
+			return new ValidationScope(
+				validationContext: validationContext,
+				validationPath);
 		}
 	}
 }

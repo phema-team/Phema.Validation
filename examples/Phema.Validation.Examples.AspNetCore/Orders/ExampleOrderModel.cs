@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using Phema.Validation.Conditions;
 
-namespace Phema.Validation.Example
+namespace Phema.Validation.Examples.AspNetCore
 {
 	[DataContract]
 	public class ExampleOrderModel
@@ -29,7 +29,7 @@ namespace Phema.Validation.Example
 				.IsNull()
 				.AddError("You should add your address");
 
-			Address?.Save(/*databaseContext, */ validationContext.CreateFor(this, m => m.Address));
+			Address?.Save(/*databaseContext, */ validationContext.CreateScope(this, m => m.Address));
 		}
 	}
 }
