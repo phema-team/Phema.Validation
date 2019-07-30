@@ -11,7 +11,7 @@ namespace Phema.Validation.Conditions
 		public static IValidationCondition<bool> IsFalse(
 			this IValidationCondition<bool> condition)
 		{
-			return condition.Is(value => !value);
+			return condition.IsNot(value => value);
 		}
 	}
 }

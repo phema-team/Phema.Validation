@@ -7,21 +7,29 @@ namespace Phema.Validation.Conditions
 	public static class ValidationConditionStringExtensions
 	{
 		public static IValidationCondition<string> IsEmpty(
-			this IValidationCondition<string> condition)
+			this IValidationCondition<string> condition,
+			StringComparison stringComparison = StringComparison.InvariantCulture)
 		{
-			return condition.Is(value => value == string.Empty);
+			return condition.Is(value => value.Equals(string.Empty, stringComparison));
 		}
 
 		public static IValidationCondition<string> IsNotEmpty(
-			this IValidationCondition<string> condition)
+			this IValidationCondition<string> condition,
+			StringComparison stringComparison = StringComparison.InvariantCulture)
 		{
-			return condition.Is(value => value != string.Empty);
+			return condition.IsNot(value => value.Equals(string.Empty, stringComparison));
 		}
 
 		public static IValidationCondition<string> IsNullOrWhitespace(
 			this IValidationCondition<string> condition)
 		{
 			return condition.Is(string.IsNullOrWhiteSpace);
+		}
+
+		public static IValidationCondition<string> IsNotNullOrWhitespace(
+			this IValidationCondition<string> condition)
+		{
+			return condition.IsNot(string.IsNullOrWhiteSpace);
 		}
 
 		public static IValidationCondition<string> IsMatch(
@@ -37,13 +45,13 @@ namespace Phema.Validation.Conditions
 			string regex,
 			RegexOptions options = RegexOptions.None)
 		{
-			return condition.Is(value => !Regex.IsMatch(value, regex, options));
+			return condition.IsNot(value => Regex.IsMatch(value, regex, options));
 		}
 
 		public static IValidationCondition<string> IsNotEmail(
 			this IValidationCondition<string> condition)
 		{
-			return condition.Is(value => !new EmailAddressAttribute().IsValid(value));
+			return condition.IsNot(value => new EmailAddressAttribute().IsValid(value));
 		}
 
 		public static IValidationCondition<string> HasLength(

@@ -51,7 +51,7 @@ namespace Phema.Validation.Conditions
 			TValue max)
 			where TValue : IComparable<TValue>
 		{
-			return condition.Is(value => value.CompareTo(min) <= 0 || value.CompareTo(max) >= 0);
+			return condition.IsNot(value => value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
 		}
 	}
 }
