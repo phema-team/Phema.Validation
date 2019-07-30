@@ -5,7 +5,7 @@ namespace Phema.Validation
 {
 	/// <summary>
 	/// <see cref="IValidationContext"/> scope with validation path.
-	/// Shares validation details, inherits validation severirty (do not override parent)
+	/// Shares validation details, inherits validation severirty
 	/// </summary>
 	public interface IValidationScope : IValidationContext, IDisposable
 	{
@@ -18,8 +18,9 @@ namespace Phema.Validation
 		public ValidationScope(IValidationContext validationContext, string validationPath)
 		{
 			ValidationPath = validationPath;
-			ValidationDetails = validationContext.ValidationDetails;
+			ValidationDetails = new ValidationDetailsCollection(validationContext.ValidationDetails);
 			ValidationSeverity = validationContext.ValidationSeverity;
+
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
@@ -34,7 +35,8 @@ namespace Phema.Validation
 
 		public void Dispose()
 		{
-			// Used for 'using' syntax only for now
+			// TODO: Already disposed checks?
+			// Used for 'using' only
 		}
 	}
 }

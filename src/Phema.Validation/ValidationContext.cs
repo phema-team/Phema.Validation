@@ -38,7 +38,7 @@ namespace Phema.Validation
 		{
 			this.serviceProvider = serviceProvider;
 
-			ValidationDetails = new List<ValidationDetail>();
+			ValidationDetails = new ValidationDetailsCollection();
 			ValidationSeverity = validationOptions.Value.ValidationSeverity;
 			ValidationPath = validationOptions.Value.ValidationPath;
 		}

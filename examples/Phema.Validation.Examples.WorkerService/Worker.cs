@@ -29,17 +29,17 @@ namespace Phema.Validation.Examples.WorkerService
 				{
 					var value = random.Next(0, 10);
 
-					var validationDetail = validationScope.When($"Key{index}", value)
+					var (validationKey, validationMessage) = validationScope.When($"Key{index}", value)
 						.IsGreater(4)
 						.AddError($"Value '{value}' is greater 4!");
 
 					if (validationScope.IsValid($"Key{index}"))
 					{
-						logger.LogInformation($"Running {index} iteration");
+						logger.LogInformation($"Running {index} iteration. Value: '{value}'");
 					}
 					else
 					{
-						logger.LogError($"{validationDetail.ValidationKey}: {validationDetail.ValidationMessage}");
+						logger.LogError($"{validationKey}: {validationMessage}");
 					}
 
 					await Task.Delay(1000, stoppingToken);
