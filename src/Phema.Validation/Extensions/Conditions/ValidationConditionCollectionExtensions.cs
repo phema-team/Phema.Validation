@@ -13,21 +13,21 @@ namespace Phema.Validation.Conditions
 		public static IValidationCondition<ICollection<TElement>> IsNotEmpty<TElement>(
 			this IValidationCondition<ICollection<TElement>> condition)
 		{
-			return condition.Is(value => value != null && value.Count != 0);
+			return condition.IsNot(value => value is null || value.Count == 0);
 		}
 
 		public static IValidationCondition<ICollection<TElement>> HasCount<TElement>(
 			this IValidationCondition<ICollection<TElement>> condition,
 			int count)
 		{
-			return condition.Is(value => value != null && value.Count == count);
+			return condition.Is(value => value?.Count == count);
 		}
 
 		public static IValidationCondition<ICollection<TElement>> NotHasCount<TElement>(
 			this IValidationCondition<ICollection<TElement>> condition,
 			int count)
 		{
-			return condition.Is(value => value != null && value.Count != count);
+			return condition.IsNot(value => value?.Count == count);
 		}
 
 		public static IValidationCondition<ICollection<TElement>> IsContains<TElement>(
@@ -41,7 +41,7 @@ namespace Phema.Validation.Conditions
 			this IValidationCondition<ICollection<TElement>> condition,
 			TElement element)
 		{
-			return condition.Is(value => !(value?.Contains(element) ?? false));
+			return condition.IsNot(value => value?.Contains(element) ?? false);
 		}
 	}
 }

@@ -2,31 +2,41 @@ using System;
 
 namespace Phema.Validation
 {
-	public interface IValidationCondition<out TValue>
+	public interface IValidationCondition
 	{
 		IValidationContext ValidationContext { get; }
-		
 		string ValidationKey { get; }
-		TValue Value { get; }
-		
 		bool? IsValid { get; set; }
 	}
 
-	internal sealed class ValidationCondition<TValue> : IValidationCondition<TValue>
+	internal class ValidationCondition : IValidationCondition
+	{
+		public ValidationCondition(IValidationContext validationContext, string validationKey)
+		{
+			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
+		}
+
+		public IValidationContext ValidationContext { get; }
+		public string ValidationKey { get; }
+		public bool? IsValid { get; set; }
+	}
+
+	public interface IValidationCondition<out TValue> : IValidationCondition
+	{
+		TValue Value { get; }
+	}
+
+	internal sealed class ValidationCondition<TValue> : ValidationCondition, IValidationCondition<TValue>
 	{
 		public ValidationCondition(
 			IValidationContext validationContext,
 			string validationKey,
-			TValue value)
+			TValue value) : base(validationContext, validationKey)
 		{
-			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
-			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
 			Value = value;
 		}
-		
-		public IValidationContext ValidationContext { get; }
-		public string ValidationKey { get; }
+
 		public TValue Value { get; }
-		public bool? IsValid { get; set; }
 	}
 }

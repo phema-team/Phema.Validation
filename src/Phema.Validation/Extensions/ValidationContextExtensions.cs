@@ -28,7 +28,7 @@ namespace Phema.Validation
 		/// <summary>
 		/// Specifies validation part with object predicate with null value. Use with closures in conditions
 		/// </summary>
-		public static IValidationCondition<object> When(
+		public static IValidationCondition When(
 			this IValidationContext validationContext,
 			string validationPart)
 		{
@@ -45,7 +45,6 @@ namespace Phema.Validation
 
 			var validationKey = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
 
-			// TODO: Should severity be ignored when validationKey specified?
 			return !validationContext.ValidationDetails
 				.Any(m => (validationPart is null || m.ValidationKey == validationKey)
 					&& m.ValidationSeverity >= validationContext.ValidationSeverity);

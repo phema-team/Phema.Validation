@@ -57,11 +57,47 @@ namespace Phema.Validation.Tests
 		{
 			var validationScope = validationContext.CreateScope("Scope");
 
-			validationScope.When("key")
-				.Is(() => true)
-				.AddError("Error");
+			validationScope.When("key").AddError("Error");
 
 			Assert.False(validationScope.IsValid());
+		}
+
+		[Fact]
+		public void ValidationScope_OwnCollection_AddDetailsToRoot()
+		{
+			validationContext.When("key").AddError("Error");
+
+			var validationScope = validationContext.CreateScope("Scope");
+
+			Assert.Empty(validationScope.ValidationDetails);
+
+			validationScope.When("Key").AddError("Error");
+
+			Assert.Single(validationScope.ValidationDetails);
+			Assert.Equal(2, validationContext.ValidationDetails.Count);
+		}
+		
+		[Fact]
+		public void DoubleValidationScope()
+		{
+			validationContext.When("key").AddError("Error");
+
+			var validationScope1 = validationContext.CreateScope("Scope1");
+			Assert.Empty(validationScope1.ValidationDetails);
+			validationScope1.When("Key").AddError("Error");
+
+			var validationScope2 = validationScope1.CreateScope("Scope2");
+			Assert.Empty(validationScope2.ValidationDetails);
+			validationScope2.When("Key").AddError("Error");
+
+			// Only from scope2
+			Assert.Single(validationScope2.ValidationDetails);
+
+			// Scope1 and scope2 - inheritance
+			Assert.Equal(2, validationScope1.ValidationDetails.Count);
+
+			// Context, Scope1, Scope2
+			Assert.Equal(3, validationContext.ValidationDetails.Count);
 		}
 	}
 }

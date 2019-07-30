@@ -57,7 +57,7 @@ namespace Phema.Validation
 		/// <summary>
 		/// Creates new validation scope with specified validation path from expression
 		/// </summary>
-		public static IValidationContext CreateScope<TModel, TValue>(
+		public static IValidationScope CreateScope<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)

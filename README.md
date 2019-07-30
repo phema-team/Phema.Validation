@@ -20,26 +20,63 @@ services.AddValidation(options => ...);
 // Get or inject
 var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
 
-// Use with a lot of validation rules (Check for Phema.Validation.Conditions namespace)
+// Validation key will be `Name`
 validationContext.When(person, p => p.Name)
-  .IsNullOrWhitespace()
-  .Is(name => ...Custom checks...)
+  .Is(name => name == null)
   .AddError("Name must be set");
 
-// Get validation details. Null if valid
+// Validation key will be `Address.Locations[0].Latitude`
+validationContext.When(person, p => p.Address.Locations[0].Latitude)
+  .Is(latitude => ...custom check...)
+  .AddError("Some custom check failed");
+
+// Override validation parts with `DataMemberAttribute`
+[DataMember(Name = "name")]
+public string Name { get; set; }
+```
+
+## Validation conditions
+
+```csharp
+// Check for Phema.Validation.Conditions namespace
+validationContext.When(person, p => p.Name)
+  .IsNullOrWhitespace()
+  .AddError("Name must be set");
+
+// Use multiple conditions (joined with AND)
+validationContext.When(person, p => p.Name)
+  .IsNotNull()
+  .HasLengthGreater(20)
+  // .IsNotNull()
+  // .IsEqual()
+  // .IsMatch(regex)
+  .AddError("Name is invalid");
+```
+
+## Validation details
+
+```csharp
+// Null if valid
 var details = validationContext.When(person, p => p.Age)
   .IsNull()
   .AddError("Age must be set");
+
+// Use deconstruction
+var (key, message) = validationContext.When(person, p => p.Age)
+  .IsNull()
+  .AddError("Age must be set");
+```
+
+## Check validation
+
+```csharp
+// Override default ValidationSeverity
+validationContext.ValidationSeverity = ValidationSeverity.Warning;
 
 // Throw exception when details severity greater than ValidationContext.ValidationSeverity
 validationContext.When(person, p => p.Address)
   .IsNull()
   .AddFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
-
-// Validate collections
-validationContext.When(person, p => p.Children)
-  .IsEmpty()
-  .AddError("You have no children");
 
 // Check if context is valid
 validationContext.IsValid();
@@ -47,32 +84,25 @@ validationContext.EnsureIsValid(); // If invalid throw ValidationContextExceptio
 
 // Check concrete validation details
 validationContext.IsValid(person, p => p.Age);
-
-// Create nested IValidationScope
-// It will be `Child.*ValidationPart*` validation key
-ValidateChild(validationContext.CreateScope(parent, p => p.Child))
-
-// Combine paths
-// It will be `Address.Locations[0].*ValidationPart*` validation key
-ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
-
-// It will be `Address.Locations[0].Latitude`
-validationContext.When(person, p => p.Address.Locations[0].Latitude)
-  .Is(latitude => ...)
-  .AddError("Some custom check failed");
-  
-// Override validation parts with `DataMemberAttribute`
-[DataMember(Name = "age")]
-public int Age { get; set; }
+validationContext.EnsureIsValid(person, p => p.Age);
 ```
 
-## Performance
+## Validation scopes
 
-- Simpler expression = less costs
-- Try to use non-expression extensions in hot paths
-- Use `CreateScope` to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
-- Expression-based `When` extensions use expression compilation to get value (Invoke)
-- Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation (DynamicInvoke)
+- Use scopes when you need to have:
+  - Same nested validation path multiple times
+  - Empty validation details collection (syncing with parent context/scope)
+  - ValidationSeverity override
+
+```csharp
+// Validation key will be `Child.*ValidationPart*`
+ValidateChild(validationContext.CreateScope(parent, p => p.Child))
+
+// Validation key will be `Address.Locations[0].*ValidationPart*`
+ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
+```
+
+## High performance with non-expression constructions
 
 ```csharp
 validationContext.When("key", value)
@@ -86,6 +116,12 @@ validationContext.EnsureIsValid("key");
 ```
 
 ## Benchmarks (i7 9700k 3.60 GHz, 16Gb 3400 MHz)
+
+- Simpler expression = less costs
+- Try to use non-expression extensions in hot paths
+- Use `CreateScope` to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
+- Expression-based `When` extensions use expression compilation to get value (Invoke)
+- Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation (DynamicInvoke)
 
 ### Non-expression validation
 

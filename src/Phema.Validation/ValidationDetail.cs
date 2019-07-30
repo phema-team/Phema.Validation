@@ -15,7 +15,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Specified validation key with validation context prefix
+		/// Specified validation key with validation context path
 		/// </summary>
 		public string ValidationKey { get; }
 

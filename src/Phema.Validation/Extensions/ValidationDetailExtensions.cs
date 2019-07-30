@@ -4,21 +4,22 @@ namespace Phema.Validation
 	{
 		public static void Deconstruct(
 			this ValidationDetail validationDetail,
-			out string? key,
-			out string? message)
+			out string validationKey,
+			out string validationMessage)
 		{
-			key = validationDetail?.ValidationKey;
-			message = validationDetail?.ValidationMessage;
+			validationKey = validationDetail?.ValidationKey;
+			validationMessage = validationDetail?.ValidationMessage;
 		}
 
 		public static void Deconstruct(
 			this ValidationDetail validationDetail,
-			out string? key,
-			out string? message,
-			out ValidationSeverity validationSeverity)
+			out string validationKey,
+			out string validationMessage,
+			out ValidationSeverity? validationSeverity)
 		{
-			validationDetail.Deconstruct(out key, out message);
-			validationSeverity = validationDetail.ValidationSeverity;
+			validationKey = validationDetail?.ValidationKey;
+			validationMessage = validationDetail?.ValidationMessage;
+			validationSeverity = validationDetail?.ValidationSeverity;
 		}
 	}
 }
