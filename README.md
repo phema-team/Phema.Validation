@@ -3,7 +3,7 @@
 [![Build Status](https://cloud.drone.io/api/badges/phema-team/Phema.Validation/status.svg)](https://cloud.drone.io/phema-team/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 
-C# strongly typed expression-based validation library for .NET
+C# strongly typed expression-based validation library for .NET built on extension methods
 
 ## Installation
 
@@ -43,9 +43,9 @@ validationContext.When(person, p => p.Name)
   .IsNullOrWhitespace()
   .AddError("Name must be set");
 
-// Use multiple conditions (joined with AND)
+// Use multiple conditions (joined with OR)
 validationContext.When(person, p => p.Name)
-  .IsNotNull()
+  .IsNull()
   .HasLengthGreater(20)
   // .IsNotNull()
   // .IsEqual()
@@ -57,7 +57,7 @@ validationContext.When(person, p => p.Name)
 
 ```csharp
 // Null if valid
-var details = validationContext.When(person, p => p.Age)
+var validationDetails = validationContext.When(person, p => p.Age)
   .IsNull()
   .AddError("Age must be set");
 
