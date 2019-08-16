@@ -44,7 +44,7 @@ namespace Phema.Validation
 					rootValidationDetails.Remove(validationDetail);
 				}
 			}
-			
+
 			validationDetails.Clear();
 		}
 

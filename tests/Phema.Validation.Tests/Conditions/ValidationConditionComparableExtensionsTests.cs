@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Phema.Validation.Conditions;
@@ -37,7 +38,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
-		
+
 		[Fact]
 		public void IsGreaterOrEqual()
 		{
@@ -131,7 +132,7 @@ namespace Phema.Validation.Tests
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
-		
+
 		[Fact]
 		public void IsNotInRange_Valid()
 		{
@@ -157,6 +158,16 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 13)
 				.IsNotInRange(10, 12)
+				.AddError("template1");
+
+			Assert.Single(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsLess_DateTime()
+		{
+			validationContext.When("age", new DateTime(2011, 11, 11))
+				.IsLess(new DateTime(2012, 12, 12))
 				.AddError("template1");
 
 			Assert.Single(validationContext.ValidationDetails);

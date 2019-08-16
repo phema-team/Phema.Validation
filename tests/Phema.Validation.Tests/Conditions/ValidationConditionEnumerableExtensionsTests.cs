@@ -21,7 +21,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsAny()
 		{
-			var (key, message) = validationContext.When("key", new[] { 1 })
+			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAny()
 				.AddError("template1");
 
@@ -42,7 +42,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsAnyWithParameter()
 		{
-			var (key, message) = validationContext.When("key", new[] { 1 })
+			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAny(x => x == 1)
 				.AddError("template1");
 
@@ -53,7 +53,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsAnyWithParameter_Valid()
 		{
-			validationContext.When("key", new[] { 1 })
+			validationContext.When("key", new[] {1})
 				.IsAny(x => x == 2)
 				.AddError("template1");
 
@@ -61,9 +61,52 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
+		public void IsNotAny()
+		{
+			var (key, message) = validationContext.When("key", Array.Empty<int>())
+				.IsNotAny()
+				.AddError("template1");
+
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotAny_Valid()
+		{
+			validationContext.When("key", new[] {1})
+				.IsNotAny()
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsNotAnyWithParameter()
+		{
+			var (key, message) = validationContext.When("key", new[] {1})
+				// When no any 2s in array
+				.IsNotAny(x => x == 2)
+				.AddError("template1");
+
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotAnyWithParameter_Valid()
+		{
+			validationContext.When("key", new[] {1})
+				.IsNotAny(x => x == 1)
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
 		public void IsAll()
 		{
-			var (key, message) = validationContext.When("key", new[] { 1 })
+			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAll(x => x == 1)
 				.AddError("template1");
 
@@ -74,11 +117,33 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsAll_Valid()
 		{
-			validationContext.When("key", new[] { 1, 2 })
+			validationContext.When("key", new[] {1, 2})
 				.IsAll(x => x == 1)
 				.AddError("template1");
 
-			Assert.True(!validationContext.ValidationDetails.Any());
-		}	
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsNotAll()
+		{
+			var (key, message) = validationContext.When("key", new[] {1, 2})
+				// When array has element != 1
+				.IsNotAll(x => x == 1)
+				.AddError("template1");
+
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotAll_Valid()
+		{
+			validationContext.When("key", new[] {1})
+				.IsNotAll(x => x == 1)
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
 	}
 }

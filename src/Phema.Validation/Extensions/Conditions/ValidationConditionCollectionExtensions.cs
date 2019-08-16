@@ -23,7 +23,7 @@ namespace Phema.Validation.Conditions
 			return condition.Is(value => value?.Count == count);
 		}
 
-		public static IValidationCondition<ICollection<TElement>> NotHasCount<TElement>(
+		public static IValidationCondition<ICollection<TElement>> HasCountNot<TElement>(
 			this IValidationCondition<ICollection<TElement>> condition,
 			int count)
 		{

@@ -6,6 +6,8 @@ namespace Phema.Validation.Conditions
 {
 	public static class ValidationConditionStringExtensions
 	{
+		private static readonly EmailAddressAttribute EmailAddress = new EmailAddressAttribute();
+
 		public static IValidationCondition<string> IsEmpty(
 			this IValidationCondition<string> condition,
 			StringComparison stringComparison = StringComparison.InvariantCulture)
@@ -51,35 +53,35 @@ namespace Phema.Validation.Conditions
 		public static IValidationCondition<string> IsNotEmail(
 			this IValidationCondition<string> condition)
 		{
-			return condition.IsNot(value => new EmailAddressAttribute().IsValid(value));
+			return condition.IsNot(value => EmailAddress.IsValid(value));
+		}
+
+		public static IValidationCondition<string> HasLength(
+			this IValidationCondition<string> condition,
+			Func<int, bool> predicate)
+		{
+			return condition.Is(value => value != null && predicate(value.Length));
 		}
 
 		public static IValidationCondition<string> HasLength(
 			this IValidationCondition<string> condition,
 			int length)
 		{
-			return condition.Is(value => value != null && value.Length == length);
-		}
-		
-		public static IValidationCondition<string> HasLength(
-			this IValidationCondition<string> condition,
-			Func<string, bool> predicate)
-		{
-			return condition.Is(value => value != null && predicate(value));
+			return condition.HasLength(value => value == length);
 		}
 
 		public static IValidationCondition<string> HasLengthLess(
 			this IValidationCondition<string> condition,
 			int length)
 		{
-			return condition.Is(value => value != null && value.Length < length);
+			return condition.HasLength(value => value < length);
 		}
 
 		public static IValidationCondition<string> HasLengthGreater(
 			this IValidationCondition<string> condition,
 			int length)
 		{
-			return condition.Is(value => value != null && value.Length > length);
+			return condition.HasLength(value => value > length);
 		}
 	}
 }

@@ -16,10 +16,7 @@ namespace Phema.Validation
 		{
 			// Not null or false
 			// Null by default, so validationContext.When(...).AddDetail(...) works without additional conditions
-			if (condition.IsValid == true)
-			{
-				return null;
-			}
+			if (condition.IsValid == true) return null;
 
 			var validationContext = condition.ValidationContext;
 

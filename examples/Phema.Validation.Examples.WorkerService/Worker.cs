@@ -34,13 +34,9 @@ namespace Phema.Validation.Examples.WorkerService
 						.AddError($"Value '{value}' is greater 4!");
 
 					if (validationScope.IsValid($"Key{index}"))
-					{
 						logger.LogInformation($"Running {index} iteration. Value: '{value}'");
-					}
 					else
-					{
 						logger.LogError($"{validationKey}: {validationMessage}");
-					}
 
 					await Task.Delay(1000, stoppingToken);
 				}
