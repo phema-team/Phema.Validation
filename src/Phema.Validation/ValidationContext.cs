@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 namespace Phema.Validation
 {
 	/// <summary>
-	/// Stores validation state
+	/// Stores validation state. Is not thread-safe
 	/// </summary>
 	public interface IValidationContext
 	{

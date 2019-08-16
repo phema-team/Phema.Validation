@@ -71,7 +71,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNull()
 		{
-			var (key, message) = validationContext.When("name", (string)null)
+			var (key, message) = validationContext.When("name", (string) null)
 				.IsNull()
 				.AddError("template1");
 
@@ -103,7 +103,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotNull_Valid()
 		{
-			validationContext.When("name", (string)null)
+			validationContext.When("name", (string) null)
 				.IsNotNull()
 				.AddError("template1");
 
@@ -134,7 +134,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsEqualNull()
 		{
-			var (key, message) = validationContext.When("name", (string)null)
+			var (key, message) = validationContext.When("name", (string) null)
 				.IsEqual(null)
 				.AddError("template1");
 
@@ -166,7 +166,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotEqualNull()
 		{
-			var (key, message) = validationContext.When("name", (string)null)
+			var (key, message) = validationContext.When("name", (string) null)
 				.IsNotEqual("john")
 				.AddError("template1");
 

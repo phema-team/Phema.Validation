@@ -18,7 +18,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddDetail_ReturnsMessage()
 		{
-			var (key, message, severity) = validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
+			var (key, message, severity) =
+				validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", key);
 			Assert.Equal("Error", message);
@@ -79,7 +80,7 @@ namespace Phema.Validation.Tests
 		public void Warning_ThrowErrorDetail_Greater()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Warning;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error));
 
@@ -100,7 +101,7 @@ namespace Phema.Validation.Tests
 		public void Trace_ThrowDebug()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Trace;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddDebug("Debug"));
 
@@ -111,7 +112,7 @@ namespace Phema.Validation.Tests
 		public void Debug_ThrowInformation()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Debug;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddInformation("Information"));
 
@@ -122,7 +123,7 @@ namespace Phema.Validation.Tests
 		public void Information_ThrowWarning()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Information;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddWarning("Warning"));
 
@@ -133,7 +134,7 @@ namespace Phema.Validation.Tests
 		public void Warning_ThrowError()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Warning;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddError("Error"));
 
@@ -144,13 +145,13 @@ namespace Phema.Validation.Tests
 		public void Error_ThrowFatal()
 		{
 			validationContext.ValidationSeverity = ValidationSeverity.Error;
-			
+
 			var exception = Assert.Throws<ValidationConditionException>(() =>
 				validationContext.When("key", "value").AddFatal("Fatal"));
 
 			Assert.Equal(ValidationSeverity.Fatal, exception.ValidationDetail.ValidationSeverity);
 		}
-		
+
 		[Fact]
 		public void Fatal_FatalNotThrows()
 		{

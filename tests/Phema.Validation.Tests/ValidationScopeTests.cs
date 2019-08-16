@@ -76,7 +76,7 @@ namespace Phema.Validation.Tests
 			Assert.Single(validationScope.ValidationDetails);
 			Assert.Equal(2, validationContext.ValidationDetails.Count);
 		}
-		
+
 		[Fact]
 		public void DoubleValidationScope()
 		{

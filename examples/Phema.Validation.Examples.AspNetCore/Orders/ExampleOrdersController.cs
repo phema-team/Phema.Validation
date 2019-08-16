@@ -28,15 +28,13 @@ namespace Phema.Validation.Examples.AspNetCore
 		[HttpPost]
 		public IActionResult CreateOrder([FromBody] ExampleOrderModel model)
 		{
-			model.Save(/*databaseContext, */validationContext);
+			model.Save( /*databaseContext, */validationContext);
 
 			if (validationContext.IsValid())
-			{
 				// databaseContext.SaveChanges();
-				return Ok(new { Payload = model });
-			}
+				return Ok(new {Payload = model});
 
-			return BadRequest(new { validationContext.ValidationDetails });
+			return BadRequest(new {validationContext.ValidationDetails});
 		}
 	}
 }

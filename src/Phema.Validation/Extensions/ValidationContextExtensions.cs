@@ -17,7 +17,8 @@ namespace Phema.Validation
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationKey = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationExpressionVisitor
+				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
@@ -32,7 +33,15 @@ namespace Phema.Validation
 			this IValidationContext validationContext,
 			string validationPart)
 		{
-			return validationContext.When(validationPart, default(object));
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+
+			var validationKey = validationExpressionVisitor
+				.FromValidationPart(validationContext.ValidationPath, validationPart);
+
+			return new ValidationCondition(
+				validationContext,
+				validationKey);
 		}
 
 		/// <summary>
@@ -43,7 +52,8 @@ namespace Phema.Validation
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationKey = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationExpressionVisitor
+				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return !validationContext.ValidationDetails
 				.Any(m => (validationPart is null || m.ValidationKey == validationKey)
@@ -69,10 +79,11 @@ namespace Phema.Validation
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationPath = validationExpressionVisitor.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationPath = validationExpressionVisitor
+				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationScope(
-				validationContext: validationContext,
+				validationContext,
 				validationPath);
 		}
 	}

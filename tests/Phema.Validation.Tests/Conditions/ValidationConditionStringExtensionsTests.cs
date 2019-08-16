@@ -81,6 +81,27 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
+		public void IsNotNullOrWhitespace()
+		{
+			var (key, message) = validationContext.When("name", "john")
+				.IsNotNullOrWhitespace()
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotNullOrWhitespace_Valid()
+		{
+			validationContext.When("name", " ")
+				.IsNotNullOrWhitespace()
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
 		public void IsMatch()
 		{
 			var (key, message) = validationContext.When("name", "abc")
@@ -163,7 +184,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
-		
+
 		[Fact]
 		public void HasLengthCallback()
 		{
@@ -184,7 +205,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
-		
+
 		[Fact]
 		public void HasLengthLess()
 		{
@@ -205,7 +226,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
-		
+
 		[Fact]
 		public void HasLengthGreater()
 		{

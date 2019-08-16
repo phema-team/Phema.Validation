@@ -56,7 +56,7 @@ namespace Phema.Validation.Tests
 				() => validationContext.EnsureIsValid(model, m => m.Property));
 
 			var validationMessage = Assert.Single(exception.ValidationDetails);
-			
+
 			Assert.Equal("Property", validationMessage.ValidationKey);
 		}
 
@@ -98,7 +98,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel
 			{
-				Array = new[]{ 12 }
+				Array = new[] {12}
 			};
 
 			var (key, message) = validationContext.When(model, m => m.Array[0])
@@ -118,7 +118,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel
 			{
-				Array = new[]{ 12 }
+				Array = new[] {12}
 			};
 
 			// Should be a local variable for closure
@@ -142,7 +142,7 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel
 			{
-				List = new List<int>{ 12 }
+				List = new List<int> {12}
 			};
 
 			var (key, message) = validationContext.When(model, m => m.List[0])
@@ -156,17 +156,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
 		}
-		
+
 		[Fact]
 		public void ExpressionKey_ListProperty_LocalIndex()
 		{
 			var model = new TestModel
 			{
-				List = new List<int>{ 12 }
+				List = new List<int> {12}
 			};
 
 			var index = 0;
-			
+
 			var (key, message) = validationContext.When(model, m => m.List[index])
 				.Is(value =>
 				{
@@ -178,29 +178,29 @@ namespace Phema.Validation.Tests
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
 		}
-		
+
 		[Fact]
 		public void CompositeIndexer()
 		{
 			var model = new TestModel
 			{
-				List = new List<int>{ 12 }
+				List = new List<int> {12}
 			};
 
-			var provider = new { ForModel = new { Index = 0}};
-			
+			var provider = new {ForModel = new {Index = 0}};
+
 			var (key, message) = validationContext.When(model, m => m.List[provider.ForModel.Index]).AddError("Error");
 
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
 		}
-		
+
 		[Fact]
 		public void ExpressionKey_DoubleProperty_ConstantIndex()
 		{
 			var model = new TestModel
 			{
-				DoubleArray = new[,] { { 12 } }
+				DoubleArray = new[,] {{12}}
 			};
 
 			var (key, message) = validationContext.When(model, m => m.DoubleArray[0, 0])
@@ -214,17 +214,17 @@ namespace Phema.Validation.Tests
 			Assert.Equal("DoubleArray[0, 0]", key);
 			Assert.Equal("Error", message);
 		}
-		
+
 		[Fact]
 		public void ExpressionKey_DoubleProperty_LocalIndex()
 		{
 			var model = new TestModel
 			{
-				DoubleArray = new[,] { { 12 } }
+				DoubleArray = new[,] {{12}}
 			};
 
 			var index = 0;
-			
+
 			var (key, message) = validationContext.When(model, m => m.DoubleArray[index, index])
 				.Is(value =>
 				{
@@ -244,7 +244,7 @@ namespace Phema.Validation.Tests
 			{
 				List = new List<int> {12}
 			};
-			
+
 			var withPrefix = validationContext.CreateScope(model, m => m.List);
 
 			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
@@ -262,7 +262,7 @@ namespace Phema.Validation.Tests
 			{
 				List = new List<int> {12}
 			};
-			
+
 			var withPrefix = validationContext.CreateScope(model, m => m.List);
 			withPrefix = withPrefix.CreateScope(model, m => m.List);
 
@@ -270,7 +270,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("List.List.Count", key);
 		}
-		
+
 		[Fact]
 		public void Expression_ChainExpressionPath()
 		{
@@ -287,7 +287,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Model.Property", detail.ValidationKey);
 		}
-		
+
 		[Fact]
 		public void Expression_ChainExpressionPath_Arrays()
 		{
@@ -295,7 +295,7 @@ namespace Phema.Validation.Tests
 			{
 				Model = new TestModel
 				{
-					List = new List<int> { 12 }
+					List = new List<int> {12}
 				}
 			};
 
@@ -321,7 +321,7 @@ namespace Phema.Validation.Tests
 			Assert.Equal("Model.List[0]", forList.ValidationPath);
 
 			var detail = forList.When("Key", "Value").AddError("Error");
-			
+
 			Assert.Equal("Model.List[0].Key", detail.ValidationKey);
 		}
 
@@ -368,19 +368,19 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Model.ModelList[0].Property", validationPath);
 		}
-		
+
 		private class TestModel
 		{
 			public int Property { get; set; }
 
 			public int[] Array { get; set; }
-			
+
 			public List<int> List { get; set; }
 
 			public int[,] DoubleArray { get; set; }
 
 			public TestModel Model { get; set; }
-			
+
 			public TestModel[] ModelArray { get; set; }
 			public List<TestModel> ModelList { get; set; }
 		}

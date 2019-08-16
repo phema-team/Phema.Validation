@@ -8,7 +8,7 @@ namespace Phema.Validation.Examples.AspNetCore
 	{
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
-		
+
 		[DataMember(Name = "cost")]
 		public int Cost { get; set; }
 
@@ -29,7 +29,7 @@ namespace Phema.Validation.Examples.AspNetCore
 				.IsNull()
 				.AddError("You should add your address");
 
-			Address?.Save(/*databaseContext, */ validationContext.CreateScope(this, m => m.Address));
+			Address?.Save( /*databaseContext, */ validationContext.CreateScope(this, m => m.Address));
 		}
 	}
 }

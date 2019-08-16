@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotEmpty()
 		{
-			var (key, message) = validationContext.When("list", new[] { 1 })
+			var (key, message) = validationContext.When("list", new[] {1})
 				.IsNotEmpty()
 				.AddError("template1");
 
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsNotEmpty()
 		{
-			var (key, message) = validationContext.When("list", new List<int> { 1 })
+			var (key, message) = validationContext.When("list", new List<int> {1})
 				.IsNotEmpty()
 				.AddError("template1");
 
@@ -66,7 +66,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasCount()
 		{
-			var (key, message) = validationContext.When("list", new[] { 1 })
+			var (key, message) = validationContext.When("list", new[] {1})
 				.HasCount(1)
 				.AddError("template1");
 
@@ -77,7 +77,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyHasCount()
 		{
-			var (key, message) = validationContext.When("list", new List<int> { 1 })
+			var (key, message) = validationContext.When("list", new List<int> {1})
 				.HasCount(1)
 				.AddError("template1");
 
@@ -88,8 +88,8 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NotHasCount()
 		{
-			var (key, message) = validationContext.When("list", new[] { 1 })
-				.NotHasCount(2)
+			var (key, message) = validationContext.When("list", new[] {1})
+				.HasCountNot(2)
 				.AddError("template1");
 
 			Assert.Equal("list", key);
@@ -99,10 +99,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyNotHasCount()
 		{
-			var (key, message) = validationContext.When("list", new List<int> { 1 })
-				.NotHasCount(2)
+			var (key, message) = validationContext.When("list", new List<int> {1})
+				.HasCountNot(2)
 				.AddError("template1");
-			
+
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -111,7 +111,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsContains()
 		{
-			var (key, message) = validationContext.When("list", new[] { 1 })
+			var (key, message) = validationContext.When("list", new[] {1})
 				.IsContains(1)
 				.AddError("template1");
 
@@ -122,7 +122,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void PropertyIsContains()
 		{
-			var (key, message) = validationContext.When("list", new List<int> { 1 })
+			var (key, message) = validationContext.When("list", new List<int> {1})
 				.IsContains(1)
 				.AddError("template1");
 
@@ -133,7 +133,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void IsNotContains()
 		{
-			var (key, message) = validationContext.When("list", new[] { "item1" })
+			var (key, message) = validationContext.When("list", new[] {"item1"})
 				.IsNotContains("item2")
 				.AddError("template1");
 
