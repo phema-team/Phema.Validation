@@ -3,7 +3,7 @@
 [![Build Status](https://cloud.drone.io/api/badges/phema-team/Phema.Validation/status.svg)](https://cloud.drone.io/phema-team/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 
-C# strongly typed expression-based validation library for .NET built on extension methods
+Strongly typed expression-based validation library for .NET built on top of extension methods and full of latest C# features
 
 ## Installation
 
@@ -20,15 +20,27 @@ services.AddValidation(options => ...);
 // Get or inject
 var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
 
-// Validation key will be `Name`
+// Validation key will be `Name` using default validation part provider
 validationContext.When(person, p => p.Name)
   .Is(name => name == null)
   .AddError("Name must be set");
 
-// Validation key will be `Address.Locations[0].Latitude`
+// Validation key will be `Address.Locations[0].Latitude` using default validation part provider
 validationContext.When(person, p => p.Address.Locations[0].Latitude)
   .Is(latitude => ...custom check...)
   .AddError("Some custom check failed");
+```
+
+## Validation part providers
+- `ValidationPartProvider` is a delegate, trying to get valdiation part from `MemberInfo`
+- Where are 2 built-in validation part providers
+  - Default - just get `MemberInfo.Name`
+  - DataMemberOrDefault - Try to get `DataMemberAttribute.Name` or use default implementation
+
+```csharp
+// Configure DataMember validation part provider
+services.AddValidation(options =>
+  options.ValidationPartProvider = ValidationDefaults.DataMemberOrDefaultValidationPartProvider);
 
 // Override validation parts with `DataMemberAttribute`
 [DataMember(Name = "name")]
@@ -58,11 +70,17 @@ validationContext.When(person, p => p.Name)
 ```csharp
 // Null if valid
 var validationDetails = validationContext.When(person, p => p.Age)
-  .IsNull()
+  // Validation condition is valid
+  .Is(() => false)
   .AddError("Age must be set");
 
 // Use deconstruction
 var (key, message) = validationContext.When(person, p => p.Age)
+  .IsNull()
+  .AddError("Age must be set");
+
+// More deconstruction
+var (key, message, severity) = validationContext.When(person, p => p.Age)
   .IsNull()
   .AddError("Age must be set");
 ```
@@ -100,6 +118,14 @@ ValidateChild(validationContext.CreateScope(parent, p => p.Child))
 
 // Validation key will be `Address.Locations[0].*ValidationPart*`
 ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
+
+// Override local scope ValidationSeverity
+using (var scope = validationContext.CreateScope(person, p => p.Address))
+{
+  scope.ValidationSeverity = ValidationSeverity.Warning;
+
+  // Some scope validation checks syncing with validationContext
+}
 ```
 
 ## High performance with non-expression constructions

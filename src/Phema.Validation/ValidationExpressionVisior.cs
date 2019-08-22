@@ -1,15 +1,13 @@
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
 	public interface IValidationExpressionVisior
 	{
-		string FromValidationPart(string validationPath, string validationPart);
+		string FromValidationPart(string? validationPath, string validationPart);
 
 		string FromExpression(Expression expression);
 	}
@@ -23,7 +21,7 @@ namespace Phema.Validation
 			this.validationOptions = validationOptions.Value;
 		}
 
-		public string FromValidationPart(string validationPath, string validationPart)
+		public string FromValidationPart(string? validationPath, string validationPart)
 		{
 			return validationPath is null
 				? validationPart
@@ -72,11 +70,9 @@ namespace Phema.Validation
 			};
 		}
 
-		private static string FromMemberExpression(MemberExpression memberExpression)
+		private string FromMemberExpression(MemberExpression memberExpression)
 		{
-			var dataMemberName = memberExpression.Member.GetCustomAttribute<DataMemberAttribute>()?.Name;
-
-			return dataMemberName ?? memberExpression.Member.Name;
+			return validationOptions.ValidationPartProvider(memberExpression.Member);
 		}
 
 		private static string GetArgumentValue(Expression expression)

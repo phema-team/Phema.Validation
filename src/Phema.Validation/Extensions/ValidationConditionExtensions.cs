@@ -3,13 +3,13 @@ namespace Phema.Validation
 	public static class ValidationConditionAddExtensions
 	{
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with specified <see cref="ValidationSeverity"/>
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with specified <see cref="ValidationSeverity"/>
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddDetail(
+		public static IValidationDetail? AddDetail(
 			this IValidationCondition condition,
 			string validationMessage,
 			ValidationSeverity validationSeverity)
@@ -36,13 +36,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with trace severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with trace severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddTrace(
+		public static IValidationDetail? AddTrace(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
@@ -50,13 +50,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with debug severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with debug severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddDebug(
+		public static IValidationDetail? AddDebug(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
@@ -64,13 +64,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with information severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with information severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddInformation(
+		public static IValidationDetail? AddInformation(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
@@ -78,13 +78,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with warning severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with warning severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddWarning(
+		public static IValidationDetail? AddWarning(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
@@ -92,13 +92,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with error severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with error severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddError(
+		public static IValidationDetail? AddError(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
@@ -106,13 +106,13 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Adds <see cref="ValidationDetail"/> to <see cref="IValidationContext"/> with fatal severity
+		/// Adds <see cref="IValidationDetail"/> to <see cref="IValidationContext"/> with fatal severity
 		/// </summary>
 		/// <exception cref="ValidationConditionException">
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail AddFatal(
+		public static IValidationDetail? AddFatal(
 			this IValidationCondition condition,
 			string validationMessage)
 		{

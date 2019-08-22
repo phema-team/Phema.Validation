@@ -3,34 +3,39 @@ using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	internal sealed class ValidationDetailsCollection : ICollection<ValidationDetail>
+	internal sealed class ValidationDetailsCollection : ICollection<IValidationDetail>
 	{
-		private readonly ICollection<ValidationDetail> validationDetails;
-		private readonly ICollection<ValidationDetail> rootValidationDetails;
+		private readonly ICollection<IValidationDetail> validationDetails;
+		private readonly ICollection<IValidationDetail>? rootValidationDetails;
 
-		public ValidationDetailsCollection(ICollection<ValidationDetail> rootValidationDetails = null)
+		public ValidationDetailsCollection(ICollection<IValidationDetail>? rootValidationDetails = null)
 		{
-			validationDetails = new List<ValidationDetail>();
+			validationDetails = new List<IValidationDetail>();
 			this.rootValidationDetails = rootValidationDetails;
 		}
 
 		public int Count => validationDetails.Count;
 		public bool IsReadOnly => validationDetails.IsReadOnly;
 
-		public void Add(ValidationDetail validationDetail)
+		public void Add(IValidationDetail validationDetail)
 		{
 			validationDetails.Add(validationDetail);
 			rootValidationDetails?.Add(validationDetail);
 		}
 
-		public bool Remove(ValidationDetail validationDetail)
+		public bool Remove(IValidationDetail validationDetail)
 		{
-			rootValidationDetails?.Remove(validationDetail);
+			var removed = validationDetails.Remove(validationDetail);
 
-			return validationDetails.Remove(validationDetail);
+			if (removed)
+			{
+				rootValidationDetails?.Remove(validationDetail);
+			}
+
+			return removed;
 		}
 
-		public bool Contains(ValidationDetail validationDetail)
+		public bool Contains(IValidationDetail validationDetail)
 		{
 			return validationDetails.Contains(validationDetail);
 		}
@@ -48,12 +53,12 @@ namespace Phema.Validation
 			validationDetails.Clear();
 		}
 
-		public void CopyTo(ValidationDetail[] array, int arrayIndex)
+		public void CopyTo(IValidationDetail[] array, int arrayIndex)
 		{
 			validationDetails.CopyTo(array, arrayIndex);
 		}
 
-		public IEnumerator<ValidationDetail> GetEnumerator()
+		public IEnumerator<IValidationDetail> GetEnumerator()
 		{
 			return validationDetails.GetEnumerator();
 		}

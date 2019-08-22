@@ -12,7 +12,7 @@ namespace Phema.Validation
 		/// <summary>
 		/// Failed validation results
 		/// </summary>
-		ICollection<ValidationDetail> ValidationDetails { get; }
+		ICollection<IValidationDetail> ValidationDetails { get; }
 
 		/// <summary>
 		/// Current validation context severity. Adding details greater than this value will throw <see cref="ValidationConditionException"/>.
@@ -43,9 +43,9 @@ namespace Phema.Validation
 			ValidationPath = validationOptions.Value.ValidationPath;
 		}
 
-		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ICollection<IValidationDetail> ValidationDetails { get; }
 		public ValidationSeverity ValidationSeverity { get; set; }
-		public string ValidationPath { get; }
+		public string? ValidationPath { get; }
 
 		public object GetService(Type serviceType)
 		{

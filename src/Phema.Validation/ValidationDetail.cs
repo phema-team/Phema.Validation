@@ -5,7 +5,26 @@ namespace Phema.Validation
 	/// <summary>
 	/// Stores failed validation result details. Inherit for custom validation properties
 	/// </summary>
-	public class ValidationDetail
+	public interface IValidationDetail
+	{
+		/// <summary>
+		/// Specified validation key with validation context path
+		/// </summary>
+		string ValidationKey { get; }
+
+		/// <summary>
+		/// Validation detail message
+		/// </summary>
+		string ValidationMessage { get; }
+
+		/// <summary>
+		/// Validation detail severity. If greater than ValidationContext.ValidationSeverity will throw <see cref="ValidationConditionException"/>
+		/// </summary>
+		ValidationSeverity ValidationSeverity { get; }
+	}
+
+	// public for external use
+	public sealed class ValidationDetail : IValidationDetail
 	{
 		public ValidationDetail(string validationKey, string validationMessage, ValidationSeverity validationSeverity)
 		{
@@ -14,19 +33,10 @@ namespace Phema.Validation
 			ValidationSeverity = validationSeverity;
 		}
 
-		/// <summary>
-		/// Specified validation key with validation context path
-		/// </summary>
 		public string ValidationKey { get; }
 
-		/// <summary>
-		/// Validation detail message
-		/// </summary>
 		public string ValidationMessage { get; }
 
-		/// <summary>
-		/// Validation detail severity. If greater than ValidationContext.ValidationSeverity will throw <see cref="ValidationConditionException"/>
-		/// </summary>
 		public ValidationSeverity ValidationSeverity { get; }
 	}
 }

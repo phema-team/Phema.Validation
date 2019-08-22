@@ -27,7 +27,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Specifies validation part with object predicate with null value. Use with closures in conditions
+		/// Specifies validation part with object predicate without value. Use with closures in conditions
 		/// </summary>
 		public static IValidationCondition When(
 			this IValidationContext validationContext,
@@ -47,23 +47,29 @@ namespace Phema.Validation
 		/// <summary>
 		/// Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
 		/// </summary>
-		public static bool IsValid(this IValidationContext validationContext, string validationPart = null)
+		public static bool IsValid(this IValidationContext validationContext, string? validationPart = null)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var validationKey = validationExpressionVisitor
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationDetails = validationContext.ValidationDetails
+				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
 
-			return !validationContext.ValidationDetails
-				.Any(m => (validationPart is null || m.ValidationKey == validationKey)
-					&& m.ValidationSeverity >= validationContext.ValidationSeverity);
+			if (validationPart is { })
+			{
+				var validationKey = validationExpressionVisitor
+					.FromValidationPart(validationContext.ValidationPath, validationPart);
+
+				validationDetails = validationDetails.Where(detail => detail.ValidationKey == validationKey);
+			}
+
+			return !validationDetails.Any();
 		}
 
 		/// <summary>
 		/// If validation context is not valid, throws <see cref="ValidationContextException"/>
 		/// </summary>
-		public static void EnsureIsValid(this IValidationContext validationContext, string validationPart = null)
+		public static void EnsureIsValid(this IValidationContext validationContext, string? validationPart = null)
 		{
 			if (!validationContext.IsValid(validationPart))
 			{

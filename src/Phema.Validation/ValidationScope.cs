@@ -15,7 +15,7 @@ namespace Phema.Validation
 	{
 		private readonly IServiceProvider serviceProvider;
 
-		public ValidationScope(IValidationContext validationContext, string validationPath)
+		public ValidationScope(IValidationContext validationContext, string? validationPath)
 		{
 			ValidationPath = validationPath;
 			ValidationDetails = new ValidationDetailsCollection(validationContext.ValidationDetails);
@@ -24,9 +24,9 @@ namespace Phema.Validation
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
-		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ICollection<IValidationDetail> ValidationDetails { get; }
 		public ValidationSeverity ValidationSeverity { get; set; }
-		public string ValidationPath { get; }
+		public string? ValidationPath { get; }
 
 		public object GetService(Type serviceType)
 		{
