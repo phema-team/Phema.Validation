@@ -13,7 +13,6 @@ namespace Phema.Validation.Examples.AspNetCore
 		}
 
 		/*
-			Try to remove or edit some fields and watch for validation messages
 			POST
 			{
 				"name": "Cookies",

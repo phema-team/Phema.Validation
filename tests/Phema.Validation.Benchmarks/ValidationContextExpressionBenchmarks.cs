@@ -44,9 +44,25 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
+		public void SimpleExpression_CompiledValue()
+		{
+			validationContext.When(model, m => m.Model)
+				.Is(value => true)
+				.AddError("Property is 12");
+		}
+
+		[Benchmark]
 		public void ChainedExpression()
 		{
 			validationContext.When(model, m => m.Model.Model)
+				.AddError("Error");
+		}
+
+		[Benchmark]
+		public void ChainedExpression_CompiledValue()
+		{
+			validationContext.When(model, m => m.Model.Model)
+				.Is(value => true)
 				.AddError("Error");
 		}
 
@@ -58,6 +74,14 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
+		public void ArrayAccessExpression_CompiledValue()
+		{
+			validationContext.When(model, m => m.Model.Array[0])
+				.Is(value => true)
+				.AddError("Error");
+		}
+
+		[Benchmark]
 		public void ChainedArrayAccessExpression()
 		{
 			validationContext.When(model, m => m.Model.Array[0].Model)
@@ -65,11 +89,29 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
-		public void ChainedArrayAccess_DynamicInvoke_Expression()
+		public void ChainedArrayAccessExpression_CompiledValue()
+		{
+			validationContext.When(model, m => m.Model.Array[0].Model)
+				.Is(value => true)
+				.AddError("Error");
+		}
+
+		[Benchmark]
+		public void ChainedArrayAccess_DynamicInvoke()
 		{
 			var provider = new {ForArray = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForArray.Index].Model)
+				.AddError("Error");
+		}
+
+		[Benchmark]
+		public void ChainedArrayAccess_DynamicInvoke_CompiledValue()
+		{
+			var provider = new {ForArray = new {Index = 0}};
+
+			validationContext.When(model, m => m.Model.Array[provider.ForArray.Index].Model)
+				.Is(value => true)
 				.AddError("Error");
 		}
 

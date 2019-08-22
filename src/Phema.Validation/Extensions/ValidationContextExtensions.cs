@@ -7,26 +7,6 @@ namespace Phema.Validation
 	public static class ValidationContextExtensions
 	{
 		/// <summary>
-		/// Specifies validation part with <see cref="TValue"/> value
-		/// </summary>
-		public static IValidationCondition<TValue> When<TValue>(
-			this IValidationContext validationContext,
-			string validationPart,
-			TValue value)
-		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
-
-			var validationKey = validationExpressionVisitor
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
-
-			return new ValidationCondition<TValue>(
-				validationContext,
-				validationKey,
-				value);
-		}
-
-		/// <summary>
 		/// Specifies validation part with object predicate without value. Use with closures in conditions
 		/// </summary>
 		public static IValidationCondition When(
@@ -42,6 +22,37 @@ namespace Phema.Validation
 			return new ValidationCondition(
 				validationContext,
 				validationKey);
+		}
+
+		/// <summary>
+		/// Specifies validation part with provider of <see cref="TValue"/> value
+		/// </summary>
+		public static IValidationCondition<TValue> When<TValue>(
+			this IValidationContext validationContext,
+			string validationPart,
+			Func<TValue> provider)
+		{
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+
+			var validationKey = validationExpressionVisitor
+				.FromValidationPart(validationContext.ValidationPath, validationPart);
+
+			return new ValidationCondition<TValue>(
+				validationContext,
+				validationKey,
+				provider);
+		}
+
+		/// <summary>
+		/// Specifies validation part with <see cref="TValue"/> value
+		/// </summary>
+		public static IValidationCondition<TValue> When<TValue>(
+			this IValidationContext validationContext,
+			string validationPart,
+			TValue value)
+		{
+			return validationContext.When(validationPart, () => value);
 		}
 
 		/// <summary>
