@@ -1,59 +1,52 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Phema.Validation
+namespace Phema.Validation.Conditions
 {
 	public static class ValidationConditionIsExtensions
 	{
 		/// <summary>
-		/// Basic condition check without concrete value usage. Checks if predicate is valid
+		/// Checks values has a value
 		/// </summary>
-		public static TValidationCondition Is<TValidationCondition>(
-			this TValidationCondition condition,
-			Func<bool> predicate)
-			where TValidationCondition : IValidationCondition
-		{
-			// Null or true
-			if (condition.IsValid != false)
-			{
-				condition.IsValid = !predicate();
-			}
-
-			return condition;
-		}
-
-		/// <summary>
-		/// Basic condition negative check without concrete value usage. Checks if predicate is not valid
-		/// </summary>
-		public static TValidationCondition IsNot<TValidationCondition>(
-			this TValidationCondition condition,
-			Func<bool> predicate)
-			where TValidationCondition : IValidationCondition
-		{
-			return condition.Is(() => !predicate());
-		}
-
-		/// <summary>
-		/// Checks if value is valid
-		/// </summary>
-		public static IValidationCondition<TValue> Is<TValue>(
+		public static IValidationCondition<TValue> IsIn<TValue>(
 			this IValidationCondition<TValue> condition,
-			Func<TValue, bool> predicate)
+			IEnumerable<TValue> values)
 		{
-			return condition.Is(() => predicate(condition.Value));
+			return condition.Is(value => values.Contains(condition.Value));
 		}
 
 		/// <summary>
-		/// Checks if value is not valid
+		/// Checks values has a value
 		/// </summary>
-		public static IValidationCondition<TValue> IsNot<TValue>(
+		public static IValidationCondition<TValue> IsIn<TValue>(
 			this IValidationCondition<TValue> condition,
-			Func<TValue, bool> predicate)
+			params TValue[] values)
 		{
-			return condition.IsNot(() => predicate(condition.Value));
+			return condition.Is(value => values.Contains(condition.Value));
 		}
 
 		/// <summary>
-		/// Checks if value is null
+		/// Checks values has a value
+		/// </summary>
+		public static IValidationCondition<TValue> IsNotIn<TValue>(
+			this IValidationCondition<TValue> condition,
+			IEnumerable<TValue> values)
+		{
+			return condition.IsNot(value => values.Contains(condition.Value));
+		}
+
+		/// <summary>
+		/// Checks values has a value
+		/// </summary>
+		public static IValidationCondition<TValue> IsNotIn<TValue>(
+			this IValidationCondition<TValue> condition,
+			params TValue[] values)
+		{
+			return condition.IsNot(value => values.Contains(condition.Value));
+		}
+
+		/// <summary>
+		/// Checks value is null
 		/// </summary>
 		public static IValidationCondition<TValue> IsNull<TValue>(
 			this IValidationCondition<TValue> condition)
@@ -62,7 +55,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks if value is not null
+		/// Checks value is not null
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotNull<TValue>(
 			this IValidationCondition<TValue> condition)
@@ -71,7 +64,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks if value is equal using Equals method
+		/// Checks value is equal using Equals method
 		/// </summary>
 		public static IValidationCondition<TValue> IsEqual<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -81,7 +74,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks if value is not equal using Equals method
+		/// Checks value is not equal using Equals method
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotEqual<TValue>(
 			this IValidationCondition<TValue> condition,

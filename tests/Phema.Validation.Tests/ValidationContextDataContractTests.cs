@@ -13,7 +13,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ServiceCollection()
 				.AddValidation(options => 
-					options.ValidationPartProvider = ValidationDefaults.DataMemberOrDefaultValidationPartProvider)
+					options.ValidationPartResolver = ValidationDefaults.DataMemberOrDefaultValidationPartResolver)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}

@@ -10,12 +10,12 @@ namespace Phema.Validation
 			ValidationSeverity = ValidationDefaults.DefaultValidationSeverity;
 			ValidationPath = ValidationDefaults.DefaultValidationPath;
 			ValidationPathSeparator = ValidationDefaults.DefaultValidationPathSeparator;
-			ValidationPartProvider = ValidationDefaults.DefaultValidationPartProvider;
+			ValidationPartResolver = ValidationDefaults.DefaultValidationPartResolver;
 		}
 
 		public ValidationSeverity ValidationSeverity { get; set; }
 		public string? ValidationPath { get; set; }
 		public string ValidationPathSeparator { get; set; }
-		public Func<MemberInfo, string> ValidationPartProvider { get; set; }
+		public Func<MemberInfo, string> ValidationPartResolver { get; set; }
 	}
 }

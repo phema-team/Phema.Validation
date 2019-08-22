@@ -10,8 +10,8 @@ namespace Phema.Validation
 		public const string? DefaultValidationPath = null;
 		public const ValidationSeverity DefaultValidationSeverity = ValidationSeverity.Error;
 
-		public static Func<MemberInfo, string> DefaultValidationPartProvider { get; } = method => method.Name;
-		public static Func<MemberInfo, string> DataMemberOrDefaultValidationPartProvider { get; } =
-			method => method.GetCustomAttribute<DataMemberAttribute>()?.Name ?? DefaultValidationPartProvider(method);
+		public static Func<MemberInfo, string> DefaultValidationPartResolver { get; } = method => method.Name;
+		public static Func<MemberInfo, string> DataMemberOrDefaultValidationPartResolver { get; } =
+			method => method.GetCustomAttribute<DataMemberAttribute>()?.Name ?? DefaultValidationPartResolver(method);
 	}
 }

@@ -72,7 +72,7 @@ namespace Phema.Validation
 
 		private string FromMemberExpression(MemberExpression memberExpression)
 		{
-			return validationOptions.ValidationPartProvider(memberExpression.Member);
+			return validationOptions.ValidationPartResolver(memberExpression.Member);
 		}
 
 		private static string GetArgumentValue(Expression expression)
