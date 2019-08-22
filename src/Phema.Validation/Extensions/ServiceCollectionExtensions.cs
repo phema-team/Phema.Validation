@@ -10,7 +10,7 @@ namespace Phema.Validation
 		/// </summary>
 		public static IServiceCollection AddValidation(
 			this IServiceCollection services,
-			Action<ValidationOptions> options = null)
+			Action<ValidationOptions>? options = null)
 		{
 			options ??= o => { };
 

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using Phema.Validation.Conditions;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -105,6 +107,70 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", (string) null)
 				.IsNotNull()
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsIn()
+		{
+			var (key, message) = validationContext.When("name", 2)
+				.IsIn(1, 2, 3)
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+
+			(key, message) = validationContext.When("name", 2)
+				.IsIn(new List<int> { 1, 2, 3 })
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsIn_Valid()
+		{
+			validationContext.When("name", 2)
+				.IsIn(1, 3)
+				.AddError("template1");
+
+			validationContext.When("name", 2)
+				.IsIn(new List<int> { 1, 3 })
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsNotIn()
+		{
+			var (key, message) = validationContext.When("name", 2)
+				.IsNotIn(1, 3)
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+			
+			(key, message) = validationContext.When("name", 2)
+				.IsNotIn(new List<int> { 1, 3 })
+				.AddError("template1");
+
+			Assert.Equal("name", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotIn_Valid()
+		{
+			validationContext.When("name", 2)
+				.IsNotIn(1, 2, 3)
+				.AddError("template1");
+
+			validationContext.When("name", 2)
+				.IsNotIn(new List<int> { 1, 2, 3 })
 				.AddError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);

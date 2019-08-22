@@ -17,10 +17,9 @@ namespace Phema.Validation
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
 
-			var value = expression.Compile().Invoke(model);
 			var validationPart = validationExpressionVisitor.FromExpression(expression.Body);
 
-			return validationContext.When(validationPart, value);
+			return validationContext.When(validationPart, () => expression.Compile().Invoke(model));
 		}
 
 		/// <summary>

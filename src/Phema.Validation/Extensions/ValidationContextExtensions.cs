@@ -7,27 +7,7 @@ namespace Phema.Validation
 	public static class ValidationContextExtensions
 	{
 		/// <summary>
-		/// Specifies validation part with <see cref="TValue"/> value
-		/// </summary>
-		public static IValidationCondition<TValue> When<TValue>(
-			this IValidationContext validationContext,
-			string validationPart,
-			TValue value)
-		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
-
-			var validationKey = validationExpressionVisitor
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
-
-			return new ValidationCondition<TValue>(
-				validationContext,
-				validationKey,
-				value);
-		}
-
-		/// <summary>
-		/// Specifies validation part with object predicate with null value. Use with closures in conditions
+		/// Specifies validation part with object predicate without value. Use with closures in conditions
 		/// </summary>
 		public static IValidationCondition When(
 			this IValidationContext validationContext,
@@ -45,9 +25,12 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
+		/// Specifies validation part with provider of <see cref="TValue"/> value
 		/// </summary>
-		public static bool IsValid(this IValidationContext validationContext, string validationPart = null)
+		public static IValidationCondition<TValue> When<TValue>(
+			this IValidationContext validationContext,
+			string validationPart,
+			Func<TValue> provider)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
@@ -55,15 +38,49 @@ namespace Phema.Validation
 			var validationKey = validationExpressionVisitor
 				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
-			return !validationContext.ValidationDetails
-				.Any(m => (validationPart is null || m.ValidationKey == validationKey)
-					&& m.ValidationSeverity >= validationContext.ValidationSeverity);
+			return new ValidationCondition<TValue>(
+				validationContext,
+				validationKey,
+				provider);
+		}
+
+		/// <summary>
+		/// Specifies validation part with <see cref="TValue"/> value
+		/// </summary>
+		public static IValidationCondition<TValue> When<TValue>(
+			this IValidationContext validationContext,
+			string validationPart,
+			TValue value)
+		{
+			return validationContext.When(validationPart, () => value);
+		}
+
+		/// <summary>
+		/// Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
+		/// </summary>
+		public static bool IsValid(this IValidationContext validationContext, string? validationPart = null)
+		{
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+
+			var validationDetails = validationContext.ValidationDetails
+				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
+
+			if (validationPart is { })
+			{
+				var validationKey = validationExpressionVisitor
+					.FromValidationPart(validationContext.ValidationPath, validationPart);
+
+				validationDetails = validationDetails.Where(detail => detail.ValidationKey == validationKey);
+			}
+
+			return !validationDetails.Any();
 		}
 
 		/// <summary>
 		/// If validation context is not valid, throws <see cref="ValidationContextException"/>
 		/// </summary>
-		public static void EnsureIsValid(this IValidationContext validationContext, string validationPart = null)
+		public static void EnsureIsValid(this IValidationContext validationContext, string? validationPart = null)
 		{
 			if (!validationContext.IsValid(validationPart))
 			{

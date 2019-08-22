@@ -2,8 +2,10 @@
 
 [![Build Status](https://cloud.drone.io/api/badges/phema-team/Phema.Validation/status.svg)](https://cloud.drone.io/phema-team/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
+[![Nuget](https://img.shields.io/nuget/dt/Phema.Validation.svg)](https://nuget.org/packages/Phema.Validation)
 
-C# strongly typed expression-based validation library for .NET built on extension methods
+Strongly typed expression-based validation library for .NET built on top of extension methods and full of latest C# features
+Can be used anywhere with `Microsoft.Extensions.DependencyInjection` package support
 
 ## Installation
 
@@ -11,7 +13,7 @@ C# strongly typed expression-based validation library for .NET built on extensio
 $> dotnet add package Phema.Validation
 ```
 
-## Usage ([example](https://github.com/phema-team/Phema.Validation/blob/master/examples/Phema.Validation.Example/Orders/ExampleOrdersController.cs))
+## Usage ([ASP.NET Core](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.AspNetCore), [HostedService](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.WorkerService) examples)
 
 ```csharp
 // Add `IValidationContext` as scoped service
@@ -20,22 +22,20 @@ services.AddValidation(options => ...);
 // Get or inject
 var validationContext = serviceProvider.GetRequiredService<IValidationContext>();
 
-// Validation key will be `Name`
+// Validation key will be `Name` using default validation part provider
 validationContext.When(person, p => p.Name)
   .Is(name => name == null)
   .AddError("Name must be set");
 
-// Validation key will be `Address.Locations[0].Latitude`
+// Validation key will be `Address.Locations[0].Latitude` using default validation part provider
 validationContext.When(person, p => p.Address.Locations[0].Latitude)
   .Is(latitude => ...custom check...)
   .AddError("Some custom check failed");
-
-// Override validation parts with `DataMemberAttribute`
-[DataMember(Name = "name")]
-public string Name { get; set; }
 ```
 
 ## Validation conditions
+
+- Monads are not composable, so `Is` and `IsNot`, `IsNull` and `IsNotNull`... duplication
 
 ```csharp
 // Check for Phema.Validation.Conditions namespace
@@ -58,11 +58,17 @@ validationContext.When(person, p => p.Name)
 ```csharp
 // Null if valid
 var validationDetails = validationContext.When(person, p => p.Age)
-  .IsNull()
+  // Validation condition is valid
+  .Is(() => false)
   .AddError("Age must be set");
 
 // Use deconstruction
 var (key, message) = validationContext.When(person, p => p.Age)
+  .IsNull()
+  .AddError("Age must be set");
+
+// More deconstruction
+var (key, message, severity) = validationContext.When(person, p => p.Age)
   .IsNull()
   .AddError("Age must be set");
 ```
@@ -87,6 +93,39 @@ validationContext.IsValid(person, p => p.Age);
 validationContext.EnsureIsValid(person, p => p.Age);
 ```
 
+## Compose and reuse validation rules
+
+- Call is allocation free
+- Static checks
+- Extensible as a `IValidators` and `IValidationComponents`
+
+```csharp
+// Extensions
+public static void ValidateCustomer(this IValidationContext validationContext, Customer customer)
+{
+  // Some checks
+}
+
+validationContext.ValidateCustomer(customer);
+```
+
+## Validation part providers
+
+- `ValidationPartResolver` is a delegate, trying to get valdiation part from `MemberInfo`
+- Where are 2 built-in validation part providers
+  - Default - just get `MemberInfo.Name`
+  - DataMemberOrDefault - Try to get `DataMemberAttribute.Name` or use default implementation
+
+```csharp
+// Configure DataMember validation part provider
+services.AddValidation(options =>
+  options.ValidationPartResolver = ValidationDefaults.DataMemberOrDefaultValidationPartResolver);
+
+// Override validation parts with `DataMemberAttribute`
+[DataMember(Name = "name")]
+public string Name { get; set; }
+```
+
 ## Validation scopes
 
 - Use scopes when you need to have:
@@ -100,6 +139,14 @@ ValidateChild(validationContext.CreateScope(parent, p => p.Child))
 
 // Validation key will be `Address.Locations[0].*ValidationPart*`
 ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
+
+// Override local scope ValidationSeverity
+using (var scope = validationContext.CreateScope(person, p => p.Address))
+{
+  scope.ValidationSeverity = ValidationSeverity.Warning;
+
+  // Some scope validation checks syncing with validationContext
+}
 ```
 
 ## High performance with non-expression constructions
@@ -127,22 +174,27 @@ validationContext.EnsureIsValid("key");
 
 |        Method |     Mean |     Error |    StdDev |      Max | Iterations |
 |-------------- |---------:|----------:|----------:|---------:|-----------:|
-|        Simple | 1.421 us | 0.0071 us | 0.0653 us | 1.581 us |      925.0 |
-|   CreateScope | 1.287 us | 0.0046 us | 0.0431 us | 1.394 us |      971.0 |
-|       IsValid | 1.350 us | 0.0042 us | 0.0401 us | 1.444 us |      986.0 |
-| EnsureIsValid | 1.374 us | 0.0042 us | 0.0401 us | 1.475 us |      987.0 |
+|        Simple | 1.431 us | 0.0048 us | 0.0454 us | 1.547 us |      955.0 |
+|   CreateScope | 1.316 us | 0.0043 us | 0.0412 us | 1.425 us |      977.0 |
+|       IsValid | 1.627 us | 0.0155 us | 0.1441 us | 1.981 us |      942.0 |
+| EnsureIsValid | 1.655 us | 0.0157 us | 0.1490 us | 2.006 us |      978.0 |
 
 ### Expression validation
 
-|                                      Method |       Mean |     Error |    StdDev |        Max | Iterations |
-|-------------------------------------------- |-----------:|----------:|----------:|-----------:|-----------:|
-|                            SimpleExpression |  52.181 us | 0.2692 us | 2.5770 us |  60.106 us |      998.0 |
-|                           ChainedExpression |  59.643 us | 0.3316 us | 3.1521 us |  68.800 us |      984.0 |
-|                       ArrayAccessExpression |  73.636 us | 0.4902 us | 4.6804 us |  89.787 us |      993.0 |
-|                ChainedArrayAccessExpression |  80.645 us | 0.5602 us | 5.3484 us |  98.931 us |      993.0 |
-| ChainedArrayAccess_DynamicInvoke_Expression | 288.098 us | 0.9826 us | 9.3864 us | 317.175 us |      994.0 |
-|                CreateScope_SimpleExpression |   4.443 us | 0.0156 us | 0.1469 us |   4.838 us |      965.0 |
-|               CreateScope_ChainedExpression |   5.467 us | 0.0301 us | 0.2849 us |   6.237 us |      973.0 |
-|                               IsValid_Empty |   4.642 us | 0.0241 us | 0.2275 us |   5.275 us |      970.0 |
-|                          IsValid_Expression |   4.659 us | 0.0192 us | 0.1826 us |   5.138 us |      982.0 |
-|                    EnsureIsValid_Expression |   4.664 us | 0.0262 us | 0.2496 us |   5.450 us |      991.0 |
+|                                         Method |       Mean |     Error |    StdDev |        Max | Iterations |
+|----------------------------------------------- |-----------:|----------:|----------:|-----------:|-----------:|
+|                               SimpleExpression |   3.520 us | 0.0225 us | 0.2136 us |   4.237 us |      986.0 |
+|                 SimpleExpression_CompiledValue |  49.909 us | 0.3173 us | 3.0343 us |  57.062 us |      996.0 |
+|                              ChainedExpression |   4.047 us | 0.0334 us | 0.3183 us |   5.062 us |      990.0 |
+|                ChainedExpression_CompiledValue |  55.812 us | 0.3958 us | 3.7844 us |  66.694 us |      996.0 |
+|                          ArrayAccessExpression |   4.502 us | 0.0170 us | 0.1606 us |   4.981 us |      976.0 |
+|            ArrayAccessExpression_CompiledValue |  70.870 us | 0.4830 us | 4.6186 us |  86.075 us |      996.0 |
+|                   ChainedArrayAccessExpression |   4.823 us | 0.0439 us | 0.4174 us |   6.250 us |      983.0 |
+|     ChainedArrayAccessExpression_CompiledValue |  75.644 us | 0.5110 us | 4.8820 us |  92.688 us |      994.0 |
+|               ChainedArrayAccess_DynamicInvoke | 126.887 us | 0.6209 us | 5.9341 us | 147.000 us |      995.0 |
+| ChainedArrayAccess_DynamicInvoke_CompiledValue | 280.266 us | 0.6133 us | 5.5828 us | 297.750 us |      903.0 |
+|                   CreateScope_SimpleExpression |   3.465 us | 0.0185 us | 0.1744 us |   4.044 us |      972.0 |
+|                  CreateScope_ChainedExpression |   4.031 us | 0.0380 us | 0.3573 us |   5.219 us |      964.0 |
+|                                  IsValid_Empty |   4.125 us | 0.0228 us | 0.2142 us |   4.688 us |      960.0 |
+|                             IsValid_Expression |   4.121 us | 0.0187 us | 0.1760 us |   4.641 us |      963.0 |
+|                       EnsureIsValid_Expression |   4.113 us | 0.0196 us | 0.1829 us |   4.625 us |      949.0 |
