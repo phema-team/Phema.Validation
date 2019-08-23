@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
@@ -80,13 +83,47 @@ namespace Phema.Validation
 			return expression switch
 			{
 				ConstantExpression constant => constant.Value.ToString(),
-				MemberExpression member when member.Expression is MemberExpression => GetArgumentValue(member.Expression),
-				MemberExpression member when member.Expression is ConstantExpression => GetArgumentValue(member.Expression),
 
-				// TODO: More optimizations on simple usecases?
+				MemberExpression member 
+					when member.Expression is MemberExpression => GetChainedArgumentValue(member),
 
-				_ => Expression.Lambda(expression).Compile().DynamicInvoke().ToString()
+				MemberExpression member
+					when member.Expression is ConstantExpression => GetChainedArgumentValue(member),
+
+				_ => throw new InvalidExpressionException($"Unsupported expression type: {expression}")
 			};
+		}
+		
+		private static string GetChainedArgumentValue(MemberExpression memberExpression)
+		{
+			var members = new List<MemberInfo>();
+			var value = GetChainedArgumentValue(members, memberExpression);
+
+			foreach (var member in members)
+			{
+				value = member switch
+				{
+					PropertyInfo propertyInfo => propertyInfo.GetMethod.Invoke(value, Array.Empty<object>()),
+					FieldInfo fieldInfo => fieldInfo.GetValue(value),
+					_ => value
+				};
+			}
+
+			return value.ToString();
+		}
+
+		private static object GetChainedArgumentValue(List<MemberInfo> members, MemberExpression expression)
+		{
+			var value = expression.Expression switch
+			{
+				ConstantExpression constantExpression => constantExpression.Value,
+				MemberExpression memberExpression => GetChainedArgumentValue(members, memberExpression),
+				_ => throw new InvalidExpressionException($"Unsupported expression type: {expression.Expression}")
+			};
+
+			members.Add(expression.Member);
+
+			return value;
 		}
 	}
 }
