@@ -79,10 +79,11 @@ namespace Phema.Validation
 		{
 			return expression switch
 			{
-				ConstantExpression constantExpression => constantExpression.Value.ToString(),
+				ConstantExpression constant => constant.Value.ToString(),
+				MemberExpression member when member.Expression is MemberExpression => GetArgumentValue(member.Expression),
+				MemberExpression member when member.Expression is ConstantExpression => GetArgumentValue(member.Expression),
 
 				// TODO: More optimizations on simple usecases?
-				// MemberExpression -> ConstantExpression = one reflection call
 
 				_ => Expression.Lambda(expression).Compile().DynamicInvoke().ToString()
 			};

@@ -97,20 +97,20 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
-		public void ChainedArrayAccess_DynamicInvoke()
+		public void ChainedArrayAccess()
 		{
-			var provider = new { Index = 0 };
+			var provider = new { ForModel = new { Index = 0 } };
 
-			validationContext.When(model, m => m.Model.Array[provider.Index].Model)
+			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.AddError("Error");
 		}
 
 		[Benchmark]
-		public void ChainedArrayAccess_DynamicInvoke_CompiledValue()
+		public void ChainedArrayAccess_CompiledValue()
 		{
-			var provider = new { Index = 0 };
+			var provider = new { ForModel = new { Index = 0 } };
 
-			validationContext.When(model, m => m.Model.Array[provider.Index].Model)
+			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.Is(value => true)
 				.AddError("Error");
 		}
