@@ -9,10 +9,10 @@ namespace Phema.Validation
 		public ValidationContextException(IValidationContext validationContext)
 		{
 			ValidationDetails = validationContext.ValidationDetails
-				.Where(m => m.ValidationSeverity >= validationContext.ValidationSeverity)
+				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity)
 				.ToList();
 		}
 
-		public IReadOnlyCollection<IValidationDetail> ValidationDetails { get; }
+		public IReadOnlyCollection<ValidationDetail> ValidationDetails { get; }
 	}
 }

@@ -20,11 +20,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", "value").AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
-			Assert.Equal("key", validationMessage.ValidationKey);
-			Assert.Equal("Error", validationMessage.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, validationMessage.ValidationSeverity);
+			Assert.Equal("key", validationDetail.ValidationKey);
+			Assert.Equal("Error", validationDetail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
@@ -42,11 +42,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", "value").AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
-			Assert.Equal("key", validationMessage.ValidationKey);
-			Assert.Equal("Error", validationMessage.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, validationMessage.ValidationSeverity);
+			Assert.Equal("key", validationDetail.ValidationKey);
+			Assert.Equal("Error", validationDetail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
@@ -54,11 +54,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key").AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
-			Assert.Equal("key", validationMessage.ValidationKey);
-			Assert.Equal("Error", validationMessage.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, validationMessage.ValidationSeverity);
+			Assert.Equal("key", validationDetail.ValidationKey);
+			Assert.Equal("Error", validationDetail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]

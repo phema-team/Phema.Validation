@@ -4,14 +4,20 @@
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/dt/Phema.Validation.svg)](https://nuget.org/packages/Phema.Validation)
 
-Strongly typed expression-based validation library for .NET built on top of extension methods and full of latest C# features
-Can be used anywhere with `Microsoft.Extensions.DependencyInjection` package support
+A simple, lightweight and extensible validation library for .NET Core with fluent interfaces built on top of extension methods
 
 ## Installation
 
 ```bash
 $> dotnet add package Phema.Validation
 ```
+
+## Core concepts
+- `IValidationContext` - Scoped service to store all validation details
+- `IValidationCondition` - Contains a validation checks (e.g. `Is(() => ...)`)
+- `IValidationDetail` - When `IValidationCondition` is not valid adds to `IValidationContext.ValidationDetails`
+- `ValidationSeverity` - Validation error level, used in `IValidationContext.ValidationSeverity` and `IValidationDetail.ValidationSeverity`
+- `IValidationScope` - Is a nested validation context with validation path override
 
 ## Usage ([ASP.NET Core](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.AspNetCore), [HostedService](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.WorkerService) examples)
 
@@ -93,11 +99,10 @@ validationContext.IsValid(person, p => p.Age);
 validationContext.EnsureIsValid(person, p => p.Age);
 ```
 
-## Compose and reuse validation rules
+## Compose and reuse validation rules with extensions
 
 - Call is allocation free
 - Static checks
-- Extensible as a `IValidators` and `IValidationComponents`
 
 ```csharp
 // Extensions
@@ -109,17 +114,15 @@ public static void ValidateCustomer(this IValidationContext validationContext, C
 validationContext.ValidateCustomer(customer);
 ```
 
-## Validation part providers
+## Validation part resolvers
 
-- `ValidationPartResolver` is a delegate, trying to get valdiation part from `MemberInfo`
-- Where are 2 built-in validation part providers
-  - Default - just get `MemberInfo.Name`
-  - DataMemberOrDefault - Try to get `DataMemberAttribute.Name` or use default implementation
+- `ValidationPartResolver` is a delegate, trying to get `string` valdiation part from `MemberInfo`
+- Use built in resolvers with `ValidationPartResolvers` static class: `Default`, `DataMember`, `PascalCase`, `CamelCase`
 
 ```csharp
-// Configure DataMember validation part provider
+// Configure DataMember validation part resolver
 services.AddValidation(options =>
-  options.ValidationPartResolver = ValidationDefaults.DataMemberOrDefaultValidationPartResolver);
+  options.ValidationPartResolver = ValidationPartResolvers.DataMember);
 
 // Override validation parts with `DataMemberAttribute`
 [DataMember(Name = "name")]

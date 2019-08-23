@@ -15,7 +15,7 @@ namespace Phema.Validation
 			options ??= o => { };
 
 			return services.AddScoped<IValidationContext, ValidationContext>()
-				.AddSingleton<IValidationExpressionVisior, ValidationExpressionVisior>()
+				.AddSingleton<IValidationPathResolver, ValidationPathResolver>()
 				.Configure(options);
 		}
 	}

@@ -29,33 +29,17 @@ namespace Phema.Validation
 
 	internal sealed class ValidationCondition<TValue> : ValidationCondition, IValidationCondition<TValue>
 	{
-		private bool initialized;
-		
-		private TValue value;
-		private Func<TValue> provider;
-		
+		private readonly Lazy<TValue> value;
+
 		public ValidationCondition(
 			IValidationContext validationContext,
 			string validationKey,
-			Func<TValue> provider)
+			Lazy<TValue> value)
 			: base(validationContext, validationKey)
 		{
-			this.provider = provider;
+			this.value = value;
 		}
 
-		public TValue Value
-		{
-			get
-			{
-				if (!initialized)
-				{
-					value = provider();
-					provider = null;
-					initialized = true;
-				}
-
-				return value;
-			}
-		}
+		public TValue Value => value.Value;
 	}
 }

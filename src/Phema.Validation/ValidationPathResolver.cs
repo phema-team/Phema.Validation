@@ -5,18 +5,18 @@ using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
-	public interface IValidationExpressionVisior
+	public interface IValidationPathResolver
 	{
 		string FromValidationPart(string? validationPath, string validationPart);
 
 		string FromExpression(Expression expression);
 	}
 
-	internal sealed class ValidationExpressionVisior : IValidationExpressionVisior
+	internal sealed class ValidationPathResolver : IValidationPathResolver
 	{
 		private readonly ValidationOptions validationOptions;
 
-		public ValidationExpressionVisior(IOptions<ValidationOptions> validationOptions)
+		public ValidationPathResolver(IOptions<ValidationOptions> validationOptions)
 		{
 			this.validationOptions = validationOptions.Value;
 		}
@@ -25,21 +25,21 @@ namespace Phema.Validation
 		{
 			return validationPath is null
 				? validationPart
-				: $"{validationPath}{validationOptions.ValidationPathSeparator}{validationPart}";
+				: $"{validationPath}{validationOptions.ValidationPartSeparator}{validationPart}";
 		}
 
 		public string FromExpression(Expression expression)
 		{
 			return expression switch
 			{
-				BinaryExpression binaryExpression => VisitBinary(binaryExpression),
-				MethodCallExpression methodCallExpression => VisitMethodCall(methodCallExpression),
-				MemberExpression memberExpression => VisitMember(memberExpression),
+				BinaryExpression binaryExpression => FromBinary(binaryExpression),
+				MethodCallExpression methodCallExpression => FromMethodCall(methodCallExpression),
+				MemberExpression memberExpression => FromMember(memberExpression),
 				_ => throw new InvalidExpressionException()
 			};
 		}
 
-		private string VisitBinary(BinaryExpression binaryExpression)
+		private string FromBinary(BinaryExpression binaryExpression)
 		{
 			var validationPart = FromExpression(binaryExpression.Left);
 			var argument = GetArgumentValue(binaryExpression.Right);
@@ -47,7 +47,7 @@ namespace Phema.Validation
 			return $"{validationPart}[{argument}]";
 		}
 
-		private string VisitMethodCall(MethodCallExpression methodCallExpression)
+		private string FromMethodCall(MethodCallExpression methodCallExpression)
 		{
 			var validationPart = FromExpression(methodCallExpression.Object);
 			var arguments = string.Join(", ", methodCallExpression.Arguments.Select(GetArgumentValue));
@@ -55,7 +55,7 @@ namespace Phema.Validation
 			return $"{validationPart}[{arguments}]";
 		}
 
-		private string VisitMember(MemberExpression memberExpression)
+		private string FromMember(MemberExpression memberExpression)
 		{
 			return memberExpression.Expression switch
 			{

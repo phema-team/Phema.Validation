@@ -15,11 +15,13 @@ namespace Phema.Validation
 			Expression<Func<TModel, TValue>> expression)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPart = validationExpressionVisitor.FromExpression(expression.Body);
+			var validationPart = validationResolver.FromExpression(expression.Body);
 
-			return validationContext.When(validationPart, () => expression.Compile().Invoke(model));
+			return validationContext.When(
+				validationPart,
+				new Lazy<TValue>(() => expression.Compile().Invoke(model)));
 		}
 
 		/// <summary>
@@ -31,9 +33,9 @@ namespace Phema.Validation
 			Expression<Func<TModel, TValue>> expression)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPart = validationExpressionVisitor.FromExpression(expression.Body);
+			var validationPart = validationResolver.FromExpression(expression.Body);
 
 			return validationContext.IsValid(validationPart);
 		}
@@ -62,9 +64,9 @@ namespace Phema.Validation
 			Expression<Func<TModel, TValue>> expression)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPart = validationExpressionVisitor.FromExpression(expression.Body);
+			var validationPart = validationResolver.FromExpression(expression.Body);
 
 			return validationContext.CreateScope(validationPart);
 		}

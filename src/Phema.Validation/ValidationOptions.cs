@@ -7,15 +7,15 @@ namespace Phema.Validation
 	{
 		public ValidationOptions()
 		{
-			ValidationSeverity = ValidationDefaults.DefaultValidationSeverity;
-			ValidationPath = ValidationDefaults.DefaultValidationPath;
-			ValidationPathSeparator = ValidationDefaults.DefaultValidationPathSeparator;
-			ValidationPartResolver = ValidationDefaults.DefaultValidationPartResolver;
+			ValidationSeverity = ValidationDefaults.ValidationSeverity;
+			ValidationPath = ValidationDefaults.ValidationPath;
+			ValidationPartSeparator = ValidationDefaults.ValidationPartSeparator;
+			ValidationPartResolver = ValidationPartResolvers.Default;
 		}
 
 		public ValidationSeverity ValidationSeverity { get; set; }
 		public string? ValidationPath { get; set; }
-		public string ValidationPathSeparator { get; set; }
+		public string ValidationPartSeparator { get; set; }
 		public Func<MemberInfo, string> ValidationPartResolver { get; set; }
 	}
 }

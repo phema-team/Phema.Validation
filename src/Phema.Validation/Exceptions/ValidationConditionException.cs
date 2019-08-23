@@ -4,11 +4,11 @@ namespace Phema.Validation
 {
 	public sealed class ValidationConditionException : ValidationException
 	{
-		public ValidationConditionException(IValidationDetail validationDetail)
+		public ValidationConditionException(ValidationDetail validationDetail)
 		{
 			ValidationDetail = validationDetail;
 		}
 
-		public IValidationDetail ValidationDetail { get; }
+		public ValidationDetail ValidationDetail { get; }
 	}
 }

@@ -13,7 +13,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext = new ServiceCollection()
 				.AddValidation(options => 
-					options.ValidationPartResolver = ValidationDefaults.DataMemberOrDefaultValidationPartResolver)
+					options.ValidationPartResolver = ValidationPartResolvers.DataMember)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -23,9 +23,9 @@ namespace Phema.Validation.Tests
 		{
 			var model = new TestModel();
 
-			var validationMessage = validationContext.When(model, m => m.Property).AddError("Error");
+			var validationDetail = validationContext.When(model, m => m.Property).AddError("Error");
 
-			Assert.Equal("property", validationMessage.ValidationKey);
+			Assert.Equal("property", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -36,9 +36,9 @@ namespace Phema.Validation.Tests
 				Array = new[] {12}
 			};
 
-			var validationMessage = validationContext.When(model, m => m.Array[0]).AddError("Error");
+			var validationDetail = validationContext.When(model, m => m.Array[0]).AddError("Error");
 
-			Assert.Equal("array[0]", validationMessage.ValidationKey);
+			Assert.Equal("array[0]", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -49,9 +49,9 @@ namespace Phema.Validation.Tests
 				List = new List<int> {12}
 			};
 
-			var validationMessage = validationContext.When(model, m => m.List[0]).AddError("Error");
+			var validationDetail = validationContext.When(model, m => m.List[0]).AddError("Error");
 
-			Assert.Equal("list[0]", validationMessage.ValidationKey);
+			Assert.Equal("list[0]", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -66,10 +66,10 @@ namespace Phema.Validation.Tests
 
 			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
 			Assert.Equal("list.Count", key);
-			Assert.Equal("list.Count", validationMessage.ValidationKey);
+			Assert.Equal("list.Count", validationDetail.ValidationKey);
 		}
 
 		[Fact]
