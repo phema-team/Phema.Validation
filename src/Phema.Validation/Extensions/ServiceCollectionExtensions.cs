@@ -16,6 +16,7 @@ namespace Phema.Validation
 
 			return services.AddScoped<IValidationContext, ValidationContext>()
 				.AddSingleton<IValidationPathResolver, ValidationPathResolver>()
+				.AddSingleton<IValidationExpressionCache, ValidationExpressionCache>()
 				.Configure(options);
 		}
 	}

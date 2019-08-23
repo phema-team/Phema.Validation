@@ -10,7 +10,7 @@ namespace Phema.Validation
 {
 	public interface IValidationPathResolver
 	{
-		string FromValidationPart(string? validationPath, string validationPart);
+		string CombineValidationPath(string? validationPath, string validationPart);
 
 		string FromExpression(Expression expression);
 	}
@@ -24,7 +24,7 @@ namespace Phema.Validation
 			this.validationOptions = validationOptions.Value;
 		}
 
-		public string FromValidationPart(string? validationPath, string validationPart)
+		public string CombineValidationPath(string? validationPath, string validationPart)
 		{
 			return validationPath is null
 				? validationPart
@@ -63,11 +63,11 @@ namespace Phema.Validation
 			return memberExpression.Expression switch
 			{
 				MemberExpression innerMemberExpression =>
-					FromValidationPart(FromExpression(innerMemberExpression), FromMemberExpression(memberExpression)),
+					CombineValidationPath(FromExpression(innerMemberExpression), FromMemberExpression(memberExpression)),
 				MethodCallExpression methodCallExpression =>
-					FromValidationPart(FromExpression(methodCallExpression), FromMemberExpression(memberExpression)),
+					CombineValidationPath(FromExpression(methodCallExpression), FromMemberExpression(memberExpression)),
 				BinaryExpression binaryExpression =>
-					FromValidationPart(FromExpression(binaryExpression), FromMemberExpression(memberExpression)),
+					CombineValidationPath(FromExpression(binaryExpression), FromMemberExpression(memberExpression)),
 
 				_ => FromMemberExpression(memberExpression)
 			};

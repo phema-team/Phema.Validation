@@ -15,13 +15,14 @@ namespace Phema.Validation
 			Expression<Func<TModel, TValue>> expression)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
+			var validationExpressionCache = serviceProvider.GetRequiredService<IValidationExpressionCache>();
+			var validationPathResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPart = validationResolver.FromExpression(expression.Body);
+			var validationPart = validationPathResolver.FromExpression(expression.Body);
 
 			return validationContext.When(
 				validationPart,
-				new Lazy<TValue>(() => expression.Compile().Invoke(model)));
+				new Lazy<TValue>(() => validationExpressionCache.FromExpression(validationPart, expression).Invoke(model)));
 		}
 
 		/// <summary>

@@ -178,36 +178,36 @@ validationContext.EnsureIsValid("key");
 
 |     Method |     Mean |     Error |    StdDev |       Max | Iterations |
 |----------- |---------:|----------:|----------:|----------:|-----------:|
-|    Default | 2.002 us | 0.0584 us | 0.5578 us |  4.031 us |      995.0 |
-| DataMember | 9.292 us | 0.1589 us | 1.5176 us | 13.200 us |      994.0 |
-| PascalCase | 2.222 us | 0.0580 us | 0.5542 us |  4.062 us |      993.0 |
-|  CamelCase | 2.341 us | 0.0527 us | 0.5020 us |  3.431 us |      988.0 |
+|    Default | 2.050 us | 0.0579 us | 0.5535 us |  3.938 us |      997.0 |
+| DataMember | 9.402 us | 0.1911 us | 1.8230 us | 14.894 us |      991.0 |
+| PascalCase | 2.326 us | 0.0465 us | 0.4431 us |  3.612 us |      988.0 |
+|  CamelCase | 2.430 us | 0.0498 us | 0.4721 us |  3.706 us |      981.0 |
 
 ### Non-expression validation
 
 |        Method |     Mean |     Error |    StdDev |      Max | Iterations |
 |-------------- |---------:|----------:|----------:|---------:|-----------:|
-|        Simple | 1.431 us | 0.0048 us | 0.0454 us | 1.547 us |      955.0 |
-|   CreateScope | 1.316 us | 0.0043 us | 0.0412 us | 1.425 us |      977.0 |
-|       IsValid | 1.627 us | 0.0155 us | 0.1441 us | 1.981 us |      942.0 |
-| EnsureIsValid | 1.655 us | 0.0157 us | 0.1490 us | 2.006 us |      978.0 |
+|        Simple | 1.425 us | 0.0053 us | 0.0500 us | 1.562 us |      971.0 |
+|   CreateScope | 1.300 us | 0.0045 us | 0.0424 us | 1.413 us |      975.0 |
+|       IsValid | 1.627 us | 0.0182 us | 0.1714 us | 2.034 us |      967.0 |
+| EnsureIsValid | 1.646 us | 0.0156 us | 0.1477 us | 1.950 us |      977.0 |
 
 ### Expression validation
 
-|                                     Method |       Mean |     Error |    StdDev |        Max | Iterations |
-|------------------------------------------- |-----------:|----------:|----------:|-----------:|-----------:|
-|                           SimpleExpression |   3.669 us | 0.0145 us | 0.1379 us |   4.025 us |      985.0 |
-|             SimpleExpression_CompiledValue |  50.204 us | 0.2615 us | 2.4918 us |  56.900 us |      989.0 |
-|                          ChainedExpression |   4.231 us | 0.0173 us | 0.1636 us |   4.694 us |      975.0 |
-|            ChainedExpression_CompiledValue |  56.831 us | 0.3474 us | 3.3099 us |  67.562 us |      989.0 |
-|                      ArrayAccessExpression |   4.404 us | 0.0291 us | 0.2747 us |   5.244 us |      968.0 |
-|        ArrayAccessExpression_CompiledValue |  70.077 us | 0.4725 us | 4.5157 us |  82.300 us |      995.0 |
-|               ChainedArrayAccessExpression |   4.958 us | 0.0431 us | 0.4031 us |   6.125 us |      951.0 |
-| ChainedArrayAccessExpression_CompiledValue |  77.390 us | 0.4006 us | 3.8073 us |  88.612 us |      984.0 |
-|                         ChainedArrayAccess |   7.129 us | 0.0797 us | 0.7534 us |   9.372 us |      974.0 |
-|           ChainedArrayAccess_CompiledValue | 172.623 us | 0.6886 us | 6.5746 us | 194.213 us |      993.0 |
-|               CreateScope_SimpleExpression |   3.577 us | 0.0169 us | 0.1591 us |   3.925 us |      968.0 |
-|              CreateScope_ChainedExpression |   3.930 us | 0.0361 us | 0.3391 us |   5.069 us |      962.0 |
-|                              IsValid_Empty |   4.086 us | 0.0164 us | 0.1553 us |   4.531 us |      974.0 |
-|                         IsValid_Expression |   4.124 us | 0.0139 us | 0.1315 us |   4.463 us |      979.0 |
-|                   EnsureIsValid_Expression |   3.978 us | 0.0251 us | 0.2298 us |   4.731 us |      912.0 |
+|                                     Method |      Mean |     Error |    StdDev |       Max | Iterations |
+|------------------------------------------- |----------:|----------:|----------:|----------:|-----------:|
+|                           SimpleExpression |  3.957 us | 0.0251 us | 0.2385 us |  4.625 us |      982.0 |
+|             SimpleExpression_CompiledValue |  8.747 us | 0.0462 us | 0.4265 us |  9.800 us |      929.0 |
+|                          ChainedExpression |  4.404 us | 0.0384 us | 0.3485 us |  5.544 us |      899.0 |
+|            ChainedExpression_CompiledValue | 10.281 us | 0.0471 us | 0.4228 us | 11.188 us |      879.0 |
+|                      ArrayAccessExpression |  5.068 us | 0.0385 us | 0.3670 us |  5.956 us |      988.0 |
+|        ArrayAccessExpression_CompiledValue | 11.947 us | 0.0466 us | 0.4287 us | 13.025 us |      924.0 |
+|               ChainedArrayAccessExpression |  5.475 us | 0.0291 us | 0.2772 us |  6.200 us |      986.0 |
+| ChainedArrayAccessExpression_CompiledValue | 13.066 us | 0.0489 us | 0.4518 us | 14.041 us |      930.0 |
+|                         ChainedArrayAccess |  8.384 us | 0.0547 us | 0.5218 us | 10.287 us |      993.0 |
+|           ChainedArrayAccess_CompiledValue | 22.303 us | 0.0952 us | 0.8856 us | 25.038 us |      942.0 |
+|               CreateScope_SimpleExpression |  3.389 us | 0.0132 us | 0.1247 us |  3.737 us |      973.0 |
+|              CreateScope_ChainedExpression |  3.953 us | 0.0334 us | 0.3185 us |  4.831 us |      990.0 |
+|                              IsValid_Empty |  4.071 us | 0.0192 us | 0.1828 us |  4.612 us |      987.0 |
+|                         IsValid_Expression |  4.013 us | 0.0157 us | 0.1489 us |  4.431 us |      978.0 |
+|                   EnsureIsValid_Expression |  3.971 us | 0.0178 us | 0.1625 us |  4.469 us |      909.0 |

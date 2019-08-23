@@ -13,11 +13,7 @@ namespace Phema.Validation
 			this IValidationContext validationContext,
 			string validationPart)
 		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
-
-			var validationKey = validationResolver
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationContext.CombineValidationPath(validationPart);
 
 			return new ValidationCondition(
 				validationContext,
@@ -32,11 +28,7 @@ namespace Phema.Validation
 			string validationPart,
 			Lazy<TValue> value)
 		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
-
-			var validationKey = validationResolver
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationKey = validationContext.CombineValidationPath(validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
@@ -60,16 +52,12 @@ namespace Phema.Validation
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, string? validationPart = null)
 		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
-
 			var validationDetails = validationContext.ValidationDetails
 				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
 
 			if (validationPart != null)
 			{
-				var validationKey = validationResolver
-					.FromValidationPart(validationContext.ValidationPath, validationPart);
+				var validationKey = validationContext.CombineValidationPath(validationPart);
 
 				validationDetails = validationDetails.Where(detail => detail.ValidationKey == validationKey);
 			}
@@ -93,15 +81,22 @@ namespace Phema.Validation
 		/// </summary>
 		public static IValidationScope CreateScope(this IValidationContext validationContext, string validationPart)
 		{
-			var serviceProvider = (IServiceProvider) validationContext;
-			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
-
-			var validationPath = validationResolver
-				.FromValidationPart(validationContext.ValidationPath, validationPart);
+			var validationPath = validationContext.CombineValidationPath(validationPart);
 
 			return new ValidationScope(
 				validationContext,
 				validationPath);
+		}
+		
+		/// <summary>
+		/// Combines validation contexts path with specified validation part
+		/// </summary>
+		public static string CombineValidationPath(this IValidationContext validationContext, string validationPart)
+		{
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
+
+			return validationPathResolver.CombineValidationPath(validationContext.ValidationPath, validationPart);
 		}
 	}
 }
