@@ -114,6 +114,8 @@ public static void ValidateCustomer(this IValidationContext validationContext, C
 validationContext.ValidateCustomer(customer);
 ```
 
+- Write your own middleware or validation components/validators on top of `IValidationContext`
+
 ## Validation part resolvers
 
 - `ValidationPartResolver` is a delegate, trying to get `string` valdiation part from `MemberInfo`
@@ -172,6 +174,15 @@ validationContext.EnsureIsValid("key");
 - Use `CreateScope` to not to repeat chained member calls (`x => x.Property1.Property2[0].Property3`)
 - Expression-based `When` extensions use expression compilation to get value (Invoke)
 - Composite indexers `x => x.Collection[indexProvider.Parsed.Index]` use expression compilation (DynamicInvoke)
+
+### ValidationPartResolvers
+
+|     Method |     Mean |     Error |    StdDev |       Max | Iterations |
+|----------- |---------:|----------:|----------:|----------:|-----------:|
+|    Default | 2.002 us | 0.0584 us | 0.5578 us |  4.031 us |      995.0 |
+| DataMember | 9.292 us | 0.1589 us | 1.5176 us | 13.200 us |      994.0 |
+| PascalCase | 2.222 us | 0.0580 us | 0.5542 us |  4.062 us |      993.0 |
+|  CamelCase | 2.341 us | 0.0527 us | 0.5020 us |  3.431 us |      988.0 |
 
 ### Non-expression validation
 

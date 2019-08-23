@@ -26,6 +26,7 @@ namespace Phema.Validation.Benchmarks
 
 			BenchmarkRunner.Run<ValidationContextBenchmarks>(config);
 			BenchmarkRunner.Run<ValidationContextExpressionBenchmarks>(config);
+			BenchmarkRunner.Run<ValidationPartResolverBenchmarks>(config);
 		}
 	}
 }

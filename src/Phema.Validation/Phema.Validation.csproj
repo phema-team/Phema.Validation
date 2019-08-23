@@ -4,11 +4,11 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>8</LangVersion>
 		<RootNamespace>Phema.Validation</RootNamespace>
-		<Version>3.0.8</Version>
+		<Version>3.0.9</Version>
 		<NullableReferenceTypes>true</NullableReferenceTypes>
 		<Authors>sergeyshaykhullin</Authors>
-		<Description>C# strongly typed validation library for .NET</Description>
-		<PackageTags>.NETCore;ASP.NETCore;Validation</PackageTags>
+		<Description>C# strongly-typed validation library for .NET</Description>
+		<PackageTags>.NET Core;ASP.NETCore;Validation</PackageTags>
 		<PackageProjectUrl>https://github.com/sergeyshaykhullin/Phema.Validation</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/sergeyshaykhullin/Phema.Validation</RepositoryUrl>

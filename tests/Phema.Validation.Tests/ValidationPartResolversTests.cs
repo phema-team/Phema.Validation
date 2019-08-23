@@ -64,7 +64,7 @@ namespace Phema.Validation.Tests
 			[DataMember(Name = "dataMember")]
 			public string DataMember { get; set; }
 
-			// It is conceived
+			// ReSharper disable once InconsistentNaming
 			public string pascalCase { get; set; }
 			public string CamelCase { get; set; }
 		}
