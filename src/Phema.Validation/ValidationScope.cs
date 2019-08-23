@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Phema.Validation
 {
@@ -11,6 +12,7 @@ namespace Phema.Validation
 	{
 	}
 
+	[DebuggerDisplay("Path={ValidationPath} Details={ValidationDetails.Count} Severity={ValidationSeverity}")]
 	internal sealed class ValidationScope : IValidationScope, IServiceProvider
 	{
 		private readonly IServiceProvider serviceProvider;
@@ -24,7 +26,7 @@ namespace Phema.Validation
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
-		public ICollection<IValidationDetail> ValidationDetails { get; }
+		public ICollection<ValidationDetail> ValidationDetails { get; }
 		public ValidationSeverity ValidationSeverity { get; set; }
 		public string? ValidationPath { get; }
 

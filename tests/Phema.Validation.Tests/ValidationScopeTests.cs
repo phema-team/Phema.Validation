@@ -22,10 +22,10 @@ namespace Phema.Validation.Tests
 
 			var (key, _) = withPrefix.When("key", "value").AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
 			Assert.Equal("path.key", key);
-			Assert.Equal("path.key", validationMessage.ValidationKey);
+			Assert.Equal("path.key", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -98,6 +98,18 @@ namespace Phema.Validation.Tests
 
 			// Context, Scope1, Scope2
 			Assert.Equal(3, validationContext.ValidationDetails.Count);
+		}
+
+		[Fact]
+		public void ScopeDoesNotRemoveValidationContextDetails()
+		{
+			var validationDetail = validationContext.When("key").AddError("Error");
+
+			var scope = validationContext.CreateScope("Scope1");
+
+			scope.ValidationDetails.Remove(validationDetail);
+
+			Assert.Single(validationContext.ValidationDetails);
 		}
 	}
 }

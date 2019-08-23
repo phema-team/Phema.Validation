@@ -29,51 +29,51 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EmptyIs_HasMessage()
 		{
-			var validationMessage = validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
+			var validationDetail = validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
 
-			Assert.Equal("key", validationMessage.ValidationKey);
-			Assert.Equal("Error", validationMessage.ValidationMessage);
-			Assert.Equal(ValidationSeverity.Error, validationMessage.ValidationSeverity);
+			Assert.Equal("key", validationDetail.ValidationKey);
+			Assert.Equal("Error", validationDetail.ValidationMessage);
+			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void AddTrace()
 		{
-			var validationMessage = validationContext.When("key", "value").AddTrace("Trace");
+			var validationDetail = validationContext.When("key", "value").AddTrace("Trace");
 
-			Assert.Equal(ValidationSeverity.Trace, validationMessage.ValidationSeverity);
+			Assert.Equal(ValidationSeverity.Trace, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void AddDebug()
 		{
-			var validationMessage = validationContext.When("key", "value").AddDebug("Debug");
+			var validationDetail = validationContext.When("key", "value").AddDebug("Debug");
 
-			Assert.Equal(ValidationSeverity.Debug, validationMessage.ValidationSeverity);
+			Assert.Equal(ValidationSeverity.Debug, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void AddInformation()
 		{
-			var validationMessage = validationContext.When("key", "value").AddInformation("Information");
+			var validationDetail = validationContext.When("key", "value").AddInformation("Information");
 
-			Assert.Equal(ValidationSeverity.Information, validationMessage.ValidationSeverity);
+			Assert.Equal(ValidationSeverity.Information, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void AddWarning()
 		{
-			var validationMessage = validationContext.When("key", "value").AddWarning("Warning");
+			var validationDetail = validationContext.When("key", "value").AddWarning("Warning");
 
-			Assert.Equal(ValidationSeverity.Warning, validationMessage.ValidationSeverity);
+			Assert.Equal(ValidationSeverity.Warning, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
 		public void AddError()
 		{
-			var validationMessage = validationContext.When("key", "value").AddError("Error");
+			var validationDetail = validationContext.When("key", "value").AddError("Error");
 
-			Assert.Equal(ValidationSeverity.Error, validationMessage.ValidationSeverity);
+			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
 
 		[Fact]
@@ -166,10 +166,10 @@ namespace Phema.Validation.Tests
 			var (key, message, severity) = validationContext.When("key", "value")
 				.AddDetail("Error", ValidationSeverity.Error);
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
-			Assert.Equal(validationMessage.ValidationKey, key);
-			Assert.Equal(validationMessage.ValidationMessage, message);
-			Assert.Equal(validationMessage.ValidationSeverity, severity);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
+			Assert.Equal(validationDetail.ValidationKey, key);
+			Assert.Equal(validationDetail.ValidationMessage, message);
+			Assert.Equal(validationDetail.ValidationSeverity, severity);
 		}
 	}
 }

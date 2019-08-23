@@ -37,7 +37,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationPathSeparatorOverride()
 		{
-			var validationContext = CreateValidationContext(o => o.ValidationPathSeparator = ":");
+			var validationContext = CreateValidationContext(o => o.ValidationPartSeparator = ":");
 
 			var model = new TestModel
 			{
@@ -54,7 +54,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationPathSeparatorOverride_CreateScope()
 		{
-			var validationContext = CreateValidationContext(o => o.ValidationPathSeparator = ":");
+			var validationContext = CreateValidationContext(o => o.ValidationPartSeparator = ":");
 
 			var model = new TestModel
 			{

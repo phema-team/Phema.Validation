@@ -55,9 +55,9 @@ namespace Phema.Validation.Tests
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid(model, m => m.Property));
 
-			var validationMessage = Assert.Single(exception.ValidationDetails);
+			var validationDetail = Assert.Single(exception.ValidationDetails);
 
-			Assert.Equal("Property", validationMessage.ValidationKey);
+			Assert.Equal("Property", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -249,10 +249,10 @@ namespace Phema.Validation.Tests
 
 			var (key, _) = withPrefix.When(model.List, list => list.Count).AddError("Error");
 
-			var validationMessage = Assert.Single(validationContext.ValidationDetails);
+			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
 			Assert.Equal("List.Count", key);
-			Assert.Equal("List.Count", validationMessage.ValidationKey);
+			Assert.Equal("List.Count", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -282,10 +282,10 @@ namespace Phema.Validation.Tests
 				}
 			};
 
-			var detail = validationContext.When(model, m => m.Model.Property)
+			var validationDetail = validationContext.When(model, m => m.Model.Property)
 				.AddError("Error");
 
-			Assert.Equal("Model.Property", detail.ValidationKey);
+			Assert.Equal("Model.Property", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -299,10 +299,10 @@ namespace Phema.Validation.Tests
 				}
 			};
 
-			var detail = validationContext.When(model, m => m.Model.List[0])
+			var validationDetail = validationContext.When(model, m => m.Model.List[0])
 				.AddError("Error");
 
-			Assert.Equal("Model.List[0]", detail.ValidationKey);
+			Assert.Equal("Model.List[0]", validationDetail.ValidationKey);
 		}
 
 		[Fact]
@@ -320,9 +320,9 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Model.List[0]", forList.ValidationPath);
 
-			var detail = forList.When("Key", "Value").AddError("Error");
+			var validationDetail = forList.When("Key", "Value").AddError("Error");
 
-			Assert.Equal("Model.List[0].Key", detail.ValidationKey);
+			Assert.Equal("Model.List[0].Key", validationDetail.ValidationKey);
 		}
 
 		[Fact]

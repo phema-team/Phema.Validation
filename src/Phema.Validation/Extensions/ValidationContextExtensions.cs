@@ -14,9 +14,9 @@ namespace Phema.Validation
 			string validationPart)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationKey = validationExpressionVisitor
+			var validationKey = validationResolver
 				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition(
@@ -30,18 +30,18 @@ namespace Phema.Validation
 		public static IValidationCondition<TValue> When<TValue>(
 			this IValidationContext validationContext,
 			string validationPart,
-			Func<TValue> provider)
+			Lazy<TValue> value)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationKey = validationExpressionVisitor
+			var validationKey = validationResolver
 				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationCondition<TValue>(
 				validationContext,
 				validationKey,
-				provider);
+				value);
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Phema.Validation
 			string validationPart,
 			TValue value)
 		{
-			return validationContext.When(validationPart, () => value);
+			return validationContext.When(validationPart, new Lazy<TValue>(() => value));
 		}
 
 		/// <summary>
@@ -61,14 +61,14 @@ namespace Phema.Validation
 		public static bool IsValid(this IValidationContext validationContext, string? validationPart = null)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
 			var validationDetails = validationContext.ValidationDetails
 				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
 
-			if (validationPart is { })
+			if (validationPart != null)
 			{
-				var validationKey = validationExpressionVisitor
+				var validationKey = validationResolver
 					.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 				validationDetails = validationDetails.Where(detail => detail.ValidationKey == validationKey);
@@ -94,9 +94,9 @@ namespace Phema.Validation
 		public static IValidationScope CreateScope(this IValidationContext validationContext, string validationPart)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
-			var validationExpressionVisitor = serviceProvider.GetRequiredService<IValidationExpressionVisior>();
+			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPath = validationExpressionVisitor
+			var validationPath = validationResolver
 				.FromValidationPart(validationContext.ValidationPath, validationPart);
 
 			return new ValidationScope(
