@@ -8,25 +8,19 @@ namespace Phema.Validation.Benchmarks
 {
 	public class Program
 	{
-		public static void Main()
-		{
-			var config = new ManualConfig()
-				.With(ConsoleLogger.Default)
-				.With(Job.Core
-					.WithInvocationCount(16)
-					.WithWarmupCount(100)
-					.WithIterationCount(1000))
-				.With(
-					TargetMethodColumn.Method,
-					StatisticColumn.Mean,
-					StatisticColumn.Max,
-					StatisticColumn.Iterations,
-					StatisticColumn.Error,
-					StatisticColumn.StdDev);
-
-			BenchmarkRunner.Run<ValidationContextBenchmarks>(config);
-			BenchmarkRunner.Run<ValidationContextExpressionBenchmarks>(config);
-			BenchmarkRunner.Run<ValidationPartResolverBenchmarks>(config);
-		}
+		private static void Main(string[] args) => 
+			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly)
+				.Run(args, new ManualConfig()
+					.With(ConsoleLogger.Default)
+					.With(Job.Core
+						.WithInvocationCount(1024)
+						.WithWarmupCount(100)
+						.WithIterationCount(32))
+					.With(
+						TargetMethodColumn.Method,
+						StatisticColumn.Mean,
+						StatisticColumn.Error,
+						StatisticColumn.Max,
+						StatisticColumn.StdDev));
 	}
 }
