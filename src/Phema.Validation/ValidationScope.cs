@@ -26,14 +26,14 @@ namespace Phema.Validation
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
+		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ValidationSeverity ValidationSeverity { get; set; }
+		public string? ValidationPath { get; }
+
 		public object GetService(Type serviceType)
 		{
 			return serviceProvider.GetService(serviceType);
 		}
-
-		public ICollection<ValidationDetail> ValidationDetails { get; }
-		public ValidationSeverity ValidationSeverity { get; set; }
-		public string? ValidationPath { get; }
 
 		public void Dispose()
 		{

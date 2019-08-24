@@ -46,13 +46,13 @@ namespace Phema.Validation
 			ValidationPath = validationOptions.Value.ValidationPath;
 		}
 
+		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ValidationSeverity ValidationSeverity { get; set; }
+		public string? ValidationPath { get; }
+
 		public object GetService(Type serviceType)
 		{
 			return serviceProvider.GetService(serviceType);
 		}
-
-		public ICollection<ValidationDetail> ValidationDetails { get; }
-		public ValidationSeverity ValidationSeverity { get; set; }
-		public string? ValidationPath { get; }
 	}
 }
