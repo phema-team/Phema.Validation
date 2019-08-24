@@ -4,7 +4,7 @@
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/dt/Phema.Validation.svg)](https://nuget.org/packages/Phema.Validation)
 
-A simple, lightweight and extensible validation library for .NET Core with fluent interfaces built on top of extension methods
+A simple, lightweight and extensible validation library for .NET Core with fluent interfaces built using extension methods only
 
 ## Installation
 
