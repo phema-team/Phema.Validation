@@ -93,7 +93,7 @@ namespace Phema.Validation
 				_ => throw new InvalidExpressionException($"Unsupported expression type: {expression}")
 			};
 		}
-		
+
 		private static string GetChainedArgumentValue(MemberExpression memberExpression)
 		{
 			var members = new List<MemberInfo>();

@@ -6,7 +6,7 @@ namespace Phema.Validation.Conditions
 	public static class ValidationConditionIsExtensions
 	{
 		/// <summary>
-		/// Checks values has a value
+		///   Checks values has a value
 		/// </summary>
 		public static IValidationCondition<TValue> IsIn<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -16,7 +16,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks values has a value
+		///   Checks values has a value
 		/// </summary>
 		public static IValidationCondition<TValue> IsIn<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -26,7 +26,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks values has a value
+		///   Checks values has a value
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotIn<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -36,7 +36,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks values has a value
+		///   Checks values has a value
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotIn<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -46,7 +46,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is null
+		///   Checks value is null
 		/// </summary>
 		public static IValidationCondition<TValue> IsNull<TValue>(
 			this IValidationCondition<TValue> condition)
@@ -55,7 +55,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is not null
+		///   Checks value is not null
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotNull<TValue>(
 			this IValidationCondition<TValue> condition)
@@ -64,7 +64,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is equal using Equals method
+		///   Checks value is equal using Equals method
 		/// </summary>
 		public static IValidationCondition<TValue> IsEqual<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -74,7 +74,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is not equal using Equals method
+		///   Checks value is not equal using Equals method
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotEqual<TValue>(
 			this IValidationCondition<TValue> condition,

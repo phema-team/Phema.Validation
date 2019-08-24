@@ -99,7 +99,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void ChainedArrayAccess()
 		{
-			var provider = new { ForModel = new { Index = 0 } };
+			var provider = new {ForModel = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.AddError("Error");
@@ -108,7 +108,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void ChainedArrayAccess_CompiledValue()
 		{
-			var provider = new { ForModel = new { Index = 0 } };
+			var provider = new {ForModel = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.Is(value => true)

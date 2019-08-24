@@ -5,7 +5,7 @@ namespace Phema.Validation.Conditions
 	public static class ValidationConditionComparableExtensions
 	{
 		/// <summary>
-		/// Checks value is greater
+		///   Checks value is greater
 		/// </summary>
 		public static IValidationCondition<TValue> IsGreater<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -24,7 +24,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is less
+		///   Checks value is less
 		/// </summary>
 		public static IValidationCondition<TValue> IsLess<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -43,7 +43,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is in range (min: inclusive, max: exclusive)
+		///   Checks value is in range (min: inclusive, max: exclusive)
 		/// </summary>
 		public static IValidationCondition<TValue> IsInRange<TValue>(
 			this IValidationCondition<TValue> condition,
@@ -55,7 +55,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks value is not in range (min: inclusive, max: exclusive)
+		///   Checks value is not in range (min: inclusive, max: exclusive)
 		/// </summary>
 		public static IValidationCondition<TValue> IsNotInRange<TValue>(
 			this IValidationCondition<TValue> condition,

@@ -6,7 +6,7 @@ namespace Phema.Validation
 	public static class ValidationPartResolvers
 	{
 		/// <summary>
-		/// Resolve validation parts using member names
+		///   Resolve validation parts using member names
 		/// </summary>
 		public static string Default(MemberInfo memberInfo)
 		{
@@ -14,7 +14,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Resolve validation parts using <see cref="DataMemberAttribute"/> or fallback to default
+		///   Resolve validation parts using <see cref="DataMemberAttribute" /> or fallback to default
 		/// </summary>
 		public static string DataMember(MemberInfo memberInfo)
 		{
@@ -22,7 +22,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Resolve validation parts capitalizing first letter
+		///   Resolve validation parts capitalizing first letter
 		/// </summary>
 		public static string PascalCase(MemberInfo memberInfo)
 		{
@@ -32,7 +32,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Resolve validation parts decapitalizing first letter
+		///   Resolve validation parts decapitalizing first letter
 		/// </summary>
 		public static string CamelCase(MemberInfo memberInfo)
 		{
