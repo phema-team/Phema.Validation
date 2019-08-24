@@ -5,8 +5,8 @@ using System.Diagnostics;
 namespace Phema.Validation
 {
 	/// <summary>
-	/// <see cref="IValidationContext"/> scope with validation path.
-	/// Shares validation details, inherits validation severirty
+	///   <see cref="IValidationContext" /> scope with validation path.
+	///   Shares validation details, inherits validation severirty
 	/// </summary>
 	public interface IValidationScope : IValidationContext, IDisposable
 	{

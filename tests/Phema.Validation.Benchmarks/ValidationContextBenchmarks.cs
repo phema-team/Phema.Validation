@@ -1,3 +1,4 @@
+using System;
 using BenchmarkDotNet.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -5,14 +6,23 @@ namespace Phema.Validation.Benchmarks
 {
 	public class ValidationContextBenchmarks
 	{
+		private IServiceProvider serviceProvider;
 		private IValidationContext validationContext;
+
+		[GlobalSetup]
+		public void GlobalSetup()
+		{
+			serviceProvider = new ServiceCollection()
+				.AddValidation()
+				.BuildServiceProvider();
+		}
 
 		[IterationSetup]
 		public void IterationSetup()
 		{
-			validationContext = new ServiceCollection()
-				.AddValidation()
-				.BuildServiceProvider()
+			validationContext = serviceProvider
+				.CreateScope()
+				.ServiceProvider
 				.GetRequiredService<IValidationContext>();
 		}
 

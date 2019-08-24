@@ -35,7 +35,7 @@ namespace Phema.Validation.Benchmarks
 				.AddValidation(o => o.ValidationPartResolver = ValidationPartResolvers.CamelCase)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
-			
+
 			model = new TestModel();
 		}
 
@@ -44,19 +44,19 @@ namespace Phema.Validation.Benchmarks
 		{
 			defaultValidationContext.When(model, m => m.Default).AddError("Error");
 		}
-		
+
 		[Benchmark]
 		public void DataMember()
 		{
 			dataMemberValidationContext.When(model, m => m.DataMember).AddError("Error");
 		}
-		
+
 		[Benchmark]
 		public void PascalCase()
 		{
 			pascalCaseValidationContext.When(model, m => m.pascalCase).AddError("Error");
 		}
-		
+
 		[Benchmark]
 		public void CamelCase()
 		{
@@ -66,13 +66,13 @@ namespace Phema.Validation.Benchmarks
 		private class TestModel
 		{
 			public int Default { get; set; }
-			
+
 			[DataMember(Name = "dataMember")]
 			public int DataMember { get; set; }
-			
+
 			// ReSharper disable once InconsistentNaming
 			public int pascalCase { get; set; }
-			
+
 			public int CamelCase { get; set; }
 		}
 	}

@@ -7,7 +7,7 @@ namespace Phema.Validation
 	public static class ValidationContextExpressionExtensions
 	{
 		/// <summary>
-		/// Specifies <see cref="TModel"/> with expression-based validation key
+		///   Specifies <see cref="TModel" /> with expression-based validation key
 		/// </summary>
 		public static IValidationCondition<TValue> When<TModel, TValue>(
 			this IValidationContext validationContext,
@@ -26,7 +26,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Checks validation context for any detail with greater or equal severity for specified expression
+		///   Checks validation context for any detail with greater or equal severity for specified expression
 		/// </summary>
 		public static bool IsValid<TModel, TValue>(
 			this IValidationContext validationContext,
@@ -42,7 +42,8 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Ensures that validation context has no details with greater or equal severity than ValidationContext.ValidationSeverity
+		///   Ensures that validation context has no details with greater or equal severity than
+		///   ValidationContext.ValidationSeverity
 		/// </summary>
 		/// <exception cref="ValidationContextException">Throws when any detail has greater or equal severity</exception>
 		public static void EnsureIsValid<TModel, TValue>(
@@ -57,7 +58,7 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Creates new validation scope with specified validation path from expression
+		///   Creates new validation scope with specified validation path from expression
 		/// </summary>
 		public static IValidationScope CreateScope<TModel, TValue>(
 			this IValidationContext validationContext,

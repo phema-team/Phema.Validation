@@ -5,8 +5,8 @@ namespace Phema.Validation
 {
 	internal sealed class ValidationDetailsCollection : ICollection<ValidationDetail>
 	{
-		private readonly ICollection<ValidationDetail> validationDetails;
 		private readonly ICollection<ValidationDetail>? rootValidationDetails;
+		private readonly ICollection<ValidationDetail> validationDetails;
 
 		public ValidationDetailsCollection(ICollection<ValidationDetail>? rootValidationDetails = null)
 		{

@@ -1,3 +1,4 @@
+using System;
 using BenchmarkDotNet.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,6 +7,7 @@ namespace Phema.Validation.Benchmarks
 	public class ValidationContextExpressionBenchmarks
 	{
 		private TestModel model;
+		private IServiceProvider serviceProvider;
 		private IValidationContext validationContext;
 
 		[GlobalSetup]
@@ -25,14 +27,17 @@ namespace Phema.Validation.Benchmarks
 					}
 				}
 			};
+
+			serviceProvider = new ServiceCollection()
+				.AddValidation()
+				.BuildServiceProvider();
 		}
 
 		[IterationSetup]
 		public void IterationSetup()
 		{
-			validationContext = new ServiceCollection()
-				.AddValidation()
-				.BuildServiceProvider()
+			validationContext = serviceProvider.CreateScope()
+				.ServiceProvider
 				.GetRequiredService<IValidationContext>();
 		}
 
@@ -99,7 +104,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void ChainedArrayAccess()
 		{
-			var provider = new { ForModel = new { Index = 0 } };
+			var provider = new {ForModel = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.AddError("Error");
@@ -108,7 +113,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void ChainedArrayAccess_CompiledValue()
 		{
-			var provider = new { ForModel = new { Index = 0 } };
+			var provider = new {ForModel = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.Is(value => true)

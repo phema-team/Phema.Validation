@@ -7,7 +7,7 @@ namespace Phema.Validation.Conditions
 	public static class ValidationConditionEnumerableExtensions
 	{
 		/// <summary>
-		/// Checks enumerable has elements
+		///   Checks enumerable has elements
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition)
@@ -16,7 +16,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks enumerable has elements with predicate
+		///   Checks enumerable has elements with predicate
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition,
@@ -26,7 +26,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks enumerable has no elements
+		///   Checks enumerable has no elements
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsNotAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition)
@@ -35,7 +35,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks enumerable has no elements with predicate
+		///   Checks enumerable has no elements with predicate
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsNotAny<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition,
@@ -45,7 +45,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks all elements suites for predicate
+		///   Checks all elements suites for predicate
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsAll<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition,
@@ -55,7 +55,7 @@ namespace Phema.Validation.Conditions
 		}
 
 		/// <summary>
-		/// Checks not all elements suites for predicate
+		///   Checks not all elements suites for predicate
 		/// </summary>
 		public static IValidationCondition<IEnumerable<TElement>> IsNotAll<TElement>(
 			this IValidationCondition<IEnumerable<TElement>> condition,
