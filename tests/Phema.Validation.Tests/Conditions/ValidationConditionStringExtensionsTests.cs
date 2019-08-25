@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Phema.Validation.Conditions;
@@ -161,7 +162,49 @@ namespace Phema.Validation.Tests
 				.IsNotEmail()
 				.AddError("template1");
 
-			Assert.True(!validationContext.ValidationDetails.Any());
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsUrl()
+		{
+			var (key, message) = validationContext.When("url", "/orders/1")
+				.IsUrl(UriKind.Relative)
+				.AddError("You should specify absolute url");
+
+			Assert.Equal("url", key);
+			Assert.Equal("You should specify absolute url", message);
+		}
+
+		[Fact]
+		public void IsUrl_Valid()
+		{
+			validationContext.When("url", "https://www.example.com")
+				.IsUrl(UriKind.Relative)
+				.AddError("You should specify absolute url");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void IsNotUrl()
+		{
+			var (key, message) = validationContext.When("url", "not a valid url")
+				.IsNotUrl()
+				.AddError("template1");
+
+			Assert.Equal("url", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void IsNotUrl_Valid()
+		{
+			validationContext.When("url", "https://www/example.com")
+				.IsNotUrl()
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
 		}
 
 		[Fact]

@@ -49,14 +49,15 @@ validationContext.When(person, p => p.Name)
   .IsNullOrWhitespace()
   .AddError("Name must be set");
 
-// Use multiple conditions (joined with OR)
+// Use multiple conditions (joined with AND)
 validationContext.When(person, p => p.Name)
-  .IsNull()
+  .IsNotNull()
+  // AND
   .HasLengthGreater(20)
   // .IsNotNull()
   // .IsEqual()
   // .IsMatch(regex)
-  .AddError("Name is invalid");
+  .AddError("Name should be less than 20");
 ```
 
 ## Validation details

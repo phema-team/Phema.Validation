@@ -12,8 +12,8 @@ namespace Phema.Validation
 			Func<bool> predicate)
 			where TValidationCondition : IValidationCondition
 		{
-			// Null or true
-			if (condition.IsValid != false)
+			// Null or false
+			if (condition.IsValid != true)
 			{
 				condition.IsValid = !predicate();
 			}
