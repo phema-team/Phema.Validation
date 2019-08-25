@@ -46,21 +46,39 @@ namespace Phema.Validation.Benchmarks
 		}
 
 		[Benchmark]
-		public void DataMember()
+		public void DataMember_WithAttribute()
 		{
 			dataMemberValidationContext.When(model, m => m.DataMember).AddError("Error");
 		}
 
 		[Benchmark]
-		public void PascalCase()
+		public void DataMember_WithoutAttribute()
+		{
+			dataMemberValidationContext.When(model, m => m.WithoutDataMember).AddError("Error");
+		}
+
+		[Benchmark]
+		public void PascalCase_Lower()
 		{
 			pascalCaseValidationContext.When(model, m => m.pascalCase).AddError("Error");
 		}
 
 		[Benchmark]
-		public void CamelCase()
+		public void PascalCase()
+		{
+			pascalCaseValidationContext.When(model, m => m.PascalCase).AddError("Error");
+		}
+
+		[Benchmark]
+		public void CamelCase_Upper()
 		{
 			camelCaseValidationContext.When(model, m => m.CamelCase).AddError("Error");
+		}
+
+		[Benchmark]
+		public void CamelCase()
+		{
+			camelCaseValidationContext.When(model, m => m.camelCase).AddError("Error");
 		}
 
 		private class TestModel
@@ -69,11 +87,16 @@ namespace Phema.Validation.Benchmarks
 
 			[DataMember(Name = "dataMember")]
 			public int DataMember { get; set; }
+			public int WithoutDataMember { get; set; }
 
 			// ReSharper disable once InconsistentNaming
 			public int pascalCase { get; set; }
 
+			public int PascalCase { get; set; }
+
 			public int CamelCase { get; set; }
+			// ReSharper disable once InconsistentNaming
+			public int camelCase { get; set; }
 		}
 	}
 }

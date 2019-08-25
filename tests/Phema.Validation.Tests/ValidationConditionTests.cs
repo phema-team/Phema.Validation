@@ -191,7 +191,18 @@ namespace Phema.Validation.Tests
 			validationContext.When("key", "value")
 				.IsNull()
 				// No error, because value is not null
-				.Is(() => true)
+				.IsEqual("value")
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
+		}
+
+		[Fact]
+		public void AndConditionJoin_SecondCondition_Valid()
+		{
+			validationContext.When("key", "value")
+				.IsNotNull()
+				.IsNotEqual("value")
 				.AddError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);

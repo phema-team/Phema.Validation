@@ -54,8 +54,10 @@ validationContext.When(person, p => p.Name)
   .IsNotNull()
   // AND
   .HasLengthGreater(20)
-  // .IsNotNull()
+  // .IsNull()
   // .IsEqual()
+  // .IsNotUrl()
+  // .IsNotEmail()
   // .IsMatch(regex)
   .AddError("Name should be less than 20");
 ```
@@ -177,12 +179,15 @@ validationContext.EnsureIsValid("key");
 
 ### ValidationPartResolvers
 
-|     Method |       Mean |     Error |    StdDev |        Max |
-|----------- |-----------:|----------:|----------:|-----------:|
-|    Default |   937.1 ns |  13.13 ns |  19.65 ns |   985.4 ns |
-| DataMember | 5,178.0 ns |  61.97 ns |  92.75 ns | 5,414.8 ns |
-| PascalCase | 1,451.4 ns | 211.22 ns | 328.85 ns | 1,875.8 ns |
-|  CamelCase | 1,647.5 ns |  51.41 ns |  78.52 ns | 1,844.8 ns |
+|                      Method |     Mean |     Error |    StdDev |      Max |
+|---------------------------- |---------:|----------:|----------:|---------:|
+|                     Default | 1.152 us | 0.0396 us | 0.0580 us | 1.199 us |
+|    DataMember_WithAttribute | 5.290 us | 0.0465 us | 0.0682 us | 5.479 us |
+| DataMember_WithoutAttribute | 1.974 us | 0.1761 us | 0.2742 us | 2.540 us |
+|            PascalCase_Lower | 1.618 us | 0.1422 us | 0.2214 us | 2.184 us |
+|                  PascalCase | 1.078 us | 0.0103 us | 0.0154 us | 1.111 us |
+|             CamelCase_Upper | 1.536 us | 0.1767 us | 0.2750 us | 2.009 us |
+|                   CamelCase | 1.156 us | 0.0112 us | 0.0158 us | 1.188 us |
 
 ### Non-expression validation
 
