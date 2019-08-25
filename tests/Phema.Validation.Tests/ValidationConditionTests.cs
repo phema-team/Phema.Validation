@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Phema.Validation.Conditions;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -170,6 +171,30 @@ namespace Phema.Validation.Tests
 			Assert.Equal(validationDetail.ValidationKey, key);
 			Assert.Equal(validationDetail.ValidationMessage, message);
 			Assert.Equal(validationDetail.ValidationSeverity, severity);
+		}
+
+		[Fact]
+		public void AndConditionJoin()
+		{
+			var (key, message) = validationContext.When("key", "value")
+				.IsNotNull()
+				.IsEqual("value")
+				.AddError("template1");
+
+			Assert.Equal("key", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
+		public void AndConditionJoin_Valid()
+		{
+			validationContext.When("key", "value")
+				.IsNull()
+				// No error, because value is not null
+				.Is(() => true)
+				.AddError("template1");
+
+			Assert.Empty(validationContext.ValidationDetails);
 		}
 	}
 }

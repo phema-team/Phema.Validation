@@ -56,6 +56,20 @@ namespace Phema.Validation.Conditions
 			return condition.IsNot(value => EmailAddress.IsValid(value));
 		}
 
+		public static IValidationCondition<string> IsUrl(
+			this IValidationCondition<string> condition,
+			UriKind kind = UriKind.Absolute)
+		{
+			return condition.Is(value => Uri.IsWellFormedUriString(condition.Value, kind));
+		}
+
+		public static IValidationCondition<string> IsNotUrl(
+			this IValidationCondition<string> condition,
+			UriKind kind = UriKind.RelativeOrAbsolute)
+		{
+			return condition.IsNot(value => Uri.IsWellFormedUriString(condition.Value, kind));
+		}
+
 		public static IValidationCondition<string> HasLength(
 			this IValidationCondition<string> condition,
 			Func<int, bool> predicate)
