@@ -1,26 +1,19 @@
-﻿using BenchmarkDotNet.Columns;
-using BenchmarkDotNet.Configs;
+﻿using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 
 namespace Phema.Validation.Benchmarks
 {
 	public class Program
 	{
-		private static void Main(string[] args) => 
+		private static void Main(string[] args) =>
 			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly)
-				.Run(args, new ManualConfig()
-					.With(ConsoleLogger.Default)
+				.Run(args, DefaultConfig.Instance
 					.With(Job.Core
-						.WithInvocationCount(1024)
+						.WithInvocationCount(32)
 						.WithWarmupCount(100)
-						.WithIterationCount(32))
-					.With(
-						TargetMethodColumn.Method,
-						StatisticColumn.Mean,
-						StatisticColumn.Error,
-						StatisticColumn.Max,
-						StatisticColumn.StdDev));
+						.WithIterationCount(10000))
+					.With(MemoryDiagnoser.Default));
 	}
 }
