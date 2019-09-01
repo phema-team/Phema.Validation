@@ -13,6 +13,7 @@ $> dotnet add package Phema.Validation
 ```
 
 ## Core concepts
+
 - `IValidationContext` - Scoped service to store all validation details
 - `IValidationCondition` - Contains a validation checks (e.g. `Is(() => ...)`)
 - `IValidationDetail` - When `IValidationCondition` is not valid adds to `IValidationContext.ValidationDetails`
@@ -179,41 +180,41 @@ validationContext.EnsureIsValid("key");
 
 ### ValidationPartResolvers
 
-|                      Method |     Mean |     Error |    StdDev |      Max |
-|---------------------------- |---------:|----------:|----------:|---------:|
-|                     Default | 1.152 us | 0.0396 us | 0.0580 us | 1.199 us |
-|    DataMember_WithAttribute | 5.290 us | 0.0465 us | 0.0682 us | 5.479 us |
-| DataMember_WithoutAttribute | 1.974 us | 0.1761 us | 0.2742 us | 2.540 us |
-|            PascalCase_Lower | 1.618 us | 0.1422 us | 0.2214 us | 2.184 us |
-|                  PascalCase | 1.078 us | 0.0103 us | 0.0154 us | 1.111 us |
-|             CamelCase_Upper | 1.536 us | 0.1767 us | 0.2750 us | 2.009 us |
-|                   CamelCase | 1.156 us | 0.0112 us | 0.0158 us | 1.188 us |
+|                      Method |     Mean |     Error |    StdDev |   Median | Allocated |
+|---------------------------- |---------:|----------:|----------:|---------:|----------:|
+|                     Default | 1.307 us | 0.0031 us | 0.0903 us | 1.309 us |     936 B |
+|    DataMember_WithAttribute | 6.904 us | 0.0105 us | 0.2985 us | 6.909 us |    2398 B |
+| DataMember_WithoutAttribute | 1.983 us | 0.0050 us | 0.1465 us | 1.991 us |    1430 B |
+|            PascalCase_Lower | 1.604 us | 0.0046 us | 0.1333 us | 1.572 us |    1048 B |
+|                  PascalCase | 1.365 us | 0.0038 us | 0.1132 us | 1.366 us |     936 B |
+|             CamelCase_Upper | 1.549 us | 0.0035 us | 0.0986 us | 1.569 us |    1040 B |
+|                   CamelCase | 1.432 us | 0.0037 us | 0.1092 us | 1.434 us |     936 B |
 
 ### Non-expression validation
 
-|        Method |     Mean |     Error |    StdDev |      Max |
-|-------------- |---------:|----------:|----------:|---------:|
-|        Simple | 183.1 ns | 0.2391 ns | 0.3429 ns | 184.0 ns |
-|   CreateScope | 134.2 ns | 0.7517 ns | 1.1479 ns | 136.9 ns |
-|       IsValid | 375.5 ns | 0.7937 ns | 1.1384 ns | 379.1 ns |
-| EnsureIsValid | 361.0 ns | 2.3126 ns | 3.2419 ns | 369.8 ns |
+|        Method |     Mean |     Error |   StdDev |   Median | Allocated |
+|-------------- |---------:|----------:|---------:|---------:|----------:|
+|        Simple | 215.7 ns | 0.9524 ns | 27.52 ns | 225.0 ns |     266 B |
+|   CreateScope | 119.7 ns | 0.5997 ns | 17.87 ns | 128.1 ns |     112 B |
+|       IsValid | 219.3 ns | 0.6558 ns | 19.38 ns | 228.1 ns |     424 B |
+| EnsureIsValid | 218.2 ns | 0.6113 ns | 17.72 ns | 225.0 ns |     424 B |
 
 ### Expression validation
 
-|                                     Method |     Mean |     Error |    StdDev |      Max |
-|------------------------------------------- |---------:|----------:|----------:|---------:|
-|                           SimpleExpression | 1.622 us | 0.0220 us | 0.0343 us | 1.712 us |
-|             SimpleExpression_CompiledValue | 2.347 us | 0.0302 us | 0.0453 us | 2.453 us |
-|                          ChainedExpression | 2.305 us | 0.0214 us | 0.0320 us | 2.385 us |
-|            ChainedExpression_CompiledValue | 2.037 us | 0.0158 us | 0.0222 us | 2.103 us |
-|                      ArrayAccessExpression | 2.492 us | 0.0279 us | 0.0425 us | 2.595 us |
-|        ArrayAccessExpression_CompiledValue | 2.468 us | 0.0209 us | 0.0313 us | 2.542 us |
-|               ChainedArrayAccessExpression | 3.028 us | 0.1101 us | 0.1614 us | 3.147 us |
-| ChainedArrayAccessExpression_CompiledValue | 2.427 us | 0.0364 us | 0.0567 us | 2.558 us |
-|                         ChainedArrayAccess | 3.521 us | 0.0235 us | 0.0352 us | 3.596 us |
-|           ChainedArrayAccess_CompiledValue | 4.337 us | 0.0536 us | 0.0803 us | 4.525 us |
-|               CreateScope_SimpleExpression | 1.619 us | 0.0088 us | 0.0137 us | 1.645 us |
-|              CreateScope_ChainedExpression | 2.060 us | 0.0131 us | 0.0200 us | 2.115 us |
-|                              IsValid_Empty | 2.044 us | 0.0184 us | 0.0276 us | 2.099 us |
-|                         IsValid_Expression | 2.110 us | 0.0096 us | 0.0135 us | 2.152 us |
-|                   EnsureIsValid_Expression | 2.027 us | 0.0209 us | 0.0312 us | 2.116 us |
+|                                     Method |       Mean |     Error |    StdDev |     Median | Allocated |
+|------------------------------------------- |-----------:|----------:|----------:|-----------:|----------:|
+|                           SimpleExpression | 1,216.5 ns | 2.0927 ns |  60.78 ns | 1,231.2 ns |     914 B |
+|             SimpleExpression_CompiledValue | 1,437.8 ns | 2.2016 ns |  62.72 ns | 1,456.2 ns |    1010 B |
+|                          ChainedExpression | 1,680.5 ns | 3.0921 ns |  90.31 ns | 1,712.5 ns |    1258 B |
+|            ChainedExpression_CompiledValue | 1,908.5 ns | 3.4080 ns |  99.13 ns | 1,940.6 ns |    1354 B |
+|                      ArrayAccessExpression | 1,766.2 ns | 3.5956 ns | 103.22 ns | 1,803.1 ns |    1410 B |
+|        ArrayAccessExpression_CompiledValue | 2,002.5 ns | 4.0274 ns | 117.76 ns | 2,056.2 ns |    1506 B |
+|               ChainedArrayAccessExpression | 2,312.1 ns | 4.5806 ns | 133.17 ns | 2,368.8 ns |    1770 B |
+| ChainedArrayAccessExpression_CompiledValue | 2,542.6 ns | 5.6628 ns | 164.75 ns | 2,593.8 ns |    1866 B |
+|                         ChainedArrayAccess | 3,998.3 ns | 9.4951 ns | 275.09 ns | 4,078.1 ns |    2715 B |
+|           ChainedArrayAccess_CompiledValue | 4,669.4 ns | 9.7369 ns | 283.27 ns | 4,790.6 ns |    2802 B |
+|               CreateScope_SimpleExpression | 1,050.5 ns | 1.2892 ns |  37.55 ns | 1,053.1 ns |     736 B |
+|              CreateScope_ChainedExpression | 1,375.0 ns | 1.3573 ns |  39.32 ns | 1,375.0 ns |    1080 B |
+|                              IsValid_Empty |   113.1 ns | 0.6117 ns |  17.99 ns |   121.9 ns |     184 B |
+|                         IsValid_Expression | 1,155.1 ns | 1.0107 ns |  28.99 ns | 1,150.0 ns |    1048 B |
+|                   EnsureIsValid_Expression | 1,098.0 ns | 1.1002 ns |  31.19 ns | 1,095.3 ns |    1048 B |

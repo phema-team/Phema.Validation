@@ -135,7 +135,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void IsValid_Empty()
 		{
-			validationContext.IsValid(model, m => m.Model);
+			validationContext.IsValid();
 		}
 
 		[Benchmark]
