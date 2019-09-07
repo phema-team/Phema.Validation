@@ -35,6 +35,7 @@ namespace Phema.Validation
 		{
 			return expression switch
 			{
+				UnaryExpression unaryExpression => FromExpression(unaryExpression.Operand),
 				BinaryExpression binaryExpression => FromBinary(binaryExpression),
 				MethodCallExpression methodCallExpression => FromMethodCall(methodCallExpression),
 				MemberExpression memberExpression => FromMember(memberExpression),
