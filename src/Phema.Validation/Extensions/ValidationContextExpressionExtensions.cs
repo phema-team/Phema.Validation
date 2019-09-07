@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,14 +32,14 @@ namespace Phema.Validation
 		public static bool IsValid<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TValue>> expression)
+			params Expression<Func<TModel, TValue>>[] expressions)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
-			var validationPart = validationResolver.FromExpression(expression.Body);
+			var validationParts = expressions.Select(e => validationResolver.FromExpression(e.Body)).ToArray();
 
-			return validationContext.IsValid(validationPart);
+			return validationContext.IsValid(validationParts);
 		}
 
 		/// <summary>
@@ -49,9 +50,9 @@ namespace Phema.Validation
 		public static void EnsureIsValid<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TValue>> expression)
+			params Expression<Func<TModel, TValue>>[] expressions)
 		{
-			if (!validationContext.IsValid(model, expression))
+			if (!validationContext.IsValid(model, expressions))
 			{
 				throw new ValidationContextException(validationContext);
 			}

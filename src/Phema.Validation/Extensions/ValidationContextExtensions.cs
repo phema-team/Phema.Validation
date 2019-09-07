@@ -1,11 +1,26 @@
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Phema.Validation
 {
 	public static class ValidationContextExtensions
 	{
+		/// <summary>
+		///   Specifies validation part with global validation key
+		/// </summary>
+		public static IValidationCondition When(this IValidationContext validationContext)
+		{
+			var serviceProvider = (IServiceProvider)validationContext;
+
+			var options = serviceProvider.GetRequiredService<IOptions<ValidationOptions>>().Value;
+
+			return new ValidationCondition(
+				validationContext,
+				options.GlobalValidationKey);
+		}
+
 		/// <summary>
 		///   Specifies validation part with object predicate without value. Use with closures in conditions
 		/// </summary>
@@ -50,16 +65,16 @@ namespace Phema.Validation
 		/// <summary>
 		///   Checks validation context for any detail with greater or equal severity. Additional filtering by validation key
 		/// </summary>
-		public static bool IsValid(this IValidationContext validationContext, string? validationPart = null)
+		public static bool IsValid(this IValidationContext validationContext, params string[] validationParts)
 		{
 			var validationDetails = validationContext.ValidationDetails
 				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
 
-			if (validationPart != null)
+			if (validationParts.Any())
 			{
-				var validationKey = validationContext.CombineValidationPath(validationPart);
+				var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
 
-				validationDetails = validationDetails.Where(detail => detail.ValidationKey == validationKey);
+				validationDetails = validationDetails.Where(detail => validationKeys.Contains(detail.ValidationKey));
 			}
 
 			return !validationDetails.Any();
@@ -68,9 +83,9 @@ namespace Phema.Validation
 		/// <summary>
 		///   If validation context is not valid, throws <see cref="ValidationContextException" />
 		/// </summary>
-		public static void EnsureIsValid(this IValidationContext validationContext, string? validationPart = null)
+		public static void EnsureIsValid(this IValidationContext validationContext, params string[] validationParts)
 		{
-			if (!validationContext.IsValid(validationPart))
+			if (!validationContext.IsValid(validationParts))
 			{
 				throw new ValidationContextException(validationContext);
 			}
