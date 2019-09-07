@@ -29,10 +29,10 @@ namespace Phema.Validation
 		/// <summary>
 		///   Checks validation context for any detail with greater or equal severity for specified expression
 		/// </summary>
-		public static bool IsValid<TModel, TValue>(
+		public static bool IsValid<TModel>(
 			this IValidationContext validationContext,
 			TModel model,
-			params Expression<Func<TModel, TValue>>[] expressions)
+			params Expression<Func<TModel, object>>[] expressions)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
@@ -47,10 +47,10 @@ namespace Phema.Validation
 		///   ValidationContext.ValidationSeverity
 		/// </summary>
 		/// <exception cref="ValidationContextException">Throws when any detail has greater or equal severity</exception>
-		public static void EnsureIsValid<TModel, TValue>(
+		public static void EnsureIsValid<TModel>(
 			this IValidationContext validationContext,
 			TModel model,
-			params Expression<Func<TModel, TValue>>[] expressions)
+			params Expression<Func<TModel, object>>[] expressions)
 		{
 			if (!validationContext.IsValid(model, expressions))
 			{
