@@ -18,7 +18,7 @@ $> dotnet add package Phema.Validation
 - `IValidationCondition` - Contains a validation checks (e.g. `Is(() => ...)`)
 - `IValidationDetail` - When `IValidationCondition` is not valid adds to `IValidationContext.ValidationDetails`
 - `ValidationSeverity` - Validation error level, used in `IValidationContext.ValidationSeverity` and `IValidationDetail.ValidationSeverity`
-- `IValidationScope` - Is a nested validation context with validation path override
+- `IValidationScope` - Is a nested validation context with validation path and severity override
 
 ## Usage ([ASP.NET Core](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.AspNetCore), [HostedService](https://github.com/phema-team/Phema.Validation/tree/master/examples/Phema.Validation.Examples.WorkerService) examples)
 
