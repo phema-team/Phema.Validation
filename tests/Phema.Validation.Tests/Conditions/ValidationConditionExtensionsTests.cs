@@ -50,6 +50,18 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
+		public void Invalidate()
+		{
+			var (key, message) = validationContext.When("age", 10)
+				.IsEqual(10)
+				.Inverted()
+				.AddError("template1");
+
+			Assert.Equal("age", key);
+			Assert.Equal("template1", message);
+		}
+
+		[Fact]
 		public void IsNot_Empty()
 		{
 			var (key, message) = validationContext.When("age", 10)

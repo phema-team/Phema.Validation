@@ -27,6 +27,25 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
+		///   Specifies <see cref="TModel" /> with expression-based validation key
+		/// </summary>
+		public static IValidationCondition<TValue> When<TModel, TValue>(
+			this IValidationContext validationContext,
+			TModel model,
+			Expression<Func<TModel, TValue>> expression,
+			Func<TValue> provider)
+		{
+			var serviceProvider = (IServiceProvider) validationContext;
+			var validationPathResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
+
+			var validationPart = validationPathResolver.FromExpression(expression.Body);
+
+			return validationContext.When(
+				validationPart,
+				new Lazy<TValue>(provider));
+		}
+
+		/// <summary>
 		///   Checks validation context for any detail with greater or equal severity for specified expression
 		/// </summary>
 		public static bool IsValid<TModel>(

@@ -12,10 +12,20 @@ namespace Phema.Validation
 			Func<bool> predicate)
 			where TValidationCondition : IValidationCondition
 		{
-			// Null or false
-			if (condition.IsValid != true)
+			if (condition.Inverted)
 			{
-				condition.IsValid = !predicate();
+				if (condition.IsValid == false)
+				{
+					condition.IsValid = !predicate();
+				}
+			}
+			else
+			{
+				// Null or false
+				if (condition.IsValid != true)
+				{
+					condition.IsValid = !predicate();
+				}
 			}
 
 			return condition;
@@ -50,6 +60,17 @@ namespace Phema.Validation
 			Func<TValue, bool> predicate)
 		{
 			return condition.IsNot(() => predicate(condition.Value));
+		}
+
+		/// <summary>
+		/// Should continue invalid checks to get IsValid back to true?
+		/// </summary>
+		public static IValidationCondition<TValue> Inverted<TValue>(
+			this IValidationCondition<TValue> condition)
+		{
+			condition.Inverted = true;
+
+			return condition;
 		}
 	}
 }
