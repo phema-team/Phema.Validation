@@ -74,7 +74,7 @@ validationContext.When(person, p => p.Car)
 ```csharp
 // Null if valid
 var validationDetails = validationContext.When(person, p => p.Age)
-  // Validation condition is valid
+  // Validation check is failed, validation condition is valid
   .Is(() => false)
   .AddError("Age must be set");
 
