@@ -61,6 +61,12 @@ validationContext.When(person, p => p.Name)
   // .IsNotEmail()
   // .IsMatch(regex)
   .AddError("Name should be less than 20");
+
+// Type checks
+validationContext.When(person, p => p.Car)
+  .IsType<Ferrari>()
+  .Is(ferarriCar => ...Some Ferrari specific checks...)
+  .AddError("You have Ferrari car, but ...");
 ```
 
 ## Validation details
