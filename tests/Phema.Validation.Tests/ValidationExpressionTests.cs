@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using Phema.Validation.Conditions;
 using Xunit;
 
 namespace Phema.Validation.Tests
@@ -14,6 +15,36 @@ namespace Phema.Validation.Tests
 				.AddValidation()
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
+		}
+
+		[Fact]
+		public void ValueProvidedKey_Valid()
+		{
+			var model = new TestModel
+			{
+				Property = 12
+			};
+
+			validationContext.When(model, m => m.Property, () => 13)
+				.IsEqual(13)
+				.AddError("Error");
+
+			Assert.False(validationContext.IsValid(model, m => m.Property));
+		}
+
+		[Fact]
+		public void ValueProvidedKey_Invalid()
+		{
+			var model = new TestModel
+			{
+				Property = 13
+			};
+
+			validationContext.When(model, m => m.Property, () => 12)
+				.IsEqual(13)
+				.AddError("Error");
+
+			Assert.Empty(validationContext.ValidationDetails);
 		}
 
 		[Fact]
