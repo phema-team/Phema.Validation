@@ -51,7 +51,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfInt_Valid()
+		public void IsTypeOfTType_TypeChecks_Valid()
 		{
 			validationContext.When("name", (object)"john")
 				.IsType<int>()
@@ -63,19 +63,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_TypeChecks_Valid()
-		{
-			validationContext.When("name", (object)"john")
-				.IsType<int>()
-				// Never called because type is string
-				.Is(value => throw new Exception())
-				.AddError("template1");
-
-			Assert.Empty(validationContext.ValidationDetails);
-		}
-
-		[Fact]
-		public void IsIsType_StringAndIntType_AndJoin_Invalid()
+		public void IsType_StringAndIntType_AndJoin_Invalid()
 		{
 			var condition = validationContext.When("name", "john");
 
@@ -87,7 +75,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_AllConditionsPassed_Invalid()
+		public void IsTypeOfTType_AllConditionsPassed_Invalid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsEqual("john")
@@ -100,7 +88,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_TypeConditionsFailed_Valid()
+		public void IsTypeOfTType_TypeConditionsFailed_Valid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsEqual("john")
@@ -113,7 +101,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_NextConditionsFailed_Valid()
+		public void IsTypeOfTType_NextConditionsFailed_Valid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsEqual("john")
@@ -126,7 +114,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_NoPrecondition_NextConditionsFailed_Valid()
+		public void IsTypeOfTType_NoPrecondition_NextConditionsFailed_Valid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<string>()
@@ -138,7 +126,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_NoPrecondition_TypeChecksFailed_Valid()
+		public void IsTypeOfTType_NoPrecondition_TypeChecksFailed_Valid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<int>()
@@ -149,7 +137,7 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void IsIsTypeOfTType_NePrecondition_TypeChecksPassed_Invalid()
+		public void IsTypeOfTType_NePrecondition_TypeChecksPassed_Invalid()
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<string>()

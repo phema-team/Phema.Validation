@@ -66,26 +66,6 @@ namespace Phema.Validation.Tests
 			Assert.Equal("Model:Model", forModel.ValidationPath);
 		}
 
-		[Theory]
-		[InlineData(ValidationSeverity.Warning, true)]
-		[InlineData(ValidationSeverity.Information, false)]
-		public void ValidationSeverityOverride(ValidationSeverity validationSeverity, bool isValid)
-		{
-			var validationContext = CreateValidationContext(o => o.ValidationSeverity = validationSeverity);
-
-			var model = new TestModel
-			{
-				Model = new TestModel()
-			};
-
-			var details = validationContext.When(model, m => m.Model.Model)
-				.IsNull()
-				.AddInformation("Inner model is null");
-
-			Assert.Equal("Model.Model", details.ValidationKey);
-			Assert.Equal(isValid, validationContext.IsValid());
-		}
-
 		private static IValidationContext CreateValidationContext(Action<ValidationOptions> validationOptions)
 		{
 			return new ServiceCollection()

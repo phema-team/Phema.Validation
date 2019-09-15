@@ -4,7 +4,7 @@
 [![Nuget](https://img.shields.io/nuget/v/Phema.Validation.svg)](https://www.nuget.org/packages/Phema.Validation)
 [![Nuget](https://img.shields.io/nuget/dt/Phema.Validation.svg)](https://nuget.org/packages/Phema.Validation)
 
-A simple, lightweight and extensible validation library for .NET Core with fluent interfaces built using extension methods only
+A simple, lightweight, fluent and extensible validation library for .NET Core
 
 ## Installation
 
@@ -61,6 +61,11 @@ validationContext.When(person, p => p.Name)
   // .IsNotEmail()
   // .IsMatch(regex)
   .AddError("Name should be less than 20");
+
+// DateTime conditions
+validationContext.When(task, t => t.DueDate)
+  .IsNotUtc()
+  .AddError("Due date must be in Utc");
 
 // Type checks
 validationContext.When(person, p => p.Car)
