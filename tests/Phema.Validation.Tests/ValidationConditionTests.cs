@@ -38,30 +38,6 @@ namespace Phema.Validation.Tests
 		}
 
 		[Fact]
-		public void AddTrace()
-		{
-			var validationDetail = validationContext.When("key", "value").AddTrace("Trace");
-
-			Assert.Equal(ValidationSeverity.Trace, validationDetail.ValidationSeverity);
-		}
-
-		[Fact]
-		public void AddDebug()
-		{
-			var validationDetail = validationContext.When("key", "value").AddDebug("Debug");
-
-			Assert.Equal(ValidationSeverity.Debug, validationDetail.ValidationSeverity);
-		}
-
-		[Fact]
-		public void AddInformation()
-		{
-			var validationDetail = validationContext.When("key", "value").AddInformation("Information");
-
-			Assert.Equal(ValidationSeverity.Information, validationDetail.ValidationSeverity);
-		}
-
-		[Fact]
 		public void AddWarning()
 		{
 			var validationDetail = validationContext.When("key", "value").AddWarning("Warning");
@@ -88,47 +64,6 @@ namespace Phema.Validation.Tests
 			Assert.Equal("key", exception.ValidationDetail.ValidationKey);
 			Assert.Equal("Error", exception.ValidationDetail.ValidationMessage);
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationDetail.ValidationSeverity);
-		}
-
-		[Fact]
-		public void Trace_Never_Throw()
-		{
-			validationContext.ValidationSeverity = ValidationSeverity.Trace;
-
-			Assert.NotNull(validationContext.When("key", "value").AddTrace("Trace"));
-		}
-
-		[Fact]
-		public void Trace_ThrowDebug()
-		{
-			validationContext.ValidationSeverity = ValidationSeverity.Trace;
-
-			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddDebug("Debug"));
-
-			Assert.Equal(ValidationSeverity.Debug, exception.ValidationDetail.ValidationSeverity);
-		}
-
-		[Fact]
-		public void Debug_ThrowInformation()
-		{
-			validationContext.ValidationSeverity = ValidationSeverity.Debug;
-
-			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddInformation("Information"));
-
-			Assert.Equal(ValidationSeverity.Information, exception.ValidationDetail.ValidationSeverity);
-		}
-
-		[Fact]
-		public void Information_ThrowWarning()
-		{
-			validationContext.ValidationSeverity = ValidationSeverity.Information;
-
-			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddWarning("Warning"));
-
-			Assert.Equal(ValidationSeverity.Warning, exception.ValidationDetail.ValidationSeverity);
 		}
 
 		[Fact]

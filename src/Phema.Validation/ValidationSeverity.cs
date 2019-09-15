@@ -7,11 +7,7 @@ namespace Phema.Validation
 	/// </summary>
 	public enum ValidationSeverity
 	{
-		Trace,
-
-		Debug,
-
-		Information,
+		None,
 
 		Warning,
 
