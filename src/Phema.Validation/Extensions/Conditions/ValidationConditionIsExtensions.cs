@@ -97,7 +97,7 @@ namespace Phema.Validation.Conditions
 		/// </summary>
 		public static IValidationCondition<object> IsType<TType>(
 			this IValidationCondition<object> condition,
-			Action<IValidationCondition<TType>> typed = null)
+			Action<IValidationCondition<TType>>? typed = null)
 		{
 			if (condition.Value is TType)
 			{
