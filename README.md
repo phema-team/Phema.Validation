@@ -32,12 +32,12 @@ var validationContext = serviceProvider.GetRequiredService<IValidationContext>()
 // Validation key will be `Name` using default validation part provider
 validationContext.When(person, p => p.Name)
   .Is(name => name == null)
-  .AddError("Name must be set");
+  .AddValidationError("Name must be set");
 
 // Validation key will be `Address.Locations[0].Latitude` using default validation part provider
 validationContext.When(person, p => p.Address.Locations[0].Latitude)
   .Is(latitude => ...custom check...)
-  .AddError("Some custom check failed");
+  .AddValidationError("Some custom check failed");
 ```
 
 ## Validation conditions
@@ -48,7 +48,7 @@ validationContext.When(person, p => p.Address.Locations[0].Latitude)
 // Check for Phema.Validation.Conditions namespace
 validationContext.When(person, p => p.Name)
   .IsNullOrWhitespace()
-  .AddError("Name must be set");
+  .AddValidationError("Name must be set");
 
 // Use multiple conditions (joined with AND)
 validationContext.When(person, p => p.Name)
@@ -60,18 +60,18 @@ validationContext.When(person, p => p.Name)
   // .IsNotUrl()
   // .IsNotEmail()
   // .IsMatch(regex)
-  .AddError("Name should be less than 20");
+  .AddValidationError("Name should be less than 20");
 
 // DateTime conditions
 validationContext.When(task, t => t.DueDate)
   .IsNotUtc()
-  .AddError("Due date must be in Utc");
+  .AddValidationError("Due date must be in Utc");
 
 // Type checks
 validationContext.When(person, p => p.Car)
   .IsType<Ferrari>()
   .Is(ferarriCar => ...Some Ferrari specific checks...)
-  .AddError("You have Ferrari car, but ...");
+  .AddValidationError("You have Ferrari car, but ...");
 ```
 
 ## Validation details
@@ -81,29 +81,26 @@ validationContext.When(person, p => p.Car)
 var validationDetails = validationContext.When(person, p => p.Age)
   // Validation check is failed, validation condition is valid
   .Is(() => false)
-  .AddError("Age must be set");
+  .AddValidationError("Age must be set");
 
 // Use deconstruction
 var (key, message) = validationContext.When(person, p => p.Age)
   .IsNull()
-  .AddError("Age must be set");
+  .AddValidationError("Age must be set");
 
 // More deconstruction
 var (key, message, severity) = validationContext.When(person, p => p.Age)
   .IsNull()
-  .AddError("Age must be set");
+  .AddValidationError("Age must be set");
 ```
 
 ## Check validation
 
 ```csharp
-// Override default ValidationSeverity
-validationContext.ValidationSeverity = ValidationSeverity.Warning;
-
 // Throw exception when details severity greater than ValidationContext.ValidationSeverity
 validationContext.When(person, p => p.Address)
   .IsNull()
-  .AddFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
+  .AddValidationFatal("Address is not presented!!!"); // If invalid throw ValidationConditionException
 
 // Check if context is valid
 validationContext.IsValid();
@@ -111,6 +108,7 @@ validationContext.EnsureIsValid(); // If invalid throw ValidationContextExceptio
 
 // Check concrete validation details
 validationContext.IsValid(person, p => p.Age);
+validationContext.IsNotValid(person, p => p.Age);
 validationContext.EnsureIsValid(person, p => p.Age);
 ```
 
@@ -161,10 +159,8 @@ ValidateChild(validationContext.CreateScope(parent, p => p.Child))
 ValidateLocation(validationContext.CreateScope(person, p => p.Address.Locations[0]))
 
 // Override local scope ValidationSeverity
-using (var scope = validationContext.CreateScope(person, p => p.Address))
+using (var scope = validationContext.CreateScope(person, p => p.Address, ValidationSeverity.Warning))
 {
-  scope.ValidationSeverity = ValidationSeverity.Warning;
-
   // Some scope validation checks syncing with validationContext
 }
 ```
@@ -174,11 +170,12 @@ using (var scope = validationContext.CreateScope(person, p => p.Address))
 ```csharp
 validationContext.When("key", value)
   .IsNull()
-  .AddError("Value is null");
+  .AddValidationError("Value is null");
 
-validationContext.CreateScope("key");
+validationContext.CreateScope("key", ValidationSeverity.Warning);
 
 validationContext.IsValid("key");
+validationContext.IsNotValid("key");
 validationContext.EnsureIsValid("key");
 ```
 
