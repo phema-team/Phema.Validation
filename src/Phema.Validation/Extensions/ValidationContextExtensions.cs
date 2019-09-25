@@ -81,6 +81,14 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
+		///   Checks validation context is not valid
+		/// </summary>
+		public static bool IsNotValid(this IValidationContext validationContext, params string[] validationParts)
+		{
+			return !validationContext.IsValid(validationParts);
+		}
+
+		/// <summary>
 		///   If validation context is not valid, throws <see cref="ValidationContextException" />
 		/// </summary>
 		public static void EnsureIsValid(this IValidationContext validationContext, params string[] validationParts)

@@ -62,6 +62,17 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
+		///   Checks validation context is not valid
+		/// </summary>
+		public static bool IsNotValid<TModel>(
+			this IValidationContext validationContext,
+			TModel model,
+			params Expression<Func<TModel, object>>[] expressions)
+		{
+			return !validationContext.IsValid(model, expressions);
+		}
+
+		/// <summary>
 		///   Ensures that validation context has no details with greater or equal severity than
 		///   ValidationContext.ValidationSeverity
 		/// </summary>
