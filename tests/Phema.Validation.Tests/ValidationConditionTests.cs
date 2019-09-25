@@ -6,12 +6,10 @@ namespace Phema.Validation.Tests
 {
 	public class ValidationConditionTests
 	{
-		private readonly IValidationContext validationContext;
-
-		public ValidationConditionTests()
+		private IValidationContext CreateValidationContext(ValidationSeverity validationSeverity)
 		{
-			validationContext = new ServiceCollection()
-				.AddValidation()
+			return new ServiceCollection()
+				.AddValidation(o => o.ValidationSeverity = validationSeverity)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -19,8 +17,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddDetail_ReturnsMessage()
 		{
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
 			var (key, message, severity) =
-				validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
+				validationContext.When("key", "value").AddValidationDetail("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", key);
 			Assert.Equal("Error", message);
@@ -30,7 +30,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void EmptyIs_HasMessage()
 		{
-			var validationDetail = validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error);
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
+			var validationDetail = validationContext.When("key", "value").AddValidationDetail("Error", ValidationSeverity.Error);
 
 			Assert.Equal("key", validationDetail.ValidationKey);
 			Assert.Equal("Error", validationDetail.ValidationMessage);
@@ -40,7 +42,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddWarning()
 		{
-			var validationDetail = validationContext.When("key", "value").AddWarning("Warning");
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
+			var validationDetail = validationContext.When("key", "value").AddValidationWarning("Warning");
 
 			Assert.Equal(ValidationSeverity.Warning, validationDetail.ValidationSeverity);
 		}
@@ -48,7 +52,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AddError()
 		{
-			var validationDetail = validationContext.When("key", "value").AddError("Error");
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
+			var validationDetail = validationContext.When("key", "value").AddValidationError("Error");
 
 			Assert.Equal(ValidationSeverity.Error, validationDetail.ValidationSeverity);
 		}
@@ -56,10 +62,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Warning_ThrowErrorDetail_Greater()
 		{
-			validationContext.ValidationSeverity = ValidationSeverity.Warning;
-
+			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
+			
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddDetail("Error", ValidationSeverity.Error));
+				validationContext.When("key", "value").AddValidationDetail("Error", ValidationSeverity.Error));
 
 			Assert.Equal("key", exception.ValidationDetail.ValidationKey);
 			Assert.Equal("Error", exception.ValidationDetail.ValidationMessage);
@@ -69,10 +75,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Warning_ThrowError()
 		{
-			validationContext.ValidationSeverity = ValidationSeverity.Warning;
+			var validationContext = CreateValidationContext(ValidationSeverity.Warning);
 
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddError("Error"));
+				validationContext.When("key", "value").AddValidationError("Error"));
 
 			Assert.Equal(ValidationSeverity.Error, exception.ValidationDetail.ValidationSeverity);
 		}
@@ -80,10 +86,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Error_ThrowFatal()
 		{
-			validationContext.ValidationSeverity = ValidationSeverity.Error;
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
 
 			var exception = Assert.Throws<ValidationConditionException>(() =>
-				validationContext.When("key", "value").AddFatal("Fatal"));
+				validationContext.When("key", "value").AddValidationFatal("Fatal"));
 
 			Assert.Equal(ValidationSeverity.Fatal, exception.ValidationDetail.ValidationSeverity);
 		}
@@ -91,16 +97,18 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void Fatal_FatalNotThrows()
 		{
-			validationContext.ValidationSeverity = ValidationSeverity.Fatal;
+			var validationContext = CreateValidationContext(ValidationSeverity.Fatal);
 
-			Assert.NotNull(validationContext.When("key", "value").AddFatal("Fatal"));
+			Assert.NotNull(validationContext.When("key", "value").AddValidationFatal("Fatal"));
 		}
 
 		[Fact]
 		public void MessageDeconstruction()
 		{
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
 			var (key, message, severity) = validationContext.When("key", "value")
-				.AddDetail("Error", ValidationSeverity.Error);
+				.AddValidationDetail("Error", ValidationSeverity.Error);
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 			Assert.Equal(validationDetail.ValidationKey, key);
@@ -111,10 +119,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AndConditionJoin()
 		{
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
 			var (key, message) = validationContext.When("key", "value")
 				.IsNotNull()
 				.IsEqual("value")
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -123,11 +133,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AndConditionJoin_Valid()
 		{
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
 			validationContext.When("key", "value")
 				.IsNull()
 				// No error, because value is not null
 				.IsEqual("value")
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -135,10 +147,12 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void AndConditionJoin_SecondCondition_Valid()
 		{
+			var validationContext = CreateValidationContext(ValidationSeverity.Error);
+			
 			validationContext.When("key", "value")
 				.IsNotNull()
 				.IsNotEqual("value")
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}

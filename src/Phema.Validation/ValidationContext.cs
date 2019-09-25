@@ -20,7 +20,7 @@ namespace Phema.Validation
 		///   <see cref="ValidationConditionException" />.
 		///   Example: Add fatal detail, when this severity is error
 		/// </summary>
-		ValidationSeverity ValidationSeverity { get; set; }
+		ValidationSeverity ValidationSeverity { get; }
 
 		/// <summary>
 		///   Used as ValidationKey prefix. To create new context with specified validation path
@@ -32,7 +32,7 @@ namespace Phema.Validation
 		string? ValidationPath { get; }
 	}
 
-	[DebuggerDisplay("Details={ValidationDetails.Count} Severity={ValidationSeverity}")]
+	[DebuggerDisplay("Severity={ValidationSeverity} Details={ValidationDetails.Count}")]
 	internal sealed class ValidationContext : IValidationContext, IServiceProvider
 	{
 		private readonly IServiceProvider serviceProvider;
@@ -47,7 +47,7 @@ namespace Phema.Validation
 		}
 
 		public ICollection<ValidationDetail> ValidationDetails { get; }
-		public ValidationSeverity ValidationSeverity { get; set; }
+		public ValidationSeverity ValidationSeverity { get; }
 		public string? ValidationPath { get; }
 
 		public object GetService(Type serviceType)

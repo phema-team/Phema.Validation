@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Local))
 				.IsDateTimeKind(DateTimeKind.Local)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsDateTimeKind(DateTimeKind.Local)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -45,7 +45,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsUtc()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -56,7 +56,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Local))
 				.IsUtc()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -67,7 +67,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Local))
 				.IsNotUtc()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -78,7 +78,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsNotUtc()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -89,7 +89,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Local))
 				.IsLocal()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -100,7 +100,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsLocal()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -111,7 +111,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsNotLocal()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -122,7 +122,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Local))
 				.IsNotLocal()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -133,7 +133,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Unspecified))
 				.IsUnspecified()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -144,7 +144,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsUnspecified()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}
@@ -155,7 +155,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Utc))
 				.IsNotUnspecified()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.NotNull(validationDetail);
 		}
@@ -166,7 +166,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext
 				.When("key", new DateTime(1, DateTimeKind.Unspecified))
 				.IsNotUnspecified()
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Null(validationDetail);
 		}

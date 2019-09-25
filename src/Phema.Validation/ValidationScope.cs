@@ -12,22 +12,25 @@ namespace Phema.Validation
 	{
 	}
 
-	[DebuggerDisplay("Path={ValidationPath} Details={ValidationDetails.Count} Severity={ValidationSeverity}")]
+	[DebuggerDisplay("Path={ValidationPath} Severity={ValidationSeverity} Details={ValidationDetails.Count}")]
 	internal sealed class ValidationScope : IValidationScope, IServiceProvider
 	{
 		private readonly IServiceProvider serviceProvider;
 
-		public ValidationScope(IValidationContext validationContext, string? validationPath)
+		public ValidationScope(
+			IValidationContext validationContext,
+			string validationPath,
+			ValidationSeverity? validationSeverity)
 		{
 			ValidationPath = validationPath;
 			ValidationDetails = new ValidationDetailsCollection(validationContext.ValidationDetails);
-			ValidationSeverity = validationContext.ValidationSeverity;
+			ValidationSeverity = validationSeverity ?? validationContext.ValidationSeverity;
 
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
 		public ICollection<ValidationDetail> ValidationDetails { get; }
-		public ValidationSeverity ValidationSeverity { get; set; }
+		public ValidationSeverity ValidationSeverity { get; }
 		public string? ValidationPath { get; }
 
 		public object GetService(Type serviceType)

@@ -15,6 +15,9 @@ namespace Phema.Validation.Conditions
 			return condition.Is(value => value.CompareTo(comparable) > 0);
 		}
 
+		/// <summary>
+		///   Checks value is greater or equal
+		/// </summary>
 		public static IValidationCondition<TValue> IsGreaterOrEqual<TValue>(
 			this IValidationCondition<TValue> condition,
 			TValue comparable)
@@ -34,6 +37,9 @@ namespace Phema.Validation.Conditions
 			return condition.Is(value => value.CompareTo(comparable) < 0);
 		}
 
+		/// <summary>
+		///   Checks value is less or equal
+		/// </summary>
 		public static IValidationCondition<TValue> IsLessOrEqual<TValue>(
 			this IValidationCondition<TValue> condition,
 			TValue comparable)

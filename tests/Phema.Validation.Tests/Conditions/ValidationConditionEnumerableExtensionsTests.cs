@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAny()
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", Array.Empty<int>())
 				.IsAny()
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.False(validationContext.ValidationDetails.Any());
 		}
@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAny(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new[] {1})
 				.IsAny(x => x == 2)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.False(validationContext.ValidationDetails.Any());
 		}
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("key", Array.Empty<int>())
 				.IsNotAny()
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -76,7 +76,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new[] {1})
 				.IsNotAny()
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -87,7 +87,7 @@ namespace Phema.Validation.Tests
 			var (key, message) = validationContext.When("key", new[] {1})
 				// When no any 2s in array
 				.IsNotAny(x => x == 2)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -98,7 +98,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new[] {1})
 				.IsNotAny(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -108,7 +108,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("key", new[] {1})
 				.IsAll(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -119,7 +119,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new[] {1, 2})
 				.IsAll(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -130,7 +130,7 @@ namespace Phema.Validation.Tests
 			var (key, message) = validationContext.When("key", new[] {1, 2})
 				// When array has element != 1
 				.IsNotAll(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("key", key);
 			Assert.Equal("template1", message);
@@ -141,7 +141,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("key", new[] {1})
 				.IsNotAll(x => x == 1)
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}

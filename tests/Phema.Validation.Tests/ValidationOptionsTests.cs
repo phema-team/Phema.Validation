@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 
 			var details = validationContext.When(model, m => m.Model.Model)
 				.IsNull()
-				.AddError("Inner model is null");
+				.AddValidationError("Inner model is null");
 
 			Assert.Equal("context.Model.Model", details.ValidationKey);
 		}
@@ -46,7 +46,7 @@ namespace Phema.Validation.Tests
 
 			var details = validationContext.When(model, m => m.Model.Model)
 				.IsNull()
-				.AddError("Inner model is null");
+				.AddValidationError("Inner model is null");
 
 			Assert.Equal("Model:Model", details.ValidationKey);
 		}

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -5,12 +6,10 @@ namespace Phema.Validation.Tests
 {
 	public class ValidationContextTests
 	{
-		private readonly IValidationContext validationContext;
-
-		public ValidationContextTests()
+		private IValidationContext CreateValidationContext(Action<ValidationOptions> options = null)
 		{
-			validationContext = new ServiceCollection()
-				.AddValidation()
+			return new ServiceCollection()
+				.AddValidation(options)
 				.BuildServiceProvider()
 				.GetRequiredService<IValidationContext>();
 		}
@@ -18,7 +17,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void BasicCondition_HasMessage()
 		{
-			validationContext.When("key", "value").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key", "value").AddValidationError("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -30,9 +31,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void BasicCondition_HasNoMessage()
 		{
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -40,7 +43,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NoCondition_HasMessage()
 		{
-			validationContext.When("key", "value").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key", "value").AddValidationError("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -52,7 +57,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void NoValidationKey_HasMessage()
 		{
-			validationContext.When("key").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key").AddValidationError("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -64,7 +71,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessage_IsNotValid()
 		{
-			validationContext.When("key").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key").AddValidationError("Error");
 
 			Assert.False(validationContext.IsValid());
 		}
@@ -72,7 +81,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessage_IsNotValid_FilterByKey()
 		{
-			validationContext.When("key").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key").AddValidationError("Error");
 
 			Assert.False(validationContext.IsValid("key"));
 		}
@@ -80,9 +91,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasNoMessage_IsValid()
 		{
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
 			validationContext.When("key")
 				.Is(() => false)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.True(validationContext.IsValid());
 		}
@@ -90,8 +103,10 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessages_IsNotValid_FilterByKey()
 		{
-			validationContext.When("key1", "value").AddError("Error");
-			validationContext.When("key2", "value").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key1", "value").AddValidationError("Error");
+			validationContext.When("key2", "value").AddValidationError("Error");
 
 			Assert.True(validationContext.IsValid("key3"));
 		}
@@ -99,7 +114,9 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessages_EnsureIsNotValid()
 		{
-			validationContext.When("key", "value").AddError("Error");
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
+			validationContext.When("key", "value").AddValidationError("Error");
 
 			var exception = Assert.Throws<ValidationContextException>(() => validationContext.EnsureIsValid());
 
@@ -113,9 +130,11 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void HasMessages_EnsureIsValid()
 		{
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
+
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			validationContext.EnsureIsValid();
 		}
@@ -123,13 +142,23 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ChangeSeverityToFatal_AddError_Valid()
 		{
-			validationContext.ValidationSeverity = ValidationSeverity.Fatal;
+			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Fatal);
 
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddError("Error");
+				.AddValidationError("Error");
 
 			Assert.True(validationContext.IsValid());
+		}
+		
+		[Fact]
+		public void GlobalValidationKey()
+		{
+			var validationContext = CreateValidationContext(x => x.GlobalValidationKey = "global");
+
+			var (key, _) = validationContext.When().AddValidationError("Error");
+
+			Assert.Equal("global", key);
 		}
 	}
 }

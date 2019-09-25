@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Phema.Validation
 {
@@ -12,20 +13,10 @@ namespace Phema.Validation
 			Func<bool> predicate)
 			where TValidationCondition : IValidationCondition
 		{
-			if (condition.Inverted)
+			// Null or false
+			if (condition.IsValid != true)
 			{
-				if (condition.IsValid == false)
-				{
-					condition.IsValid = !predicate();
-				}
-			}
-			else
-			{
-				// Null or false
-				if (condition.IsValid != true)
-				{
-					condition.IsValid = !predicate();
-				}
+				condition.IsValid = !predicate();
 			}
 
 			return condition;
@@ -63,14 +54,21 @@ namespace Phema.Validation
 		}
 
 		/// <summary>
-		/// Should continue invalid checks to get IsValid back to true?
+		///  Checks if value is default 
 		/// </summary>
-		public static IValidationCondition<TValue> Inverted<TValue>(
+		public static IValidationCondition<TValue> IsDefault<TValue>(
 			this IValidationCondition<TValue> condition)
 		{
-			condition.Inverted = true;
+			return condition.Is(value => EqualityComparer<TValue>.Default.Equals(value, default));
+		}
 
-			return condition;
+		/// <summary>
+		///   Checks if value is not default
+		/// </summary>
+		public static IValidationCondition<TValue> IsNotDefault<TValue>(
+			this IValidationCondition<TValue> condition)
+		{
+			return condition.IsNot(value => EqualityComparer<TValue>.Default.Equals(value, default));
 		}
 	}
 }

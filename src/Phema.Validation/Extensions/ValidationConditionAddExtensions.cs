@@ -10,7 +10,7 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddDetail(
+		public static ValidationDetail? AddValidationDetail(
 			this IValidationCondition condition,
 			string validationMessage,
 			ValidationSeverity validationSeverity)
@@ -43,11 +43,11 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddWarning(
+		public static ValidationDetail? AddValidationWarning(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
-			return condition.AddDetail(validationMessage, ValidationSeverity.Warning);
+			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Warning);
 		}
 
 		/// <summary>
@@ -57,11 +57,11 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddError(
+		public static ValidationDetail? AddValidationError(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
-			return condition.AddDetail(validationMessage, ValidationSeverity.Error);
+			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Error);
 		}
 
 		/// <summary>
@@ -71,11 +71,11 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddFatal(
+		public static ValidationDetail? AddValidationFatal(
 			this IValidationCondition condition,
 			string validationMessage)
 		{
-			return condition.AddDetail(validationMessage, ValidationSeverity.Fatal);
+			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Fatal);
 		}
 	}
 }
