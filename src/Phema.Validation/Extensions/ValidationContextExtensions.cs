@@ -94,13 +94,17 @@ namespace Phema.Validation
 		/// <summary>
 		///   Creates new validation scope with specified validation path
 		/// </summary>
-		public static IValidationScope CreateScope(this IValidationContext validationContext, string validationPart)
+		public static IValidationScope CreateScope(
+			this IValidationContext validationContext,
+			string validationPart,
+			ValidationSeverity? validationSeverity = null)
 		{
 			var validationPath = validationContext.CombineValidationPath(validationPart);
 
 			return new ValidationScope(
 				validationContext,
-				validationPath);
+				validationPath,
+				validationSeverity);
 		}
 
 		/// <summary>

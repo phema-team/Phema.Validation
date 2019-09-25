@@ -19,15 +19,15 @@ namespace Phema.Validation.Examples.AspNetCore
 		{
 			validationContext.When(this, a => a.City)
 				.IsNullOrWhitespace()
-				.AddError("City must be set");
+				.AddValidationError("City must be set");
 
 			validationContext.When(this, a => a.Street)
 				.IsNullOrWhitespace()
-				.AddError("Street must be set");
+				.AddValidationError("Street must be set");
 
 			validationContext.When(this, a => a.House)
 				.IsNull()
-				.AddError("House must be set");
+				.AddValidationError("House must be set");
 		}
 	}
 }

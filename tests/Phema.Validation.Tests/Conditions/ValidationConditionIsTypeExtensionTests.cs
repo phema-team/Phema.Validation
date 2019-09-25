@@ -22,7 +22,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.IsType(typeof(string))
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -33,7 +33,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsType(typeof(int))
-				.AddError("template1");
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -42,9 +42,8 @@ namespace Phema.Validation.Tests
 		public void IsTypeOfString_NextChecksValid_Invalid()
 		{
 			var (key, message) = validationContext.When("name", (object)"john")
-				.IsType<string>()
-				.Is(value => value.Length == 4)
-				.AddError("template1");
+				.IsType<string>(typed => typed.Is(value => value.Length == 4))
+				.AddValidationError("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -54,10 +53,9 @@ namespace Phema.Validation.Tests
 		public void IsTypeOfTType_TypeChecks_Valid()
 		{
 			validationContext.When("name", (object)"john")
-				.IsType<int>()
 				// Never called because type is string
-				.Is(value => throw new Exception())
-				.AddError("template1");
+				.IsType<int>(typed => typed.Is(value => throw new Exception()))
+				.AddValidationError("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -71,7 +69,7 @@ namespace Phema.Validation.Tests
 			Assert.False(stringCondition.IsValid);
 
 			var intCondition = stringCondition.IsType<int>();
-			Assert.False(intCondition.IsValid);
+			Assert.True(intCondition.IsValid);
 		}
 
 		[Fact]
@@ -81,7 +79,7 @@ namespace Phema.Validation.Tests
 				.IsEqual("john")
 				.IsType<string>()
 				.IsEqual("john")
-				.AddError("error");
+				.AddValidationError("error");
 
 			// Because all checks passed
 			Assert.NotNull(validationDetail);
@@ -92,9 +90,8 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsEqual("john")
-				.IsType<int>()
-				.Is(() => throw new Exception())
-				.AddError("error");
+				.IsType<int>(typed => typed.Is(() => throw new Exception()))
+				.AddValidationError("error");
 
 			// Because string is not of type int
 			Assert.Null(validationDetail);
@@ -107,7 +104,7 @@ namespace Phema.Validation.Tests
 				.IsEqual("john")
 				.IsType<string>()
 				.IsEqual("sarah")
-				.AddError("error");
+				.AddValidationError("error");
 
 			// Because sarah != john
 			Assert.Null(validationDetail);
@@ -119,7 +116,7 @@ namespace Phema.Validation.Tests
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<string>()
 				.IsEqual("sarah")
-				.AddError("error");
+				.AddValidationError("error");
 
 			// Because sarah != john
 			Assert.Null(validationDetail);
@@ -130,7 +127,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<int>()
-				.AddError("error");
+				.AddValidationError("error");
 
 			// Because string is not typeof int
 			Assert.Null(validationDetail);
@@ -141,7 +138,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("name", "john")
 				.IsType<string>()
-				.AddError("error");
+				.AddValidationError("error");
 
 			Assert.NotNull(validationDetail);
 		}

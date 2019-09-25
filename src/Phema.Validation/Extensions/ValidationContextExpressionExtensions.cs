@@ -83,14 +83,15 @@ namespace Phema.Validation
 		public static IValidationScope CreateScope<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
-			Expression<Func<TModel, TValue>> expression)
+			Expression<Func<TModel, TValue>> expression,
+			ValidationSeverity? validationSeverity = null)
 		{
 			var serviceProvider = (IServiceProvider) validationContext;
 			var validationResolver = serviceProvider.GetRequiredService<IValidationPathResolver>();
 
 			var validationPart = validationResolver.FromExpression(expression.Body);
 
-			return validationContext.CreateScope(validationPart);
+			return validationContext.CreateScope(validationPart, validationSeverity);
 		}
 	}
 }

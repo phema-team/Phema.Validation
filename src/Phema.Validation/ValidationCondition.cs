@@ -7,7 +7,6 @@ namespace Phema.Validation
 		IValidationContext ValidationContext { get; }
 		string ValidationKey { get; }
 		bool? IsValid { get; set; }
-		bool Inverted { get; set; }
 	}
 
 	internal class ValidationCondition : IValidationCondition
@@ -21,7 +20,6 @@ namespace Phema.Validation
 		public IValidationContext ValidationContext { get; }
 		public string ValidationKey { get; }
 		public bool? IsValid { get; set; }
-		public bool Inverted { get; set; }
 	}
 
 	public interface IValidationCondition<out TValue> : IValidationCondition

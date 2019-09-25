@@ -95,21 +95,27 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is type of <see cref="TType"/>
 		/// </summary>
-		public static IValidationCondition<TType> IsType<TType>(
-			this IValidationCondition<object> condition)
+		public static IValidationCondition<object> IsType<TType>(
+			this IValidationCondition<object> condition,
+			Action<IValidationCondition<TType>>? typed = null)
 		{
-			return condition.Value switch
+			if (condition.Value is TType)
 			{
-				TType value => condition.ValidationContext
-					.When(condition.ValidationKey, value)
-					.Is(() => !condition.Inverted)
-					.Inverted(),
+				var typedCondition = new ValidationCondition<TType>(
+					condition.ValidationContext,
+					condition.ValidationKey,
+					new Lazy<TType>(() => (TType)condition.Value)); 
 
-				_ => condition.ValidationContext
-					.When(condition.ValidationKey, default(TType))
-					.Is(() => condition.Inverted)
-					.Inverted()
-			};
+				typed?.Invoke(typedCondition);
+
+				condition.IsValid = typedCondition.IsValid ?? false;
+			}
+			else
+			{
+				condition.IsValid = true;
+			}
+
+			return condition;
 		}
 	}
 }

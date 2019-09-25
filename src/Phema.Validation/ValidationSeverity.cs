@@ -7,12 +7,9 @@ namespace Phema.Validation
 	/// </summary>
 	public enum ValidationSeverity
 	{
-		None,
-
 		Warning,
-
 		Error,
-
-		Fatal
+		Fatal,
+		None
 	}
 }
