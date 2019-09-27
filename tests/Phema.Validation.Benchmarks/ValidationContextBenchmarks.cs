@@ -29,7 +29,7 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void Simple()
 		{
-			validationContext.When("Model", "Value").AddValidationError("Error");
+			validationContext.When("Model", "Value").AddValidationDetail("Error");
 		}
 
 		[Benchmark]

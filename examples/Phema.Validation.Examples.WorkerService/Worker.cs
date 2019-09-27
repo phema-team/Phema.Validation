@@ -46,7 +46,7 @@ namespace Phema.Validation.Examples.WorkerService
 
 			validationContext.When(message, m => m.Elapsed)
 				.Is(timeSpan => timeSpan.Seconds % 2 == 0)
-				.AddValidationError($"Elapsed: {message.Elapsed.Seconds} seconds");
+				.AddValidationDetail($"Elapsed: {message.Elapsed.Seconds} seconds");
 
 			if (validationContext.IsValid())
 			{

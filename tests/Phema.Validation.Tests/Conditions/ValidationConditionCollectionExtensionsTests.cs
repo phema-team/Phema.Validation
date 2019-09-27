@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("key", Array.Empty<int>())
 				.IsEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.NotNull(validationDetail);
 			Assert.Equal("key", validationDetail.ValidationKey);
@@ -35,7 +35,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int>())
 				.IsEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -46,7 +46,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new[] {1})
 				.IsNotEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -57,7 +57,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int> {1})
 				.IsNotEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new[] {1})
 				.HasCount(1)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -79,7 +79,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int> {1})
 				.HasCount(1)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -90,7 +90,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new[] {1})
 				.HasCountNot(2)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -101,7 +101,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int> {1})
 				.HasCountNot(2)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 
 			Assert.Equal("list", key);
@@ -113,7 +113,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new[] {1})
 				.IsContains(1)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -124,7 +124,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int> {1})
 				.IsContains(1)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -135,7 +135,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new[] {"item1"})
 				.IsNotContains("item2")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);
@@ -146,7 +146,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("list", new List<int>())
 				.IsNotContains(1)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("list", key);
 			Assert.Equal("template1", message);

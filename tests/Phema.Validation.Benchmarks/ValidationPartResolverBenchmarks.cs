@@ -42,43 +42,43 @@ namespace Phema.Validation.Benchmarks
 		[Benchmark]
 		public void Default()
 		{
-			defaultValidationContext.When(model, m => m.Default).AddValidationError("Error");
+			defaultValidationContext.When(model, m => m.Default).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void DataMember_WithAttribute()
 		{
-			dataMemberValidationContext.When(model, m => m.DataMember).AddValidationError("Error");
+			dataMemberValidationContext.When(model, m => m.DataMember).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void DataMember_WithoutAttribute()
 		{
-			dataMemberValidationContext.When(model, m => m.WithoutDataMember).AddValidationError("Error");
+			dataMemberValidationContext.When(model, m => m.WithoutDataMember).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void PascalCase_Lower()
 		{
-			pascalCaseValidationContext.When(model, m => m.pascalCase).AddValidationError("Error");
+			pascalCaseValidationContext.When(model, m => m.pascalCase).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void PascalCase()
 		{
-			pascalCaseValidationContext.When(model, m => m.PascalCase).AddValidationError("Error");
+			pascalCaseValidationContext.When(model, m => m.PascalCase).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void CamelCase_Upper()
 		{
-			camelCaseValidationContext.When(model, m => m.CamelCase).AddValidationError("Error");
+			camelCaseValidationContext.When(model, m => m.CamelCase).AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void CamelCase()
 		{
-			camelCaseValidationContext.When(model, m => m.camelCase).AddValidationError("Error");
+			camelCaseValidationContext.When(model, m => m.camelCase).AddValidationDetail("Error");
 		}
 
 		private class TestModel

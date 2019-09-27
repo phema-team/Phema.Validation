@@ -21,7 +21,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("key", true)
 				.IsTrue()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.NotNull(validationDetail);
 
@@ -35,9 +35,9 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("key", false)
 				.IsTrue()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
-			Assert.Null(validationDetail);
+			Assert.True(validationDetail.IsValid);
 		}
 
 		[Fact]
@@ -45,7 +45,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("key", false)
 				.IsFalse()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.NotNull(validationDetail);
 
@@ -59,9 +59,9 @@ namespace Phema.Validation.Tests
 		{
 			var validationDetail = validationContext.When("key", true)
 				.IsFalse()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
-			Assert.Null(validationDetail);
+			Assert.True(validationDetail.IsValid);
 		}
 	}
 }

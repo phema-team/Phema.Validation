@@ -20,7 +20,7 @@ namespace Phema.Validation.Tests
 		{
 			var withPrefix = validationContext.CreateScope("path");
 
-			var (key, _) = withPrefix.When("key", "value").AddValidationError("Error");
+			var (key, _) = withPrefix.When("key", "value").AddValidationDetail("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 			var withPrefix = validationContext.CreateScope("path1");
 			withPrefix = withPrefix.CreateScope("path2");
 
-			var (key, _) = withPrefix.When("key", "value").AddValidationError("Error");
+			var (key, _) = withPrefix.When("key", "value").AddValidationDetail("Error");
 
 			Assert.Equal("path1.path2.key", key);
 		}
@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		{
 			var withPrefix = validationContext.CreateScope("path");
 
-			withPrefix.When("key", "value").AddValidationError("Error");
+			withPrefix.When("key", "value").AddValidationDetail("Error");
 
 			Assert.False(withPrefix.IsValid("key"));
 			Assert.False(validationContext.IsValid("path.key"));
@@ -57,7 +57,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationScope = validationContext.CreateScope("Scope");
 
-			validationScope.When("key").AddValidationError("Error");
+			validationScope.When("key").AddValidationDetail("Error");
 
 			Assert.False(validationScope.IsValid());
 		}
@@ -65,13 +65,13 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ValidationScope_OwnCollection_AddDetailsToRoot()
 		{
-			validationContext.When("key").AddValidationError("Error");
+			validationContext.When("key").AddValidationDetail("Error");
 
 			var validationScope = validationContext.CreateScope("Scope");
 
 			Assert.Empty(validationScope.ValidationDetails);
 
-			validationScope.When("Key").AddValidationError("Error");
+			validationScope.When("Key").AddValidationDetail("Error");
 
 			Assert.Single(validationScope.ValidationDetails);
 			Assert.Equal(2, validationContext.ValidationDetails.Count);
@@ -80,15 +80,15 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void DoubleValidationScope()
 		{
-			validationContext.When("key").AddValidationError("Error");
+			validationContext.When("key").AddValidationDetail("Error");
 
 			var validationScope1 = validationContext.CreateScope("Scope1");
 			Assert.Empty(validationScope1.ValidationDetails);
-			validationScope1.When("Key").AddValidationError("Error");
+			validationScope1.When("Key").AddValidationDetail("Error");
 
 			var validationScope2 = validationScope1.CreateScope("Scope2");
 			Assert.Empty(validationScope2.ValidationDetails);
-			validationScope2.When("Key").AddValidationError("Error");
+			validationScope2.When("Key").AddValidationDetail("Error");
 
 			// Only from scope2
 			Assert.Single(validationScope2.ValidationDetails);
@@ -103,7 +103,7 @@ namespace Phema.Validation.Tests
 		[Fact]
 		public void ScopeDoesNotRemoveValidationContextDetails()
 		{
-			var validationDetail = validationContext.When("key").AddValidationError("Error");
+			var validationDetail = validationContext.When("key").AddValidationDetail("Error");
 
 			var scope = validationContext.CreateScope("Scope1");
 

@@ -27,7 +27,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When(model, m => m.Property, () => 13)
 				.IsEqual(13)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.False(validationContext.IsValid(model, m => m.Property));
 		}
@@ -42,7 +42,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When(model, m => m.Property, () => 12)
 				.IsEqual(13)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 				Property = 12
 			};
 
-			validationContext.When(model, m => m.Property).AddValidationError("Error");
+			validationContext.When(model, m => m.Property).AddValidationDetail("Error");
 
 			Assert.False(validationContext.IsValid(model, m => m.Property));
 		}
@@ -68,7 +68,7 @@ namespace Phema.Validation.Tests
 				Property = 12
 			};
 
-			validationContext.When(model, m => m.Property).AddValidationError("Error");
+			validationContext.When(model, m => m.Property).AddValidationDetail("Error");
 
 			Assert.True(validationContext.IsValid(model, m => m.List));
 		}
@@ -81,7 +81,7 @@ namespace Phema.Validation.Tests
 				Property = 12
 			};
 
-			validationContext.When(model, m => m.Property).AddValidationError("Error");
+			validationContext.When(model, m => m.Property).AddValidationDetail("Error");
 
 			var exception = Assert.Throws<ValidationContextException>(
 				() => validationContext.EnsureIsValid(model, m => m.Property));
@@ -99,7 +99,7 @@ namespace Phema.Validation.Tests
 				Property = 12
 			};
 
-			validationContext.When(model, m => m.Property).AddValidationError("Error");
+			validationContext.When(model, m => m.Property).AddValidationDetail("Error");
 
 			validationContext.EnsureIsValid(model, m => m.List);
 		}
@@ -118,7 +118,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("Property", key);
 			Assert.Equal("Error", message);
@@ -138,7 +138,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("Array[0]", key);
 			Assert.Equal("Error", message);
@@ -162,7 +162,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("Array[0]", key);
 			Assert.Equal("Error", message);
@@ -182,7 +182,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
@@ -204,7 +204,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
@@ -220,7 +220,7 @@ namespace Phema.Validation.Tests
 
 			var provider = new {ForModel = new {Index = 0}};
 
-			var (key, message) = validationContext.When(model, m => m.List[provider.ForModel.Index]).AddValidationError("Error");
+			var (key, message) = validationContext.When(model, m => m.List[provider.ForModel.Index]).AddValidationDetail("Error");
 
 			Assert.Equal("List[0]", key);
 			Assert.Equal("Error", message);
@@ -240,7 +240,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("DoubleArray[0, 0]", key);
 			Assert.Equal("Error", message);
@@ -262,7 +262,7 @@ namespace Phema.Validation.Tests
 					Assert.Equal(12, value);
 					return true;
 				})
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("DoubleArray[0, 0]", key);
 			Assert.Equal("Error", message);
@@ -278,7 +278,7 @@ namespace Phema.Validation.Tests
 
 			var withPrefix = validationContext.CreateScope(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, list => list.Count).AddValidationError("Error");
+			var (key, _) = withPrefix.When(model.List, list => list.Count).AddValidationDetail("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -297,7 +297,7 @@ namespace Phema.Validation.Tests
 			var withPrefix = validationContext.CreateScope(model, m => m.List);
 			withPrefix = withPrefix.CreateScope(model, m => m.List);
 
-			var (key, _) = withPrefix.When(model.List, c => c.Count).AddValidationError("Error");
+			var (key, _) = withPrefix.When(model.List, c => c.Count).AddValidationDetail("Error");
 
 			Assert.Equal("List.List.Count", key);
 		}
@@ -314,7 +314,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var validationDetail = validationContext.When(model, m => m.Model.Property)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("Model.Property", validationDetail.ValidationKey);
 		}
@@ -331,7 +331,7 @@ namespace Phema.Validation.Tests
 			};
 
 			var validationDetail = validationContext.When(model, m => m.Model.List[0])
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Equal("Model.List[0]", validationDetail.ValidationKey);
 		}
@@ -351,7 +351,7 @@ namespace Phema.Validation.Tests
 
 			Assert.Equal("Model.List[0]", forList.ValidationPath);
 
-			var validationDetail = forList.When("Key", "Value").AddValidationError("Error");
+			var validationDetail = forList.When("Key", "Value").AddValidationDetail("Error");
 
 			Assert.Equal("Model.List[0].Key", validationDetail.ValidationKey);
 		}

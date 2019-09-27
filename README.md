@@ -32,12 +32,12 @@ var validationContext = serviceProvider.GetRequiredService<IValidationContext>()
 // Validation key will be `Name` using default validation part provider
 validationContext.When(person, p => p.Name)
   .Is(name => name == null)
-  .AddValidationError("Name must be set");
+  .AddValidationDetail("Name must be set");
 
 // Validation key will be `Address.Locations[0].Latitude` using default validation part provider
 validationContext.When(person, p => p.Address.Locations[0].Latitude)
   .Is(latitude => ...custom check...)
-  .AddValidationError("Some custom check failed");
+  .AddValidationDetail("Some custom check failed");
 ```
 
 ## Validation conditions
@@ -48,7 +48,7 @@ validationContext.When(person, p => p.Address.Locations[0].Latitude)
 // Check for Phema.Validation.Conditions namespace
 validationContext.When(person, p => p.Name)
   .IsNullOrWhitespace()
-  .AddValidationError("Name must be set");
+  .AddValidationDetail("Name must be set");
 
 // Use multiple conditions (joined with AND)
 validationContext.When(person, p => p.Name)
@@ -60,38 +60,45 @@ validationContext.When(person, p => p.Name)
   // .IsNotUrl()
   // .IsNotEmail()
   // .IsMatch(regex)
-  .AddValidationError("Name should be less than 20");
+  .AddValidationDetail("Name should be less than 20");
 
 // DateTime conditions
 validationContext.When(task, t => t.DueDate)
   .IsNotUtc()
-  .AddValidationError("Due date must be in Utc");
+  .AddValidationDetail("Due date must be in Utc");
 
 // Type checks
 validationContext.When(person, p => p.Car)
-  .IsType<Ferrari>()
-  .Is(ferarriCar => ...Some Ferrari specific checks...)
-  .AddValidationError("You have Ferrari car, but ...");
+  .IsType<Ferrari>(typed => typed.Is(ferarriCar => ...Some Ferrari specific checks...))
+  .AddValidationDetail("You have Ferrari car, but ...");
 ```
 
 ## Validation details
 
 ```csharp
-// Null if valid
-var validationDetails = validationContext.When(person, p => p.Age)
+var validationDetails = validationContext
+  .When(person, p => p.Age)
   // Validation check is failed, validation condition is valid
   .Is(() => false)
-  .AddValidationError("Age must be set");
+  .AddValidationDetail("Age must be set");
 
 // Use deconstruction
-var (key, message) = validationContext.When(person, p => p.Age)
+var (key, message) = validationContext
+  .When(person, p => p.Age)
   .IsNull()
-  .AddValidationError("Age must be set");
+  .AddValidationDetail("Age must be set");
 
 // More deconstruction
-var (key, message, severity) = validationContext.When(person, p => p.Age)
+var (key, message, isValid) = validationContext
+  .When(person, p => p.Age)
   .IsNull()
-  .AddValidationError("Age must be set");
+  .AddValidationDetail("Age must be set");
+
+// Even more deconstruction!
+var (key, message, isValid, severity) = validationContext
+  .When(person, p => p.Age)
+  .IsNull()
+  .AddValidationDetail("Age must be set");
 ```
 
 ## Check validation
@@ -170,7 +177,7 @@ using (var scope = validationContext.CreateScope(person, p => p.Address, Validat
 ```csharp
 validationContext.When("key", value)
   .IsNull()
-  .AddValidationError("Value is null");
+  .AddValidationDetail("Value is null");
 
 validationContext.CreateScope("key", ValidationSeverity.Warning);
 

@@ -67,8 +67,9 @@ namespace Phema.Validation
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, params string[] validationParts)
 		{
-			var validationDetails = validationContext.ValidationDetails
-				.Where(detail => detail.ValidationSeverity >= validationContext.ValidationSeverity);
+			var validationDetails = validationContext
+				.ValidationDetails
+				.Where(detail => detail.ValidationSeverity >= detail.ValidationContext.ValidationSeverity);
 
 			if (validationParts.Any())
 			{

@@ -9,12 +9,21 @@ namespace Phema.Validation
 	[DebuggerDisplay("Key={ValidationKey} Message={ValidationMessage} Severity={ValidationSeverity}")]
 	public class ValidationDetail
 	{
-		public ValidationDetail(string validationKey, string validationMessage, ValidationSeverity validationSeverity)
+		public ValidationDetail(
+			IValidationContext validationContext,
+			string validationKey,
+			string validationMessage,
+			ValidationSeverity validationSeverity,
+			bool isValid)
 		{
+			ValidationContext = validationContext;
 			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
 			ValidationMessage = validationMessage ?? throw new ArgumentNullException(nameof(validationMessage));
 			ValidationSeverity = validationSeverity;
+			IsValid = isValid;
 		}
+
+		public IValidationContext ValidationContext { get; }
 
 		/// <summary>
 		///   Specified validation key with validation context path
@@ -31,5 +40,7 @@ namespace Phema.Validation
 		///   <see cref="ValidationConditionException" />
 		/// </summary>
 		public ValidationSeverity ValidationSeverity { get; }
+
+		public bool IsValid { get; }
 	}
 }
