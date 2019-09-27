@@ -45,7 +45,7 @@ namespace Phema.Validation.Benchmarks
 		public void SimpleExpression()
 		{
 			validationContext.When(model, m => m.Model)
-				.AddValidationError("Property is 12");
+				.AddValidationDetail("Property is 12");
 		}
 
 		[Benchmark]
@@ -53,14 +53,14 @@ namespace Phema.Validation.Benchmarks
 		{
 			validationContext.When(model, m => m.Model)
 				.Is(value => true)
-				.AddValidationError("Property is 12");
+				.AddValidationDetail("Property is 12");
 		}
 
 		[Benchmark]
 		public void ChainedExpression()
 		{
 			validationContext.When(model, m => m.Model.Model)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
@@ -68,14 +68,14 @@ namespace Phema.Validation.Benchmarks
 		{
 			validationContext.When(model, m => m.Model.Model)
 				.Is(value => true)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void ArrayAccessExpression()
 		{
 			validationContext.When(model, m => m.Model.Array[0])
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
@@ -83,14 +83,14 @@ namespace Phema.Validation.Benchmarks
 		{
 			validationContext.When(model, m => m.Model.Array[0])
 				.Is(value => true)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
 		public void ChainedArrayAccessExpression()
 		{
 			validationContext.When(model, m => m.Model.Array[0].Model)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
@@ -98,7 +98,7 @@ namespace Phema.Validation.Benchmarks
 		{
 			validationContext.When(model, m => m.Model.Array[0].Model)
 				.Is(value => true)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
@@ -107,7 +107,7 @@ namespace Phema.Validation.Benchmarks
 			var provider = new {ForModel = new {Index = 0}};
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]
@@ -117,7 +117,7 @@ namespace Phema.Validation.Benchmarks
 
 			validationContext.When(model, m => m.Model.Array[provider.ForModel.Index].Model)
 				.Is(value => true)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 		}
 
 		[Benchmark]

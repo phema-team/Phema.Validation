@@ -22,7 +22,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 10)
 				.Is(() => true)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -33,7 +33,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 10)
 				.IsNot(value => value == 5)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsNot(value => value == 10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -54,7 +54,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 0)
 				.IsDefault()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsDefault()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -75,7 +75,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 10)
 				.IsNotDefault()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -86,7 +86,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 0)
 				.IsNotDefault()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -96,7 +96,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 10)
 				.IsNot(() => false)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -107,7 +107,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsNot(() => true)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -117,7 +117,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", (string) null)
 				.IsNull()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -128,7 +128,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "")
 				.IsNull()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -138,7 +138,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "")
 				.IsNotNull()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -149,7 +149,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", (string) null)
 				.IsNotNull()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -159,14 +159,14 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", 2)
 				.IsIn(1, 2, 3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
 
 			(key, message) = validationContext.When("name", 2)
 				.IsIn(new List<int> { 1, 2, 3 })
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -177,11 +177,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", 2)
 				.IsIn(1, 3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			validationContext.When("name", 2)
 				.IsIn(new List<int> { 1, 3 })
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -191,14 +191,14 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", 2)
 				.IsNotIn(1, 3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
 			
 			(key, message) = validationContext.When("name", 2)
 				.IsNotIn(new List<int> { 1, 3 })
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -209,11 +209,11 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", 2)
 				.IsNotIn(1, 2, 3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			validationContext.When("name", 2)
 				.IsNotIn(new List<int> { 1, 2, 3 })
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -223,7 +223,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.IsEqual("john")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -234,7 +234,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsEqual("notjohn")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -244,7 +244,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", (string) null)
 				.IsEqual(null)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -255,7 +255,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.IsNotEqual("notjohn")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -266,7 +266,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsNotEqual("john")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -276,7 +276,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", (string) null)
 				.IsNotEqual("john")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);

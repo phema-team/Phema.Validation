@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", string.Empty)
 				.IsEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.IsNotEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", string.Empty)
 				.IsNotEmpty()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", " ")
 				.IsNullOrWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -76,7 +76,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.IsNullOrWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -86,7 +86,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.IsNotNullOrWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", " ")
 				.IsNotNullOrWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -107,7 +107,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "   ")
 				.IsWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -118,7 +118,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", (string)null)
 				.IsWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -128,7 +128,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", (string)null)
 				.IsNotWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -139,7 +139,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "  ")
 				.IsNotWhitespace()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -149,7 +149,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "abc")
 				.IsMatch("[a-c]+")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -160,7 +160,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "def")
 				.IsMatch("[a-c]+")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -170,7 +170,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "def")
 				.IsNotMatch("[a-c]+")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -181,7 +181,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "abc")
 				.IsNotMatch("[a-c]+")
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -191,7 +191,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("email", "email@email.com")
 				.IsEmail()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("email", key);
 			Assert.Equal("template1", message);
@@ -202,7 +202,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("email", "email")
 				.IsEmail()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -212,7 +212,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("email", "email")
 				.IsNotEmail()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("email", key);
 			Assert.Equal("template1", message);
@@ -223,7 +223,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("email", "email@email.com")
 				.IsNotEmail()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -233,7 +233,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("url", "/orders/1")
 				.IsUrl(UriKind.Relative)
-				.AddValidationError("You should specify absolute url");
+				.AddValidationDetail("You should specify absolute url");
 
 			Assert.Equal("url", key);
 			Assert.Equal("You should specify absolute url", message);
@@ -244,7 +244,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("url", "https://www.example.com")
 				.IsUrl(UriKind.Relative)
-				.AddValidationError("You should specify absolute url");
+				.AddValidationDetail("You should specify absolute url");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -254,7 +254,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("url", "not a valid url")
 				.IsNotUrl()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("url", key);
 			Assert.Equal("template1", message);
@@ -265,7 +265,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("url", "https://www/example.com")
 				.IsNotUrl()
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -275,7 +275,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.HasLength(4)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -286,7 +286,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLength(5)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -296,7 +296,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.HasLength(length => true)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -307,7 +307,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLength(length => false)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -317,7 +317,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.HasLengthLess(5)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -328,7 +328,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLengthLess(3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -338,7 +338,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("name", "john")
 				.HasLengthGreater(3)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("name", key);
 			Assert.Equal("template1", message);
@@ -349,7 +349,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("name", "john")
 				.HasLengthGreater(5)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}

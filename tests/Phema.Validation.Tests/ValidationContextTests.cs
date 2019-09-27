@@ -19,7 +19,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key", "value").AddValidationError("Error");
+			validationContext.When("key", "value").AddValidationDetail("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -35,7 +35,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.Empty(validationContext.ValidationDetails);
 		}
@@ -45,7 +45,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key", "value").AddValidationError("Error");
+			validationContext.When("key", "value").AddValidationDetail("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -59,7 +59,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key").AddValidationError("Error");
+			validationContext.When("key").AddValidationDetail("Error");
 
 			var validationDetail = Assert.Single(validationContext.ValidationDetails);
 
@@ -73,7 +73,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key").AddValidationError("Error");
+			validationContext.When("key").AddValidationDetail("Error");
 
 			Assert.False(validationContext.IsValid());
 		}
@@ -83,7 +83,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key").AddValidationError("Error");
+			validationContext.When("key").AddValidationDetail("Error");
 
 			Assert.False(validationContext.IsValid("key"));
 		}
@@ -95,7 +95,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When("key")
 				.Is(() => false)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.True(validationContext.IsValid());
 		}
@@ -105,8 +105,8 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key1", "value").AddValidationError("Error");
-			validationContext.When("key2", "value").AddValidationError("Error");
+			validationContext.When("key1", "value").AddValidationDetail("Error");
+			validationContext.When("key2", "value").AddValidationDetail("Error");
 
 			Assert.True(validationContext.IsValid("key3"));
 		}
@@ -116,14 +116,15 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.ValidationSeverity = ValidationSeverity.Error);
 
-			validationContext.When("key", "value").AddValidationError("Error");
+			validationContext.When("key", "value").AddValidationDetail("Error");
 
 			var exception = Assert.Throws<ValidationContextException>(() => validationContext.EnsureIsValid());
 
-			var (key, message, severity) = Assert.Single(exception.ValidationDetails);
+			var (key, message, isValid, severity) = Assert.Single(exception.ValidationDetails);
 
 			Assert.Equal("key", key);
 			Assert.Equal("Error", message);
+			Assert.False(isValid);
 			Assert.Equal(ValidationSeverity.Error, severity);
 		}
 
@@ -134,7 +135,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			validationContext.EnsureIsValid();
 		}
@@ -146,7 +147,7 @@ namespace Phema.Validation.Tests
 
 			validationContext.When("key", "value")
 				.Is(value => false)
-				.AddValidationError("Error");
+				.AddValidationDetail("Error");
 
 			Assert.True(validationContext.IsValid());
 		}
@@ -156,7 +157,7 @@ namespace Phema.Validation.Tests
 		{
 			var validationContext = CreateValidationContext(x => x.GlobalValidationKey = "global");
 
-			var (key, _) = validationContext.When().AddValidationError("Error");
+			var (key, _) = validationContext.When().AddValidationDetail("Error");
 
 			Assert.Equal("global", key);
 		}

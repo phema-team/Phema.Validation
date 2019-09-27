@@ -23,7 +23,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 11)
 				.IsGreater(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -34,7 +34,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsGreater(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -44,7 +44,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 10)
 				.IsGreaterOrEqual(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -55,7 +55,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 9)
 				.IsGreaterOrEqual(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -65,7 +65,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 11)
 				.IsLess(12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -76,7 +76,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 10)
 				.IsLess(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -86,7 +86,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 12)
 				.IsLessOrEqual(12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -97,7 +97,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 11)
 				.IsLessOrEqual(10)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -107,7 +107,7 @@ namespace Phema.Validation.Tests
 		{
 			var (key, message) = validationContext.When("age", 11)
 				.IsInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Equal("age", key);
 			Assert.Equal("template1", message);
@@ -118,7 +118,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 9)
 				.IsInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -128,7 +128,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 13)
 				.IsInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.True(!validationContext.ValidationDetails.Any());
 		}
@@ -138,7 +138,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 11)
 				.IsNotInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			validationContext.EnsureIsValid();
 		}
@@ -148,7 +148,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 9)
 				.IsNotInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Single(validationContext.ValidationDetails);
 		}
@@ -158,7 +158,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", 13)
 				.IsNotInRange(10, 12)
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Single(validationContext.ValidationDetails);
 		}
@@ -168,7 +168,7 @@ namespace Phema.Validation.Tests
 		{
 			validationContext.When("age", new DateTime(2011, 11, 11))
 				.IsLess(new DateTime(2012, 12, 12))
-				.AddValidationError("template1");
+				.AddValidationDetail("template1");
 
 			Assert.Single(validationContext.ValidationDetails);
 		}

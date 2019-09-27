@@ -13,18 +13,23 @@ namespace Phema.Validation
 		public static ValidationDetail? AddValidationDetail(
 			this IValidationCondition condition,
 			string validationMessage,
-			ValidationSeverity validationSeverity)
+			ValidationSeverity validationSeverity = ValidationSeverity.Error)
 		{
-			// Not null or false
-			// Null by default, so validationContext.When(...).AddDetail(...) works without additional conditions
-			if (condition.IsValid == true)
-			{
-				return null;
-			}
-
 			var validationContext = condition.ValidationContext;
 
-			var validationDetail = new ValidationDetail(condition.ValidationKey, validationMessage, validationSeverity);
+			var validationDetail = new ValidationDetail(
+				validationContext,
+				condition.ValidationKey,
+				validationMessage,
+				validationSeverity,
+				condition.IsValid ?? false);
+
+			// Not null or false
+			// Null by default, so validationContext.When(...).AddValidationDetail(...) works without additional conditions
+			if (validationDetail.IsValid)
+			{
+				return validationDetail;
+			}
 
 			validationContext.ValidationDetails.Add(validationDetail);
 
@@ -48,20 +53,6 @@ namespace Phema.Validation
 			string validationMessage)
 		{
 			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Warning);
-		}
-
-		/// <summary>
-		///   Adds <see cref="ValidationDetail" /> to <see cref="IValidationContext" /> with error severity
-		/// </summary>
-		/// <exception cref="ValidationConditionException">
-		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
-		///   Example: Add fatal detail, when validation context severity is error
-		/// </exception>
-		public static ValidationDetail? AddValidationError(
-			this IValidationCondition condition,
-			string validationMessage)
-		{
-			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Error);
 		}
 
 		/// <summary>
