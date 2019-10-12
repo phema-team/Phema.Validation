@@ -144,7 +144,7 @@ validationContext.ValidateCustomer(customer);
 ```csharp
 // Configure DataMember validation part resolver
 services.AddValidation(options =>
-  options.ValidationPartResolver = ValidationPartResolvers.DataMember);
+  options.WithValidationPartResolver(ValidationPartResolvers.DataMember));
 
 // Override validation parts with `DataMemberAttribute`
 [DataMember(Name = "name")]

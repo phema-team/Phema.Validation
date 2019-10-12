@@ -1,21 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Phema.Validation
 {
-	internal sealed class ValidationDetailsCollection : ICollection<ValidationDetail>
+	public sealed class ValidationDetailsCollection : IList<ValidationDetail>
 	{
-		private readonly ICollection<ValidationDetail>? rootValidationDetails;
-		private readonly ICollection<ValidationDetail> validationDetails;
+		private readonly ValidationDetailsCollection? rootValidationDetails;
+		private readonly List<ValidationDetail> validationDetails;
 
-		public ValidationDetailsCollection(ICollection<ValidationDetail>? rootValidationDetails = null)
+		internal ValidationDetailsCollection(ValidationDetailsCollection? rootValidationDetails = null)
 		{
 			validationDetails = new List<ValidationDetail>();
 			this.rootValidationDetails = rootValidationDetails;
 		}
 
+		public bool IsReadOnly => false;
 		public int Count => validationDetails.Count;
-		public bool IsReadOnly => validationDetails.IsReadOnly;
+
+		public ValidationDetail this[int index]
+		{
+			get => validationDetails[index];
+			set => validationDetails[index] = value;
+		}
 
 		public void Add(ValidationDetail validationDetail)
 		{
@@ -35,11 +42,6 @@ namespace Phema.Validation
 			return removed;
 		}
 
-		public bool Contains(ValidationDetail validationDetail)
-		{
-			return validationDetails.Contains(validationDetail);
-		}
-
 		public void Clear()
 		{
 			if (rootValidationDetails != null)
@@ -53,19 +55,44 @@ namespace Phema.Validation
 			validationDetails.Clear();
 		}
 
-		public void CopyTo(ValidationDetail[] array, int arrayIndex)
-		{
-			validationDetails.CopyTo(array, arrayIndex);
-		}
-
-		public IEnumerator<ValidationDetail> GetEnumerator()
+		public List<ValidationDetail>.Enumerator GetEnumerator()
 		{
 			return validationDetails.GetEnumerator();
+		}
+
+		IEnumerator<ValidationDetail> IEnumerable<ValidationDetail>.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public void CopyTo(ValidationDetail[] array, int arrayIndex)
+		{
+			throw new NotSupportedException();
+		}
+
+		public bool Contains(ValidationDetail validationDetail)
+		{
+			throw new NotSupportedException();
+		}
+
+		public int IndexOf(ValidationDetail item)
+		{
+			throw new NotSupportedException();
+		}
+
+		public void Insert(int index, ValidationDetail item)
+		{
+			throw new NotSupportedException();
+		}
+
+		public void RemoveAt(int index)
+		{
+			throw new NotSupportedException();
 		}
 	}
 }

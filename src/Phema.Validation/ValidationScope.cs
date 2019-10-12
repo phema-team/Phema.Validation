@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Phema.Validation
@@ -29,7 +28,7 @@ namespace Phema.Validation
 			serviceProvider = (IServiceProvider) validationContext;
 		}
 
-		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ValidationDetailsCollection ValidationDetails { get; }
 		public ValidationSeverity ValidationSeverity { get; }
 		public string? ValidationPath { get; }
 
