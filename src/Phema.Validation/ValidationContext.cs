@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
 
@@ -13,7 +12,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Failed validation results
 		/// </summary>
-		ICollection<ValidationDetail> ValidationDetails { get; }
+		ValidationDetailsCollection ValidationDetails { get; }
 
 		/// <summary>
 		///   Current validation context severity. Adding details greater than this value will throw
@@ -46,7 +45,7 @@ namespace Phema.Validation
 			ValidationPath = validationOptions.Value.ValidationPath;
 		}
 
-		public ICollection<ValidationDetail> ValidationDetails { get; }
+		public ValidationDetailsCollection ValidationDetails { get; }
 		public ValidationSeverity ValidationSeverity { get; }
 		public string? ValidationPath { get; }
 

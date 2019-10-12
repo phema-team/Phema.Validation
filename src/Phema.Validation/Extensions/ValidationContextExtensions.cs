@@ -71,7 +71,7 @@ namespace Phema.Validation
 				.ValidationDetails
 				.Where(detail => detail.ValidationSeverity >= detail.ValidationContext.ValidationSeverity);
 
-			if (validationParts.Any())
+			if (validationParts.Length > 0)
 			{
 				var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
 
