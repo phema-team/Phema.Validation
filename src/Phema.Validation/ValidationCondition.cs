@@ -11,7 +11,7 @@ namespace Phema.Validation
 
 	public struct ValidationCondition : IValidationCondition
 	{
-		public ValidationCondition(IValidationContext validationContext, string validationKey)
+		internal ValidationCondition(IValidationContext validationContext, string validationKey)
 		{
 			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
@@ -32,7 +32,7 @@ namespace Phema.Validation
 	{
 		private readonly Lazy<TValue> value;
 
-		public ValidationCondition(
+		internal ValidationCondition(
 			IValidationContext validationContext,
 			string validationKey,
 			Lazy<TValue> value)
