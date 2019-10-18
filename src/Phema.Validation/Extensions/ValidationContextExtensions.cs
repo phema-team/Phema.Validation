@@ -83,22 +83,24 @@ namespace Phema.Validation
 							}
 						}
 					}
-				}
-				else
-				{
-					var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
 
-					foreach (var validationDetail in validationContext.ValidationDetails)
+					return true;
+				}
+
+				var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
+
+				foreach (var validationDetail in validationContext.ValidationDetails)
+				{
+					if (validationDetail.ValidationSeverity >= validationDetail.ValidationContext.ValidationSeverity)
 					{
-						if (validationDetail.ValidationSeverity >= validationDetail.ValidationContext.ValidationSeverity)
+						if (validationKeys.Contains(validationDetail.ValidationKey))
 						{
-							if (validationKeys.Contains(validationDetail.ValidationKey))
-							{
-								return false;
-							}
+							return false;
 						}
 					}
 				}
+
+				return true;
 			}
 
 			foreach (var validationDetail in validationContext.ValidationDetails)
