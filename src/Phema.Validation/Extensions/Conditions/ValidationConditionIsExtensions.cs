@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Phema.Validation.Conditions
 {
@@ -9,8 +8,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks values has a value
 		/// </summary>
-		public static IValidationCondition<TValue> IsIn<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsIn<TValue>(
+			this ValidationCondition<TValue> condition,
 			IEnumerable<TValue> values)
 		{
 			return condition.Is(value => values.Contains(condition.Value));
@@ -19,8 +18,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks values has a value
 		/// </summary>
-		public static IValidationCondition<TValue> IsIn<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsIn<TValue>(
+			this ValidationCondition<TValue> condition,
 			params TValue[] values)
 		{
 			return condition.Is(value => values.Contains(condition.Value));
@@ -29,8 +28,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks values has a value
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotIn<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsNotIn<TValue>(
+			this ValidationCondition<TValue> condition,
 			IEnumerable<TValue> values)
 		{
 			return condition.IsNot(value => values.Contains(condition.Value));
@@ -39,8 +38,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks values has a value
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotIn<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsNotIn<TValue>(
+			this ValidationCondition<TValue> condition,
 			params TValue[] values)
 		{
 			return condition.IsNot(value => values.Contains(condition.Value));
@@ -49,7 +48,7 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is null
 		/// </summary>
-		public static IValidationCondition<TValue> IsNull<TValue>(this IValidationCondition<TValue> condition)
+		public static ValidationCondition<TValue> IsNull<TValue>(this ValidationCondition<TValue> condition)
 		{
 			return condition.Is(value => value is null);
 		}
@@ -57,7 +56,7 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is not null
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotNull<TValue>(this IValidationCondition<TValue> condition)
+		public static ValidationCondition<TValue> IsNotNull<TValue>(this ValidationCondition<TValue> condition)
 		{
 			return condition.IsNot(value => value is null);
 		}
@@ -65,8 +64,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is equal using Equals method
 		/// </summary>
-		public static IValidationCondition<TValue> IsEqual<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsEqual<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue expect)
 		{
 			return condition.Is(value => value?.Equals(expect) ?? expect is null);
@@ -75,47 +74,11 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is not equal using Equals method
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotEqual<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsNotEqual<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue expect)
 		{
 			return condition.IsNot(value => value?.Equals(expect) ?? expect is null);
-		}
-
-		/// <summary>
-		///   Checks value is type of
-		/// </summary>
-		public static IValidationCondition<TValue> IsType<TValue>(
-			this IValidationCondition<TValue> condition,
-			Type type)
-		{
-			return condition.Is(value => value?.GetType() == type);
-		}
-
-		/// <summary>
-		///   Checks value is type of <see cref="TType"/>
-		/// </summary>
-		public static IValidationCondition<object> IsType<TType>(
-			this IValidationCondition<object> condition,
-			Action<IValidationCondition<TType>>? typed = null)
-		{
-			if (condition.Value is TType)
-			{
-				var typedCondition = new ValidationCondition<TType>(
-					condition.ValidationContext,
-					condition.ValidationKey,
-					new Lazy<TType>(() => (TType)condition.Value)); 
-
-				typed?.Invoke(typedCondition);
-
-				condition.IsValid = typedCondition.IsValid ?? false;
-			}
-			else
-			{
-				condition.IsValid = true;
-			}
-
-			return condition;
 		}
 	}
 }

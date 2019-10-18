@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Phema.Validation.Conditions
@@ -7,8 +8,9 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection is empty
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> IsEmpty<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition)
+		public static ValidationCondition<TCollection> IsEmpty<TCollection>(
+			this ValidationCondition<TCollection> condition)
+			where TCollection : ICollection
 		{
 			return condition.Is(value => value is null || value.Count == 0);
 		}
@@ -16,8 +18,9 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection is not empty
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> IsNotEmpty<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition)
+		public static ValidationCondition<TCollection> IsNotEmpty<TCollection>(
+			this ValidationCondition<TCollection> condition)
+			where TCollection : ICollection
 		{
 			return condition.IsNot(value => value is null || value.Count == 0);
 		}
@@ -25,9 +28,10 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection has count
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> HasCount<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition,
+		public static ValidationCondition<TCollection> HasCount<TCollection>(
+			this ValidationCondition<TCollection> condition,
 			int count)
+			where TCollection : ICollection
 		{
 			return condition.Is(value => value?.Count == count);
 		}
@@ -35,9 +39,10 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection has count not
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> HasCountNot<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition,
+		public static ValidationCondition<TCollection> HasCountNot<TCollection>(
+			this ValidationCondition<TCollection> condition,
 			int count)
+			where TCollection : ICollection
 		{
 			return condition.IsNot(value => value?.Count == count);
 		}
@@ -45,9 +50,10 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection is contains
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> IsContains<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition,
+		public static ValidationCondition<TCollection> IsContains<TCollection, TElement>(
+			this ValidationCondition<TCollection> condition,
 			TElement element)
+			where TCollection : ICollection<TElement>
 		{
 			return condition.Is(value => value?.Contains(element) ?? false);
 		}
@@ -55,9 +61,10 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks collection is not contains
 		/// </summary>
-		public static IValidationCondition<ICollection<TElement>> IsNotContains<TElement>(
-			this IValidationCondition<ICollection<TElement>> condition,
+		public static ValidationCondition<TCollection> IsNotContains<TCollection, TElement>(
+			this ValidationCondition<TCollection> condition,
 			TElement element)
+			where TCollection : ICollection<TElement>
 		{
 			return condition.IsNot(value => value?.Contains(element) ?? false);
 		}

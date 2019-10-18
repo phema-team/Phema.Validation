@@ -10,7 +10,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies <see cref="TModel" /> with expression-based validation key
 		/// </summary>
-		public static IValidationCondition<TValue> When<TModel, TValue>(
+		public static ValidationCondition<TValue> When<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression)
@@ -29,7 +29,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies <see cref="TModel" /> with expression-based validation key
 		/// </summary>
-		public static IValidationCondition<TValue> When<TModel, TValue>(
+		public static ValidationCondition<TValue> When<TModel, TValue>(
 			this IValidationContext validationContext,
 			TModel model,
 			Expression<Func<TModel, TValue>> expression,

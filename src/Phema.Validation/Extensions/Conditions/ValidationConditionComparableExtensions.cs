@@ -7,8 +7,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is greater
 		/// </summary>
-		public static IValidationCondition<TValue> IsGreater<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsGreater<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
@@ -18,8 +18,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is greater or equal
 		/// </summary>
-		public static IValidationCondition<TValue> IsGreaterOrEqual<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsGreaterOrEqual<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
@@ -29,8 +29,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is less
 		/// </summary>
-		public static IValidationCondition<TValue> IsLess<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsLess<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
@@ -40,8 +40,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is less or equal
 		/// </summary>
-		public static IValidationCondition<TValue> IsLessOrEqual<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsLessOrEqual<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue comparable)
 			where TValue : IComparable<TValue>
 		{
@@ -51,8 +51,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is in range (min: inclusive, max: exclusive)
 		/// </summary>
-		public static IValidationCondition<TValue> IsInRange<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsInRange<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue min,
 			TValue max)
 			where TValue : IComparable<TValue>
@@ -63,8 +63,8 @@ namespace Phema.Validation.Conditions
 		/// <summary>
 		///   Checks value is not in range (min: inclusive, max: exclusive)
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotInRange<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsNotInRange<TValue>(
+			this ValidationCondition<TValue> condition,
 			TValue min,
 			TValue max)
 			where TValue : IComparable<TValue>

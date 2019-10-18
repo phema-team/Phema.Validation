@@ -36,8 +36,8 @@ namespace Phema.Validation
 		/// <summary>
 		///   Checks if value is valid
 		/// </summary>
-		public static IValidationCondition<TValue> Is<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> Is<TValue>(
+			this ValidationCondition<TValue> condition,
 			Func<TValue, bool> predicate)
 		{
 			return condition.Is(() => predicate(condition.Value));
@@ -46,8 +46,8 @@ namespace Phema.Validation
 		/// <summary>
 		///   Checks if value is not valid
 		/// </summary>
-		public static IValidationCondition<TValue> IsNot<TValue>(
-			this IValidationCondition<TValue> condition,
+		public static ValidationCondition<TValue> IsNot<TValue>(
+			this ValidationCondition<TValue> condition,
 			Func<TValue, bool> predicate)
 		{
 			return condition.IsNot(() => predicate(condition.Value));
@@ -56,8 +56,8 @@ namespace Phema.Validation
 		/// <summary>
 		///  Checks if value is default 
 		/// </summary>
-		public static IValidationCondition<TValue> IsDefault<TValue>(
-			this IValidationCondition<TValue> condition)
+		public static ValidationCondition<TValue> IsDefault<TValue>(
+			this ValidationCondition<TValue> condition)
 		{
 			return condition.Is(value => EqualityComparer<TValue>.Default.Equals(value, default));
 		}
@@ -65,8 +65,8 @@ namespace Phema.Validation
 		/// <summary>
 		///   Checks if value is not default
 		/// </summary>
-		public static IValidationCondition<TValue> IsNotDefault<TValue>(
-			this IValidationCondition<TValue> condition)
+		public static ValidationCondition<TValue> IsNotDefault<TValue>(
+			this ValidationCondition<TValue> condition)
 		{
 			return condition.IsNot(value => EqualityComparer<TValue>.Default.Equals(value, default));
 		}

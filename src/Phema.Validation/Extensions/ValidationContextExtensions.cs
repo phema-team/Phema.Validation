@@ -10,7 +10,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies validation part with global validation key
 		/// </summary>
-		public static IValidationCondition When(this IValidationContext validationContext)
+		public static ValidationCondition When(this IValidationContext validationContext)
 		{
 			var serviceProvider = (IServiceProvider)validationContext;
 
@@ -24,7 +24,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies validation part with object predicate without value. Use with closures in conditions
 		/// </summary>
-		public static IValidationCondition When(
+		public static ValidationCondition When(
 			this IValidationContext validationContext,
 			string validationPart)
 		{
@@ -38,7 +38,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies validation part with provider of <see cref="TValue" /> value
 		/// </summary>
-		public static IValidationCondition<TValue> When<TValue>(
+		public static ValidationCondition<TValue> When<TValue>(
 			this IValidationContext validationContext,
 			string validationPart,
 			Lazy<TValue> value)
@@ -54,7 +54,7 @@ namespace Phema.Validation
 		/// <summary>
 		///   Specifies validation part with <see cref="TValue" /> value
 		/// </summary>
-		public static IValidationCondition<TValue> When<TValue>(
+		public static ValidationCondition<TValue> When<TValue>(
 			this IValidationContext validationContext,
 			string validationPart,
 			TValue value)
@@ -67,18 +67,49 @@ namespace Phema.Validation
 		/// </summary>
 		public static bool IsValid(this IValidationContext validationContext, params string[] validationParts)
 		{
-			var validationDetails = validationContext
-				.ValidationDetails
-				.Where(detail => detail.ValidationSeverity >= detail.ValidationContext.ValidationSeverity);
-
 			if (validationParts.Length > 0)
 			{
-				var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
+				if (validationParts.Length == 1)
+				{
+					var validationKey = validationContext.CombineValidationPath(validationParts[0]);
 
-				validationDetails = validationDetails.Where(detail => validationKeys.Contains(detail.ValidationKey));
+					foreach (var validationDetail in validationContext.ValidationDetails)
+					{
+						if (validationDetail.ValidationSeverity >= validationDetail.ValidationContext.ValidationSeverity)
+						{
+							if (validationKey == validationDetail.ValidationKey)
+							{
+								return false;
+							}
+						}
+					}
+				}
+				else
+				{
+					var validationKeys = validationParts.Select(validationContext.CombineValidationPath).ToList();
+
+					foreach (var validationDetail in validationContext.ValidationDetails)
+					{
+						if (validationDetail.ValidationSeverity >= validationDetail.ValidationContext.ValidationSeverity)
+						{
+							if (validationKeys.Contains(validationDetail.ValidationKey))
+							{
+								return false;
+							}
+						}
+					}
+				}
 			}
 
-			return !validationDetails.Any();
+			foreach (var validationDetail in validationContext.ValidationDetails)
+			{
+				if (validationDetail.ValidationSeverity >= validationDetail.ValidationContext.ValidationSeverity)
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		/// <summary>

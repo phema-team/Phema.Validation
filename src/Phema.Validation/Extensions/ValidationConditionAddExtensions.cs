@@ -10,10 +10,11 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddValidationDetail(
-			this IValidationCondition condition,
+		public static ValidationDetail? AddValidationDetail<TValidationCondition>(
+			this TValidationCondition condition,
 			string validationMessage,
 			ValidationSeverity validationSeverity = ValidationSeverity.Error)
+			where TValidationCondition : struct, IValidationCondition
 		{
 			var validationContext = condition.ValidationContext;
 
@@ -48,9 +49,10 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddValidationWarning(
-			this IValidationCondition condition,
+		public static ValidationDetail? AddValidationWarning<TValidationCondition>(
+			this TValidationCondition condition,
 			string validationMessage)
+			where TValidationCondition : struct, IValidationCondition
 		{
 			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Warning);
 		}
@@ -62,9 +64,10 @@ namespace Phema.Validation
 		///   Throws when ValidationDetail.ValidationSeverity greater ValidationContext.ValidationSeverity.
 		///   Example: Add fatal detail, when validation context severity is error
 		/// </exception>
-		public static ValidationDetail? AddValidationFatal(
-			this IValidationCondition condition,
+		public static ValidationDetail? AddValidationFatal<TValidationCondition>(
+			this TValidationCondition condition,
 			string validationMessage)
+			where TValidationCondition : struct, IValidationCondition
 		{
 			return condition.AddValidationDetail(validationMessage, ValidationSeverity.Fatal);
 		}

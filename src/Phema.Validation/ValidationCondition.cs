@@ -9,12 +9,13 @@ namespace Phema.Validation
 		bool? IsValid { get; set; }
 	}
 
-	internal class ValidationCondition : IValidationCondition
+	public struct ValidationCondition : IValidationCondition
 	{
 		public ValidationCondition(IValidationContext validationContext, string validationKey)
 		{
 			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
 			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
+			IsValid = null;
 		}
 
 		public IValidationContext ValidationContext { get; }
@@ -27,7 +28,7 @@ namespace Phema.Validation
 		TValue Value { get; }
 	}
 
-	internal sealed class ValidationCondition<TValue> : ValidationCondition, IValidationCondition<TValue>
+	public struct ValidationCondition<TValue> : IValidationCondition<TValue>
 	{
 		private readonly Lazy<TValue> value;
 
@@ -35,11 +36,16 @@ namespace Phema.Validation
 			IValidationContext validationContext,
 			string validationKey,
 			Lazy<TValue> value)
-			: base(validationContext, validationKey)
 		{
+			ValidationContext = validationContext ?? throw new ArgumentNullException(nameof(validationContext));
+			ValidationKey = validationKey ?? throw new ArgumentNullException(nameof(validationKey));
 			this.value = value;
+			IsValid = null;
 		}
 
+		public IValidationContext ValidationContext { get; }
+		public string ValidationKey { get; }
+		public bool? IsValid { get; set; }
 		public TValue Value => value.Value;
 	}
 }

@@ -11,9 +11,9 @@ namespace Phema.Validation.Benchmarks
 			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly)
 				.Run(args, DefaultConfig.Instance
 					.With(Job.Core
-						.WithInvocationCount(32)
-						.WithWarmupCount(100)
-						.WithIterationCount(10000))
+						.WithInvocationCount(2048)
+						.WithWarmupCount(200)
+						.WithIterationCount(1000))
 					.With(MemoryDiagnoser.Default));
 	}
 }
